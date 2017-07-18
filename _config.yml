@@ -1,6 +1,6 @@
 # Site settings
-title: Mickey0524 Blog
-SEOTitle: 白皓的博客 | Mickey0524 Blog
+title: Mickey 小站
+SEOTitle: 白皓的博客 | Mickey 小站
 header-img: img/home-bg.jpg
 email: buptbh@163.com
 description: "web前端 | 白皓，Web & Front-End Engineer | 这里是 @mickey0524白皓 的个人博客，与你一起发现更大的世界。"
@@ -60,15 +60,15 @@ netease_comment: false
 # ba_track_id: [your track id]
 
 # Google Analytics
-ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+# ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
+# ga_domain: huangxuan.me
 
 
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "半世浮萍随逝水<br>一宵冷雨葬名花"
-sidebar-avatar: /img/avatar-hux.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/2.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
