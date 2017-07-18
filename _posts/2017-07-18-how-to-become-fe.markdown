@@ -13,7 +13,6 @@ tags:
 理论知识和实践能力完全脱节，顶多平时刷刷leetcode，其他的一窍不通，在大三下学期的时候，笔者去面试了一发阿里
 的暑期实习，结果可想而知，被虐的非常惨，然后的几个月时间内，非常的迷茫，不知道自己喜欢啥，也不知道以后能够
 做什么，做过JAVAEE，写过android，做过测试开发，然后在一个契机下，接触了前端，瞬间被吸引，直到现在
-笔者的经历在知乎就可以看到，大学专业是数字媒体艺术，大一实习过动效设计师，大二拿到了人生第一个大公司 offer 是阿里的交互设计，后来转岗到淘宝旅行的前端团队，现在在微信电影票做前端研发。
 <br>
 上面说这么多，其实就是告诉大家，迷茫是很正常的，要勇于尝试各种新东西，才能发现自己真正的兴趣所在
 <br>
@@ -74,7 +73,7 @@ p { color: red;}
 </ul>
 <br><b>这个阶段的练习主要是“临摹”：用代码画出你想画的网站，越多越好。</b>
 <br>
-<br>如果完成的好，这个阶段过后你大概就可以写出一些简单又好看的“静态网页”了，比如这个作品集/简历：<a href="//link.zhihu.com/?target=http%3A//github.com/mickey0524/2016ife/" class=" wrap external" target="_blank" rel="nofollow noreferrer">2016ife - 白皓的作业集<i class="icon-external"></i></a>
+<br>如果完成的好，这个阶段过后你大概就可以写出一些简单又好看的“静态网页”了，比如这个作品集：<a href="//link.zhihu.com/?target=http%3A//github.com/mickey0524/2016ife/" class=" wrap external" target="_blank" rel="nofollow noreferrer">2016ife - 白皓的作业集<i class="icon-external"></i></a>
 <br>
 <br>
 <br>
@@ -92,8 +91,9 @@ document.getElementById('awesome')
 ```
 <br>jQuery
 
-```jQuery
+```js
 $('#awesome')
+```
 
 <br>
 可以看到，jQuery能够大大减少你的代码量，不仅如此，jQuery还封装了许多有用的函数（毕竟是存活了10年的库2333）
