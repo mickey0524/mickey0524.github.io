@@ -178,7 +178,10 @@ $('#awesome')
 <br>
 <br>虽然一下扯得有点多，但这些确实就是你未来将会遇到的。你并不需要全部掌握它们，但是却多多益善；你也可以专精在某几个方面，这已经足以让你成为非常专业的前端工程师。
 <br>
-
+<br>
+<br>致谢
+<br>本文参考黄玄大大的<a data-hash="85de6407f2219137df29b4249b91asd" href="http://huangxuan.me/2015/10/28/how-designer-learn-fe/" class="member_mention" data-editable="true" data-title="@黄玄" data-tip="p$b$85de6407f2219137df29b4249b91cfd5">「知乎」设计师如何学习前端？
+</a> 
 
 
 
