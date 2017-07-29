@@ -23,8 +23,10 @@ tags:
 以此类推
 <br>
 <br>linear-gradient( 45deg, blue, red );           /* A gradient on 45deg axis starting blue and finishing red */
+
 linear-gradient( to left top, blue, red);      /* A gradient going from the bottom right to the top left starting blue and 
                                                   finishing red */
+
 linear-gradient( 0deg, blue, green 40%, red ); /* A gradient going from the bottom to top, starting blue, being green after 40% 
                                                   and finishing red */
 <br>
@@ -33,7 +35,7 @@ linear-gradient( 0deg, blue, green 40%, red ); /* A gradient going from the bott
 <br>如果要实现下面这个图的效果
 <br>linear-gradient(135deg/to bottom right, #26ce61, #26ce61 50%, transparent 0/50%)都阔以
 
-![example]('../img/in-post/linear-gradient.png')
+![example](/img/in-post/linear-gradient.png)
 
 <br>
 <br>------------
