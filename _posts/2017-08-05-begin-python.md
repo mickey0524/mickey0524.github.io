@@ -45,7 +45,7 @@ for k, v in enumerate(a):
 <br>9. map，reduce，filter，sorted都是高阶函数，区别是前三个的函数参数是第一个，sorted的函数参数是第二个
 <br>10. lambda 匿名函数，简化代码量
 <br>11. 在函数执行过程中动态增加功能的方式称为装饰器，decorator本质上也是高阶函数，接受需要动态添加功能的函数作为一个参数
-<a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/00138681987994612.007bbf6ad052463ab18034f0254bf355000" class=" wrap external" target="_blank" rel="nofollow noreferrer">初识装饰器</a>
+<a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819879946007bbf6ad052463ab18034f0254bf355000" class=" wrap external" target="_blank" rel="nofollow noreferrer">初识装饰器</a>
 <br>12. isinstance() < = > instanceof 同样用来判断类和引用类型（js中） type() < = > typeof  同样用来判断基本类型
 <br>13. python可以通过hasattr(), setattr(), getattr()来操作对象实例，有点类似DOM了，同样和字典一样，通过get()操作对象可能不存在，可以返回一个默认值
 <br>14. python作为一门动态语言，能够在程序运行过程中对类和实例对象绑定方法，贼强，这里需要从types里引入MethodType
