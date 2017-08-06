@@ -14,9 +14,10 @@ tags:
 <br>------------
 <br>
 <br><b>begin-python</b>
+<br>
 <br>下面列出一些python的知识点，总结一下，用来温故知新(本博客所用python版本为2.7)
 <br>1. python中 / 为浮点除，//为地板除, /只要有一个参数为浮点数，那么结果就是浮点数，//无论参数如何返回的都是整数
-想要让/ 和 //分工明确，可以和引入，import division from __future__，这样/返回的都是浮点数，//返回的都是整数
+想要让/ 和 //分工明确，可以和引入，`import division from __future__`，这样/返回的都是浮点数，//返回的都是整数
 <br>2. python变量键入的写法和c有些相似
 ```js
 print "my name is %s" % baihao
