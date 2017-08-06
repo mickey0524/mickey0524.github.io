@@ -1,8 +1,8 @@
 ---
 layout:     post
-title:      "如何成为一名前端工程师？"
-subtitle:   "How to become a front-end engineer?"
-date:       2017-07-18 20:30:00
+title:      "初识CSS抛物线动画"
+subtitle:   "Get started with CSS parabolic animation"
+date:       2017-08-06 14:00:00
 author:     "Mickey"
 header-img: "img/home-bg-rwd.jpg"
 tags:
