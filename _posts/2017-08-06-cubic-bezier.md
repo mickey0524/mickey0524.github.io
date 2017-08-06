@@ -4,7 +4,7 @@ title:      "初识CSS抛物线动画"
 subtitle:   "Get started with CSS parabolic animation"
 date:       2017-08-06 14:00:00
 author:     "Mickey"
-header-img: "img/home-bg-rwd.jpg"
+header-img: "img/post-bg-rwd.jpg"
 tags:
     - 前端开发
     - CSS
@@ -20,15 +20,15 @@ tags:
 <br>
 <br>
 水平方向上是匀速运动的，那么它的运动动画应该也是linear的
-![hor](../img/in-post/post-css-bezier/hor.png)
+![hor](/img/in-post//post-css-bezier/hor.png)
 <br>
 垂直方向上我的项目里是需要实现一个先向上减速到0，再向下加速的动画，于是它的运动轨迹如图
-![hor](../img/in-post/post-css-bezier/vertical.png)
+![hor](/img/in-post/post-css-bezier/vertical.png)
 <br>
 这里需要注意的是，<b>不要把上面的用于描述“一个维度”的动画完成的过程，与我们这里的抛物线的轨迹混淆！我之前就是卡在了这个误区！</b>
 <br>
 好的，现在给出一张实际效果图，我们再来分析代码是如何实现的
-![ele](../img/in-post/post-css-bezier/ele.gif)
+![ele](/img/in-post/post-css-bezier/ele.gif)
 <br>
 <br>
 大体上，容易想到的思路不外乎使用transition控制left和top的变化，使用transition控制transfrom的translate的变化以及使用animation，其实思路都比较简单
