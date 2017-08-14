@@ -155,7 +155,7 @@ json.loads()将JSON对象转为python对象
   json.loads(jsonobject, object_hook=dict2student)
 ```
 
-	
+<br>21. 在python中有模块和包之分，模块的话就是一个简单的.py文件，包的话必须包含一个__init__.py文件，模块的引入方式为直接import，包的话，可以import全部的包，也可以from package import module
 
 
 
