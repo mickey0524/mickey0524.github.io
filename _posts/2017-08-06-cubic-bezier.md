@@ -20,7 +20,7 @@ tags:
 <br>
 <br>
 水平方向上是匀速运动的，那么它的运动动画应该也是linear的
-![hor](/img/in-post//post-css-bezier/hor.png)
+![hor](/img/in-post/post-css-bezier/hor.png)
 <br>
 垂直方向上我的项目里是需要实现一个先向上减速到0，再向下加速的动画，于是它的运动轨迹如图
 ![hor](/img/in-post/post-css-bezier/vertical.png)
