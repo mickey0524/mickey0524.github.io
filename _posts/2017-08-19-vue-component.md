@@ -4,7 +4,7 @@ title:      "vue-component"
 subtitle:   "Vue组件的创建，注册和使用"
 date:       2017-08-19 18:30:00
 author:     "Mickey"
-header-img: "img/post-bg-os-metro.jpg"
+header-img: "img/post-bg-js-module.jpg"
 tags:
     - 前端开发
     - Vue
@@ -12,13 +12,13 @@ tags:
 
 Vue是博主学习的第一个MVVM框架，当时学习的时候为了快速上手，加之有vue-cli十分的好用，对vue中组件相关的操作没有理解的非常透彻，最近公司用vue写一些后台管理界面，深刻的发现自己的基础不是很扎实，于是温习了一下，在此记录一下～
 
-## 组件简介
+<h3>组件简介</h3>
 
 组件系统是Vue.js其中一个重要的概念，它提供了一种抽象，让我们可以使用独立可复用的小组件来构建大型应用，任意类型的应用界面都可以抽象为一个组件树
 
 ![component](/img/in-post/post-vue-component/1.png)
 
-## 组件的创建和注册
+<h3>组件的创建和注册</h3>
 
 Vue组件的使用有三个基本的步骤：创建组件构造器，注册组件和使用组件
 
@@ -64,7 +64,7 @@ Vue组件的使用有三个基本的步骤：创建组件构造器，注册组�
 
 4. 组件应该挂载到某个Vue实例下，否则它不会生效。
 
-## 单页Vue应用和多页Vue应用的区别
+<h3>单页Vue应用和多页Vue应用的区别</h3>
 
 单页的话，非常easy，首先，有vue-cli的存在，使用vue-cli初始化的项目，通过App.vue和main.js已经把组件App挂载到了全局的#app元素下，基本上只用去写相应的.vue组件就好，单页的.vue组件由template，script，style三部分组成，直接export default {}就行，十分easy，再次膜拜yyx大大。
 
