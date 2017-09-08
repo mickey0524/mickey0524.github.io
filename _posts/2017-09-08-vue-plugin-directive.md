@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "js-css-slider"
+title:      "Vue-plugin"
 subtitle:   "Vue中的自定义插件和指令"
 date:       2017-09-08 20:00:00
 author:     "Mickey"
