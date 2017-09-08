@@ -26,11 +26,11 @@ tags:
 
 首先依然是创建一个Notice.vue的文件
 
-```
+```js
 <template>
   <div class="notice">
     <div class="content">
-      {{content}}
+      {{text}}
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@ tags:
     data() {
       return {
         visible: false,
-        content: '',
+        text: '',
         duration: 3000
       }
     },
@@ -87,7 +87,7 @@ const noticeConstructor = Vue.extend(require('./Notice.vue'));
 const Notice = (content) => {
   let noticeInstance = new noticeConstructor({
     data: {
-      content: content
+      text: content
     }
   });
   noticeInstance.vm = noticeInstance.$mount();
