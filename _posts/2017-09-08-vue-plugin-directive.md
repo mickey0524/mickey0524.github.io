@@ -30,7 +30,7 @@ tags:
 <template>
   <div class="notice">
     <div class="content">
-      {{ content }}
+      {{content}}
     </div>
   </div>
 </template>
