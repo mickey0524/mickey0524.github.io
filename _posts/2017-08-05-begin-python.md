@@ -157,7 +157,21 @@ json.loads()将JSON对象转为python对象
 
 <br>21. 在python中有模块和包之分，模块的话就是一个简单的.py文件，包的话必须包含一个__init__.py文件，模块的引入方式为直接import，包的话，可以import全部的包，也可以from package import module
 
+<br>22. python由于GIL锁的原因，多线程不能使用多核，十分鸡肋，因而python多用多进程模型进行并发操作，一般来说使用的都是multiprocessing 包中的Pool来创建一个python进程池
 
+```
+from multiprocess import Pool
 
+p = Pool()
+
+task = p.apply_async(f,  args=(参数,))
+
+p.close()
+p.join()
+
+result = task.get()
+```
+
+一般在p.close()之后调用get方法获取并发操作的返回值，避免阻塞
 
 
