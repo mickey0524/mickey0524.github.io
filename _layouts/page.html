@@ -180,6 +180,16 @@ layout: default
                                 </a>
                             </li>
                             {% endif %}
+                            {% if site.leetcode_username %}
+                            <li>
+                                <a target="_blank" href="https://leetcode.com/{{ site.leetcode_username }}">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-code fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </section>
