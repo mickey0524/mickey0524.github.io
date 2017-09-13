@@ -47,7 +47,7 @@ rem是用来解决移动端网页的适配问题的，大大减少了移动端we
 
 讲道理，上面的五个.block渲染的结果应该是一样的，均为65.625px，但是请看，实际渲染出来的数值既有65px，也有66px，最关键的是毫无规律，emmmm
 
-![1](/img/in-post/rem-decimal/1.jpg) ![2](/img/in-post/rem-decimal/2.jpg)
+![1](/img/in-post/rem-decimal/1.jpg)
 
 我参考淘宝FE[mobile-rem-problem](http://taobaofed.org/blog/2015/11/04/mobile-rem-problem/)，得出如下结论
 
