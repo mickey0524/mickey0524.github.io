@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "queue-reconstruction-by-height"
-subtitle:   "按照高度重新排列队列"
+title:      "danmu-plugin-desgin"
+subtitle:   "弹幕插件的设计与实现"
 date:       2017-09-16 22:00:00
 author:     "Mickey"
 header-img: "img/post-bg-kuaidi.jpg"
