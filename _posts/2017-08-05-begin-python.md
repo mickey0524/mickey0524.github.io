@@ -174,7 +174,7 @@ result = task.get()
 
 一般在p.close()之后调用get方法获取并发操作的返回值，避免阻塞
 
-<br>23. python List 向list末尾插入元素的方法是append方法，有一个渐变的写法
+<br>23. python List 向list末尾插入元素的方法是append方法，有一个简便的写法
 
 ```
 a = [1, 2, 3]
