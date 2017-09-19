@@ -2,7 +2,7 @@
 layout:     post
 title:      "移动端video标签踩坑总结"
 subtitle:   "mobile-video-control"
-date:       2017-09-10 18:00:00
+date:       2017-09-19 18:00:00
 author:     "Mickey"
 header-img: "img/post-bg-rwd.jpg"
 tags:
