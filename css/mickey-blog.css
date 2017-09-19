@@ -9,6 +9,9 @@
     padding-right: 5%;
   }
 }
+.anchorjs-link {
+  display: none!important;
+}
 .sidebar-container {
   color: #bfbfbf;
   font-size: 14px;
