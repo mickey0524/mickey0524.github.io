@@ -184,4 +184,6 @@ a // [1, 2, 3, 4]
 
 <br>24. python scrapy中不能定义名字为model的模块，会有冲突，定义成models即可
 
+<br>25. python中str.find(substr)类似于js中的indexOf，然而，判断一个子字符串是否存在于父亲字符串中最快的方式为substr in str，list中的index()方法在字串不存在的时候会报错，不推荐使用
+
 
