@@ -206,3 +206,13 @@ a = [[1, 2], [3, 4], [5, 6]]
 sorted(a, key = lambda x: x[1]) # 按照数组的第二个元素的大小排序
 sorted(a, key = lambda x: x[1], reverse = True) # 按照数组的第二个元素的大小的反序大小排序
 ```
+
+<br>28. python set 的操作
+
+```
+x, y = set(['a', 'p', 's', 'm']), set(['a', 'h', 'm'])
+
+x & y = set('a', 'm') # 集合的交操作
+x | y = set('a', 'p', 's', 'm', 'h') # 集合的并操作
+x - y = set('p', 's') # 集合的差操作 
+```
