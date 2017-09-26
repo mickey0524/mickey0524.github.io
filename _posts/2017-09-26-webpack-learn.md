@@ -78,4 +78,4 @@ resolve: {
 
 * webpack-dev-server
 
-  多用于起一个express服务器处理静态文件，可以配置热更新，最好起两个express服务器，不然后端代码修改的时候，自动重启进程，webpack-dev-server就丢失缓存了，其实，个人觉得，没有特别大的好处
+  多用于起一个express服务器处理静态文件，可以配置热更新，最好起两个express服务器，不然后端代码修改的时候，自动重启进程，webpack-dev-server就丢失缓存了，其实，个人觉得，没有特别大的好处，个人还是喜欢MVC开发方式~
