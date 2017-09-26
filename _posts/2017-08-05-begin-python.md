@@ -188,7 +188,7 @@ a // [1, 2, 3, 4]
 <br>26. python内置函数zip的用法，zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
 如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用 * 号操作符，可以将元组解压为列表
 
-```
+```js
 a, b = [1, 2, 3], [4, 5, 6]
 c = zip(a, b) # [(1, 4), (2, 5), (3, 6)]
 d = zip(*c) [(1, 2, 3), (4, 5, 6)]
@@ -197,4 +197,12 @@ l是一个递增的数组，快速请求最小的元素间隔
 min_interval = min([abs(a - b) for a, b in zip(l, l[1:])])
 ```
 
+<br>26. python中的最小数和最大数，类似于java中的Interger.MAX_VALUE或者js中的Number.MAX_SAFE_INTEGER，float('inf')(最大值)，float('-inf')(最小值)
 
+<br>27. python中sorted函数配合lambda的用法:
+
+```
+a = [[1, 2], [3, 4], [5, 6]]
+sorted(a, key = lambda x: x[1]) # 按照数组的第二个元素的大小排序
+sorted(a, key = lambda x: x[1], reverse = True) # 按照数组的第二个元素的大小的反序大小排序
+```
