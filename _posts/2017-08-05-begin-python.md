@@ -218,3 +218,24 @@ x - y = set('p', 's') # 集合的差操作
 ```
 
 <br>29. python 3 < 4 and 4 < 5 可以简写为 3 < 4 < 5，简直不要太优美
+
+<br>30. python函数是引用传值，修改传递的对象会影响形参
+
+<br>31. python对象的深浅拷贝
+
+```js
+import copy
+
+a = [1, 2, [3, 4]]
+b = copy.copy(a) # 浅拷贝
+c = copy.deepcopy(a) # 深拷贝
+```
+
+<br>32. python中一行写不下的东西可以用反斜杠\分成多行来表示
+
+```
+ # check conditions
+    if (weather_is_hot == 1) and \
+    (shark_warnings == 0):
+    	send_goto_beach_mesg_to_pager()
+```
