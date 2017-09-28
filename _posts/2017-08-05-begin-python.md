@@ -9,7 +9,7 @@ tags:
     - python
 ---
 
-一直觉得前端工程师不能完全拘泥于前端开发，应该多关注关注后端领域，毕竟作为http的两端，缺一不可，233333，正好公司后端用的语言是python，加之想学习python数据抓取配合前端进行数据可视化的开发，于是义无反顾的开始学习啦
+一直觉得前端工程师不能完全拘泥于前端开发，应该多关注关注后端领域，毕竟作为http的两端，缺一不可，233333，正好公司后端用的语言是python，加之想学习python数据抓取配合前端进行数据可视化的开发，于是义无反顾的开始学习啦，本博客的内容来自[《python核心编程》](https://book.douban.com/subject/3112503/)和[《廖雪峰python》](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000)，感谢🙏
 <br>
 <br>------------
 <br>
@@ -239,3 +239,29 @@ c = copy.deepcopy(a) # 深拷贝
     (shark_warnings == 0):
     	send_goto_beach_mesg_to_pager()
 ```
+
+<br>33. python合理的模块布局
+
+```
+#!/usr/bin/env python      起始行
+"this is a test module"   模块文档
+import sys, os            模块引入
+debug = True              全局变量定义
+class FooClass (object):  类定义
+	pass
+def test():               函数定义    
+	foo = FooClass()
+	if debug:
+		print 'run test()'
+
+if __name__ == '__main__': main方法
+	test()
+```
+
+<br>34. python中判断两个变量是否是一个对象的方法
+
+`obj1 is obj2` obj1和obj2是同一个对象
+
+`obj1 is not obj2` obj1和obj2不是同一个对象
+
+<br>35. 在python中，当一个对象生成的时候，python会给该对象绑上一个计算器，当该对象被引用的时候，计数器+1，当引用的对象销毁的时候，计数器-1，当计数器为0的时候，python垃圾回收器就回将该对象占用的内存释放，这就是python大概的内存管理机制
