@@ -265,3 +265,40 @@ if __name__ == '__main__': main方法
 `obj1 is not obj2` obj1和obj2不是同一个对象
 
 <br>35. 在python中，当一个对象生成的时候，python会给该对象绑上一个计算器，当该对象被引用的时候，计数器+1，当引用的对象销毁的时候，计数器-1，当计数器为0的时候，python垃圾回收器就回将该对象占用的内存释放，这就是python大概的内存管理机制
+
+<br>36. 在python中检测变量类型有两种方法 type() 和 isinstance()，在python2.2之后对类型和类的统一导致 isinstance()使用的越来越多，由于int既是类型也是类，使用isinstance(variable, [type1, type2])显得更为方便，如果要使用type()方法的话，可以按照如下进行一些优化
+
+```
+import types
+type(a) == types.IntType # 这是最容易想到的
+
+type(a) is types.IntType # 其实没必要去比较数值是否相同，这里可以调用is去判断是否为相同的对象
+
+from types import IntType # 这样写可以避免每次使用IntType的时候都去types模块内查找
+```
+<br>37. python中字符串和二进制串相互转换的方法
+
+```
+bin(int('256', 10)) # 0b100000000
+
+str(int('0b100000000', 2)) # 256
+
+''.join([bin(int(x)).replace('0b', '') for x in '999']) # 100110011001
+```
+
+<br>38. python中ASCII和字符串的转换
+
+```
+ord('a') # 97
+chr(97) # 'a'
+```
+
+<br>39. python的随机数模块
+
+```
+from random import *
+randrange(1, 5) # 返回1-5之内的随机一个整数
+uniform(1, 5) # 返回1-5之内的随机一个浮点数
+random() # 和js中的random一样，返回0-1之间的一个浮点数
+choice() # 返回序列中的随机一个数值
+```
