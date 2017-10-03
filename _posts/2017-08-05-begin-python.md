@@ -302,3 +302,45 @@ uniform(1, 5) # 返回1-5之内的随机一个浮点数
 random() # 和js中的random一样，返回0-1之间的一个浮点数
 choice() # 返回序列中的随机一个数值
 ```
+
+<br>40. python中遍历字符串，依次减少最后一个字符的输出，简便写法
+
+```
+s = 'abcde'
+s[:None] = 'abcde' # 厉害了
+for i in [None] + range(-1, -len(s), -1):
+	print s[:i]
+	
+依次输出abcde, abcd, abc, ab, a
+```
+
+<br>41. python中的string模块
+
+```
+import string
+string.ascii_uppercase   # ABCDEDF...XYZ
+string.ascii_lowercase   # abcdefg...xyz 
+string.ascii_letters     # ABCD...XYZabcd...xyz
+string.digits            # 0123456789
+string.upper()           # 转为大写
+string.lower()           # 转为小写
+```
+
+<br>42. python字符串中一些内建函数
+
+```
+string.count(substr, begin, end) # 计算字符串中下表为begin到end的范围内，substr出现的次数，如果没有指定的话，即为0 - len(string)
+string.startswith() # 检查字符串是否以XXX开始
+string.endswith() # 检查字符串是否以XXX结束
+```
+
+<br>43. python不允许修改字符串中间的一个字符，如果需要修改的话，需要用切片创建一个新字符串
+
+```
+s = 'asd'
+s[2] = 'S'
+Trackback(innermost last):
+File "<stdin>", line 1, in ? AttributeError: __setitem__
+
+s = s[:2] + 'S' # asS
+```
