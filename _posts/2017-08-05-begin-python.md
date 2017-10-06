@@ -344,3 +344,58 @@ File "<stdin>", line 1, in ? AttributeError: __setitem__
 
 s = s[:2] + 'S' # asS
 ```
+
+<br>44. python可以用一个很方便的内建方法fromkeys()来创建一个“默认”字典，字典中的元素具有相同的值（如果没有给出，默认为None）
+
+```
+dict = {}.fromkeys(('x', 'y'), -1)
+dict # {'x': -1, 'y': -1}
+```
+
+<br>45. python中字典的大小比较比较鸡肋，因为python的字典为了查找的速度，key仅仅和hash值有关，但是还是记录一下python字典的比较方法
+
+python字典比较首先进行字典长度的比较，然后是key值的比较，最后是value值的比较，比较规则和序列的一样，不做过多记录
+
+<br>46. python字典的内建函数
+
+```
+a = {'a': 1, 'b': 2}
+a.get(key, default=None) # 获取字典中key的value，如果key不存在，则返回default值，如果没有给出default，则返回None
+a.setdefault(key, default) # 获取字典中key的value，如果key不存在，则设置key的value为default并且放回该值，如果key存在的话，返回value值
+```
+
+<br>47. python的不可变集合frosenset(存在hash，可以作为字典的key值)和可变集合set，set中的add类似list的append，set中的update类似list的extend
+
+```
+a = [1, 2]
+a.extend('asd') # [1, 2, 'a', 's', 'd']
+a.append('asd') # [1, 2, 'a', 's', 'd', 'asd']
+
+a = set([1, 2])
+a.add('asd') # set([1, 2, 'asd'])
+a.update('asd') # set([1, 2, 'asd', 'a', 's', 'd'])
+```
+
+<br>48. python中else语句的其他用法
+
+在C语言中，你不会在条件语句范围外发现else语句，但python不同，你可以在while和for循环中使用else语句，在循环中使用时，else子句只在循环完成后执行，也就是说break语句也会跳过else块
+
+<br>49. python在使用for...in...迭代器遍历字典的时候，不能使用del语句删除字典中的项，因为一个序列的迭代器只是记录你当前到达第多少个元素，所以如果你在迭代的时候改变了元素，更新会立即反映到你所迭代的条目上，但是使用字典的keys()方法是可以的，因为keys()返回一个独立于字典的列表。而迭代器是与实际对象绑定在一起的，它将不会继续执行下去。
+
+<br>50. python使用生成器的一个例子
+
+```
+rows = [1, 2, 3, 17]
+
+def cols():
+	yield 56
+	yield 2
+	yield 1
+	
+x_product_pairs = ((i, j) for i in rows for j in cols())
+
+for pair in x_product_pairs:
+	print pair
+	
+(1, 56)...
+```
