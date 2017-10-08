@@ -58,6 +58,15 @@ for k, v in enumerate(a):
 <br>11. 在函数执行过程中动态增加功能的方式称为装饰器，decorator本质上也是高阶函数，接受需要动态添加功能的函数作为一个参数
 <a href="https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819879946007bbf6ad052463ab18034f0254bf355000" class=" wrap external" target="_blank" rel="nofollow noreferrer">初识装饰器</a>
 
+装饰器的数学定义其实就是 (g · f)(x) = g(f(x))
+
+```
+@deco2
+@deco1
+def func(arg1, arg2, ...): pass
+func = deco2(deco1(func))
+```
+
 <br>12. isinstance() < = > instanceof 同样用来判断类和引用类型（js中） type() < = > typeof  同样用来判断基本类型
 
 <br>13. python可以通过hasattr(), setattr(), getattr()来操作对象实例，有点类似DOM了，同样和字典一样，通过get()操作对象可能不存在，可以返回一个默认值
@@ -398,4 +407,39 @@ for pair in x_product_pairs:
 	print pair
 	
 (1, 56)...
+```
+
+<br>51. python除了可以进行显示的参数调用，还可以传入列表和字典进行传参，传入字典的时候，可以不按照顺序，举个栗子:
+
+```
+def print_stu(name, age):
+	print name, age
+
+print_stu(*['bob', 21]) # bob, 21
+print_stu(**{'name': 'bob', 'age': 21}) # bob, 21
+```
+
+<br>52. python也可以在函数声明中定义接受可变数量的参数（我觉得js es6的三点运算符...就是和python学的2333）
+
+```
+def print_stu(name, *tuple, **obj):
+	pass
+
+print_stu('bob', 21, 32, arg1 = 'a', arg2 = 'b')
+tuple = (21, 32)
+obj = { 'arg1': 'a', 'arg2': 'b' }
+
+```
+
+<br>53. python中局部作用域如果想影响全局作用域的变量，可以使用global关键字
+
+```
+is_this_global = 'xyz'
+def foo():
+	global is_this_global
+	is_this_global = 'def'
+	
+>>> foo()
+>>> print is_this_global
+def
 ```
