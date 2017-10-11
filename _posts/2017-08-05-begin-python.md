@@ -451,3 +451,78 @@ def
 3. 应用程序自定义模块
 
 然后用一个空行分割这三类模块的导入语句，这将确保模块使用固定的习惯导入，有助于减少每个模块需要的import语句数目
+
+<br>55. python中，class中的`__init__()`方法和`__del__()`方法类似于构造函数和解构函数（可能有同学会说，`__new__()`才是构造函数，`__new__()`函数返回一个self实例，提供给`__init__()`初始化），需要注意的是，如果类存在一个继承的非object的基类，在`__del__()`中需要首先调用`Parent.__del__()`，下面给出一个最简单的`__init__()`和`__del__()`的用法，记录该class实例化了多少个实例
+
+```js
+class InstCc(object):
+	count = 0
+	def __init__(self):
+		InstCc.count += 1
+	def __del__(self):
+		InstCc.count -= 1
+	def howMany(self):
+		return InstCc.count
+
+a = InstCc()
+b = InstCc()
+b.howMany() 2
+a.howMany() 2
+del b
+a.howMany() 1
+del a
+InstCc.count 0
+```
+
+<br>56. python中类属性如果是不可变的，那么通过实例修改类属性不会对类属性造成影响，相当于在实例的__dict__属性中创建了一个新的字段，然而，如果通过实例修改的类属性是可变的话，比如字典，那么，修改实例属性会同步修改类属性，所以尽量不要通过实例修改类属性，操作类的静态数据的时候，使用Class.property
+
+<br>57. python中class存在静态方法（staticmethod）和类方法（classmethod)，类方法定义的时候需要传入一个参数，一般是cls，可以理解为创建实例中的self，这个cls就代指类对象，可以通过cls获得类的属性，比如cls.__name__，下面给出一个栗子
+
+```
+  1 #!/usr/bin/env python
+  2
+  3 class Stu:
+  4     count = 1
+  5
+  6     @staticmethod
+  7     def how_many():
+  8         print Stu.count
+  9
+ 10     @classmethod
+ 11     def how_much(cls):
+ 12         print cls.count
+ 13
+ 14 if __name__ == '__main__':
+ 15     stu = Stu()
+ 16     stu.how_many()
+ 17     stu.how_much()
+```
+
+<br>58. python类的继承，子类可以调用父亲类中的所有方法，但是如果在子类中需要覆盖掉父亲类的方法，例如__init__方法，可以在子类中显示的调用父亲类的方法
+
+```
+class P(object):	def __init__(self):		print "calling P's constructor"
+		
+class C(P):
+	def __init__(self):
+		P.__init__(self) / super(P, self).__init__() # 需要注意的是，super方法只有基类为新类才能有，如果基类为老类 class P: 这种类型的，只能用第一种方法显示的调用父亲类的重名方法
+```
+
+<br>59. 类、实例的一些内建函数
+
+issubclass(child, parent) python2.3之后parent可以为一个父亲类组成的元组
+
+isinstance(example, class) 和issubclass一样，class可以为一个元组
+
+*attr()系列函数可以在各种对象下工作，不限于类(class)和实例(instance)，但是在类和实例里面，使用的非常多，于是在这里介绍一下
+
+hasattr(obj, attr)
+
+setattr(obj, attr)
+
+getattr(obj, attr[, 默认值])
+
+delattr(obj, attr)
+
+vars(obj = None) 返回obj的属性及其的一个字典；如果没有给出obj，vars()显示局部名字空间字典(属性及其值)，也就是locals()
+
