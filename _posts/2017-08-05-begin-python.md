@@ -526,3 +526,39 @@ delattr(obj, attr)
 
 vars(obj = None) 返回obj的属性及其的一个字典；如果没有给出obj，vars()显示局部名字空间字典(属性及其值)，也就是locals()
 
+在类中间方法中返回一个类，一般不建议直接使用类名，这样修改的时候需要逐个查找修改，推荐使用self.__class__方法
+
+<br>60. python except 捕获异常既可以分开操作，也可以作为一个元组合在一起捕获
+
+```
+try:
+	A
+except MyException: B
+else: C(try块中的代码完全正确执行完毕，没有发生异常，调用else中的代码)
+finally: D(无论如何，都会调用的代码)
+
+try:
+	try-body
+except TypeError, e:
+	except-body
+except ValueError, e:
+	except-body
+
+try:
+	try-body
+except (TypeError, ValueError), e:
+	except-body
+```
+
+<br>61. with语句的使用
+
+python提供with语句进一步的透明程序中发生的细节，让程序员更加注重于代码的实现，用打开文件作为例子介绍一下with
+
+```
+with open('path', 'r') as f:
+	for eachlines in f:
+		# ...do stuff with eachLine or f...
+```
+
+
+
