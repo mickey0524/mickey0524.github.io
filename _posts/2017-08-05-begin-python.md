@@ -526,7 +526,7 @@ delattr(obj, attr)
 
 vars(obj = None) 返回obj的属性及其的一个字典；如果没有给出obj，vars()显示局部名字空间字典(属性及其值)，也就是locals()
 
-在类中间方法中返回一个类，一般不建议直接使用类名，这样修改的时候需要逐个查找修改，推荐使用self.__class__方法
+在类中间方法中返回一个类，一般不建议直接使用类名，这样修改的时候需要逐个查找修改，推荐使用`self.__class__`方法
 
 <br>60. python except 捕获异常既可以分开操作，也可以作为一个元组合在一起捕获
 
@@ -560,5 +560,41 @@ with open('path', 'r') as f:
 		# ...do stuff with eachLine or f...
 ```
 
+<br>62. python中，在windows环境下，换行符为'\r\n'，在mac环境下，换行符为'\n'，这在跨平台读取文件的时候，就会存在一些问题，解决方法如下所示:
 
+* 如果不是txt文件，建议用wb和rb来读写。通过二进制读写，不会有换行问题。
+* 如果需要明文内容，请用rU来读取（强烈推荐），即U通用换行模式（Universal new line mode）。该模式会把所有的换行符（\r \n \r\n）替换为\n。
+* os.linesep，可以获得当前操作系统的换行符
+* os.sep 用来分隔文件路径名的字符串
+* os.pathsep 用来分隔文件路径的字符串
+* os.curdir 当前工作目录的字符串名称
+* os.pardir 当前工作目录的父目录字符串的名称
+
+<br>63. python中，通过open或者file操作文件，当使用输入方法如read()或者readlines()从文件中读取行的时候，python并不会删除行结束符，同理，输出方法，write()或者writelines()也不会自动加入行结束符，这都是留给程序员自己解决的	
+
+```js
+f = open('myFile', 'r')
+data = [line.strip() for line in f.readlines()]
+f.close()
+```
+
+<br>64. python中通过sys.argv属性提供了对命令行参数的访问，sys.argv是一个列表，sys.argc是一个number，也就是len(sys.argv)
+
+<br>65. python中关于正则表达式的操作
+
+```
+import re
+
+pattern = re.compile(r'[abc]', re.S(让.可以匹配\n)) 预编译，增加速度
+
+re.match(pattern, string) 从头开始匹配，找到一个符合正则表达式的匹配串
+re.search(pattern, string) 随便从什么地方匹配，找到一个符合正则表达式的匹配串，一般来说用search不用match
+re.group() / re.group(0) 返回search或match
+匹配到的串
+re.group(1) 返回第一个字匹配
+re.groups() 返回子匹配组成的元组
+re.findall(pattern, string) 返回字符串中所有的匹配，不限于找到第一个
+re.sub(pattern, newstring, string) 类似于js中的replace
+re.spilt(pattern, string) 分割字符串，返回list，速度比string的split快得多
+```
 
