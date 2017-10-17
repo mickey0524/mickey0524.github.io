@@ -72,12 +72,48 @@ func = deco2(deco1(func))
 <br>13. python可以通过hasattr(), setattr(), getattr()来操作对象实例，有点类似DOM了，同样和字典一样，通过get()操作对象可能不存在，可以返回一个默认值
 
 <br>14. python作为一门动态语言，能够在程序运行过程中对类和实例对象绑定方法，贼强，这里需要从types里引入MethodType
+
 Class.way = MethodType(way,None, Student) 类
+
 instance.way = MethodType(way, instance, Student) 实例
+
+```
+from types import MethodType
+
+class Stu(object):
+	pass
+
+def set_name(self, name):
+	self.name = name
+
+def set_age(self, age):
+	self.age = age
+
+Stu.set_name = MethodType(set_name, None, Stu) # 为class动态添加方法
+
+bob = Stu()
+
+bob.set_age = MethodType(set_age, bob, Stu) # 为实例动态添加方法
+```
 
 <br>15. python类可以通过设置__slots__来限制类能被设置的属性，需要注意的是子类继承父类如果不定义__slots__属性的话，是没有限制的，子类如果定义了的话，它的可编辑属性为自己和父亲的slots中的值之和
 
+```
+class Stu(object):
+	__slots__ = ('name', 'age')
+	
+>>> s = Student() # 创建新的实例
+>>> s.name = 'Michael' # 绑定属性'name'
+>>> s.age = 25 # 绑定属性'age'
+>>> s.score = 99 # 绑定属性'score'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Student' object has no attribute 'score'
+```
+
 <br>16. 通过set和get来操作类的属性有简写方法，通过python的装饰器
+
+众所周知，python中，可以通过instance.property的方式直接访问属性，但是这样没法对新的数据做数值的判断，于是有了如下的装饰器(默认不能直接访问实例._property的内部属性，不然property毫无意义)
 
 ```js
   class Student(object):
@@ -93,10 +129,11 @@ instance.way = MethodType(way, instance, Student) 实例
 ```
 @property，@属性.setter，这样实例就能和操作属性一样操作方法了，s.birth，s.birth = 'XXX'
 
-<br>17. python里面__XXX__这样命名的属性都是有hin大作用的，前面我们已经知道了__slots__，在python里面print 实例或者直接输出实例是
-<__main__.Student object at 0x109afb310>，不好看，可以在class 里面定义__str__和__repr__，__str__定义print 返回的语句，__repr__定义在命令行直接输入显示的语句，偷懒的写法是__repr__ = __str__，这样只定义__str__就行了
-__getattr__：当python在类属性中寻找不到的话，python解释器会自动调用__getattr__方法，我们可以在__getattr__中做一些限制
-__call__: 实例初始化后，如果调用自身则访问该函数
+<br>17. python里面\_\_XXX\_\_这样命名的属性都是有hin大作用的，前面我们已经知道了\_\_slots\_\_，在python里面print 实例或者直接输出实例是
+<\_\_main\_\_.Student object at 0x109afb310>，不好看，可以在class 里面定义\_\_str\_\_和\_\_repr\_\_，\_\_str\_\_定义print 返回的语句，\_\_repr\_\_定义在命令行直接输入显示的语句，偷懒的写法是\_\_repr\_\_ = \_
+\_str\_\_，这样只定义\_\_str\_\_就行了
+\_\_getattr\_\_：当python在类属性中寻找不到的话，python解释器会自动调用\_\_getattr\_\_方法，我们可以在\_\_getattr\_\_中做一些限制
+\_\_call\_\_: 实例初始化后，如果调用自身则访问该函数
 
 ```js
 class Student(object):
@@ -104,7 +141,7 @@ class Student(object):
 s = Student()
 s() => 调用__call__方法
 ```
-可以通过callable()方法来判断一个类是否包含__call__方法
+可以通过callable()方法来判断一个类是否包含\_\_call\_\_方法
 
 <br>18. 大多数编程语言都有用于捕获代码中发生的错误的方法，JavaScript中的try catch之类的，python也不例外，python中对应的代码为try except finally
 
@@ -194,6 +231,7 @@ a // [1, 2, 3, 4]
 <br>24. python scrapy中不能定义名字为model的模块，会有冲突，定义成models即可
 
 <br>25. python中str.find(substr)类似于js中的indexOf，然而，判断一个子字符串是否存在于父亲字符串中最快的方式为substr in str，list中的index()方法在字串不存在的时候会报错，不推荐使用
+
 <br>26. python内置函数zip的用法，zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
 如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用 * 号操作符，可以将元组解压为列表
 
@@ -598,3 +636,12 @@ re.sub(pattern, newstring, string) 类似于js中的replace
 re.spilt(pattern, string) 分割字符串，返回list，速度比string的split快得多
 ```
 
+<br>66. python自定义类的一些方法[自定义python类](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013946328809098c1be08a2c7e4319bd60269f62be04fa000)
+
+\_\_iter\_\_: 如果一个类想被用于for ... in循环，类似list或tuple那样，就必须实现一个\_\_iter\_\_()方法，该方法返回一个迭代对象，然后，Python的for循环就会不断调用该迭代对象的next()方法拿到循环的下一个值，直到遇到StopIteration错误时退出循环 
+
+\_\_getitem\_\_: 要表现得像list那样按照下标取出元素
+
+\_\_getattr\_\_: 当调用不存在的属性时，比如score，Python解释器会试图调用\_\_getattr\_\_(self, 'score')来尝试获得属性，这样，我们就有机会返回score的值
+
+\_\_call\_\_: 直接调用实例() instance = Class() instance() => 访问 \_\_call\_\_()
