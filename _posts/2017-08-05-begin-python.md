@@ -645,3 +645,72 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 \_\_getattr\_\_: 当调用不存在的属性时，比如score，Python解释器会试图调用\_\_getattr\_\_(self, 'score')来尝试获得属性，这样，我们就有机会返回score的值
 
 \_\_call\_\_: 直接调用实例() instance = Class() instance() => 访问 \_\_call\_\_()
+
+<br>67. 常用内建模块 -- collections
+
+1. namedtuple: namedtuple是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素
+
+	```
+	from collections import namedtuple
+	
+	Point = namedtuple('Point', ['x', 'y'])
+	p = Point(1, 2)
+	p.x // 1
+	p.y // 2
+	```
+	
+2. deque: 使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈
+
+	```
+	>>> from collections import deque
+	>>> q = deque(['a', 'b', 'c'])
+	>>> q.append('x')
+	>>> q.appendleft('y')
+	>>> q
+	deque(['y', 'a', 'b', 'c', 'x'])
+	```
+
+3. OrderedDict: 字典的key值排序是按照hash来的，如果想按照插入的顺序来排序，可以采用OrderedDict
+
+	```
+	>>> from collections import OrderedDict
+	>>> d = dict([('a', 1), ('b', 2), ('c', 3)])
+	>>> d # dict的Key是无序的
+	{'a': 1, 'c': 3, 'b': 2}
+	>>> od = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+	>>> od # OrderedDict的Key是有序的
+	OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+	```
+4. Counter: Counter是一个简单的计数器，例如，统计字符出现的个数
+
+	```
+	>>> from collections import Counter
+	>>> Counter('programmer')
+	Counter({'r': 3, 'm': 2, 'a': 1, 'e': 1, 'g': 1, 'o': 1, 'p': 1})
+	```
+
+<br>68. 常用内建模块 -- base64
+
+* base64.b64encode()
+* base64.b64decode()
+
+由于标准的Base64编码后可能出现字符+和/，在URL中就不能直接作为参数，所以又有一种"url safe"的base64编码，其实就是把字符+和/分别变成-和_
+
+* base64.urlsafe_b64encode()
+* base64.urlsafe_b64decode()
+
+<br>69. 常用内建模块 -- hashlib
+
+其实就是 MD5, SHA1 之类的加密算法
+
+```
+import hashlib
+
+md5 = hashlib.md5()
+md5.update('how to use md5 in ')
+md5.update('python hashlib?')
+
+sha1 = hashlib.sha1()
+sha1.update('how to use sha1 in ')
+sha1.update('python hashlib?')
+```
