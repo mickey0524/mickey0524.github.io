@@ -714,3 +714,5 @@ sha1 = hashlib.sha1()
 sha1.update('how to use sha1 in ')
 sha1.update('python hashlib?')
 ```
+
+<br>70. python中快速建立集合的方法，`{()}`这样就建立了一个集合
