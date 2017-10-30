@@ -29,9 +29,7 @@ tags:
 ```js
 <template>
   <div class="notice">
-    <div class="content">
-      {{text}}
-    </div>
+    <div class="content" v-text="text"></div>
   </div>
 </template>
 
