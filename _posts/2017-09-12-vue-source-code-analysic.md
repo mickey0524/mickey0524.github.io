@@ -19,7 +19,7 @@ Vue实现响应式最重要的函数是Object.defineProperty()，这也是Vue为
 下面就是Vue将data变为可观察的方法
 
 ```js
-function observer(value) {
+function observer(value, cb) {
     Object.keys(value).forEach((key) => defineReactive(value, key, value[key] , cb))
 }
 
@@ -29,7 +29,7 @@ function defineReactive (obj, key, val, cb) {
         configurable: true,
         get: ()=>{
             /*....依赖收集等....*/
-            /*Github:https://github.com/answershuto*/
+	         return obj[key];
         },
         set:newVal=> {
             cb();/*订阅者收到消息的回调*/
@@ -102,7 +102,6 @@ class Dep () {
     removeSub (sub: Watcher) {
         remove(this.subs, sub)
     }
-    /*Github:https://github.com/answershuto*/
     notify () { //当data中的数据执行setter方法的时候，调用该方法，通知watch订阅者重绘
         // stabilize the subscriber list first
         const subs = this.subs.slice()
@@ -113,23 +112,100 @@ class Dep () {
 }
 ```
 
-可能有同学看到上图代码中的subs数据会产生疑问，其实这就是用来存放watch订阅者对象的，因为一个data数据可能有多个watch，因此需要使用数组，下面给出watch的实现
+可能有同学看到上图代码中的subs数据会产生疑问，其实这就是用来存放watch订阅者对象的(其实就是一个一个包含{{}}的节点)，因为一个data数据可能有多个watch，因此需要使用数组，下面给出watch的实现
 
 ```js
 class Watcher () {
-    constructor (vm, expOrFn, cb, options) {
-        this.cb = cb;
-        this.vm = vm;
-
-        /*在这里将观察者本身赋值给全局的target，只有被target标记过的才会进行依赖收集*/
-        Dep.target = this;
-        /*Github:https://github.com/answershuto*/
-        /*触发渲染操作进行依赖收集*/
-        this.cb.call(this.vm);
+    constructor (vm, exp, cb) {
+        this.cb = cb; //数据改变的时候的回调函数
+        this.vm = vm; //vue实例
+        this.exp = exp; //data中的key值
+        this.value = this.get(); //当前的数值
     }
 
     update () {
-        this.cb.call(this.vm);
+        var value = this.vm.data[this.exp];
+        if (value == this.value) {
+            return ;
+        }
+        this.cb.call(this.vm, value, this.value);
+        this.value = value;
+    }
+    
+    get () {
+        Dep.target = this; 结合observer看，将watcher对象绑定到Dep上
+        var value = this.vm.data[this.exp]; 触发一次getter，等于触发依赖收集
+        Dep.target = null;
+        return value;
+    }
+}
+```
+
+看到这里，同学们可能会问，那什么时候该调用Watcher呢（何时注册观察者），我们知道，实例化Vue对象的时候，需要给出一个el的字段，同时，我们也知道，Vue的模版文件中有很多{{}}，那么，肯定需要一个Compile过程，来将{{}}包裹的字段替换为真实字符串，这里只给出最基本的代码
+
+```js
+class Compile {
+
+	 constructor(el, vm) {
+		  this.el = document.querySelector(el);
+		  this.vm = vm;
+		  this.fragment = null;
+		  this.init();
+	 }
+	 
+    init: function () {
+        if (this.el) {
+            this.fragment = this.nodeToFragment(this.el);
+            this.compileElement(this.fragment);
+            this.el.appendChild(this.fragment);//由于appendChild会删除原先DOM中存在的节点，千万要记得最后要把fragment回填到DOM中去
+        } else {
+            console.error('Dom元素不存在');
+        }
+    }
+    
+    nodeToFragment: function (el) {
+        var fragment = document.createDocumentFragment();
+        var child = el.firstChild;
+        while (child) {
+            // 将Dom元素移入fragment中
+            fragment.appendChild(child);
+            child = el.firstChild; //这里咋一看似乎问题，child似乎一直没有改变，其实不是这样，因为appendChild会删除原先DOM中存在的节点
+        }
+        return fragment;
+    }
+    
+    compileElement: function (el) {
+        var childNodes = el.childNodes;
+        var self = this;
+        [].slice.call(childNodes).forEach(function(node) {
+            var reg = /\{\{(.*)\}\}/;
+            var text = node.textContent;
+
+			  if (self.isTextNode(node) && reg.test(text)) {
+                self.compileText(node, reg.exec(text)[1]);
+            }
+
+            if (node.childNodes && node.childNodes.length) {
+                self.compileElement(node);
+            }
+        });
+    }
+    
+    compileText: function(node, exp) {
+        var self = this;
+        var initText = this.vm[exp];
+        this.updateText(node, initText);
+        new Watcher(this.vm, exp, function (value) {
+            self.updateText(node, value);
+        });
+    }
+    
+    updateText: function (node, value) {
+        node.textContent = typeof value == 'undefined' ? '' : value;
+    }
+    
+    isTextNode: function(node) {
+        return node.nodeType == 3;
     }
 }
 ```
@@ -139,33 +215,18 @@ class Watcher () {
 ```js
 class Vue {
     constructor(options) {
-        this._data = options.data;
-        observer(this._data, options.render);
-        let watcher = new Watcher(this, );
+        var self = this;
+        this.data = options.data;
+        Object.keys(this.data).forEach((key) => {
+            self.proxyKey(key);
+        })
+        observer(this.data);
+        new Compile(options.el, this);
+        options.mounted.call(this); // 所有事情处理好后执行mounted函数
     }
 }
-
-function defineReactive (obj, key, val, cb) {
-    ／*在闭包内存储一个Dep对象*／
-    const dep = new Dep();
-
-    Object.defineProperty(obj, key, {
-        enumerable: true,
-        configurable: true,
-        get: ()=>{
-            if (Dep.target) {
-                /*Watcher对象存在全局的Dep.target中*/
-                dep.addSub(Dep.target);
-            }
-        },
-        set:newVal=> {
-            /*只有之前addSub中的函数才会触发*/
-            dep.notify();
-        }
-    })
-}
-
-Dep.target = null;
 ```
 
-将观察者Watcher实例赋值给全局的Dep.target，然后触发render操作只有被Dep.target标记过的才会进行依赖收集。有Dep.target的对象会将Watcher的实例push到subs中，在对象被修改出发setter操作的时候dep会调用subs中的Watcher实例的update方法进行渲染。
+### 参考资料
+
+[Vue的视图数据绑定实现](https://www.w3cplus.com/vue/vue-two-way-binding.html)

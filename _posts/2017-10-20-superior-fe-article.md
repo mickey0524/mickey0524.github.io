@@ -14,3 +14,4 @@ tags:
 * [JavaScript 浮点数陷阱及解法](https://github.com/camsong/blog/issues/9)
 * [Mac Chrome 主题](https://www.zhihu.com/question/20318191)
 * [Rem布局的原理解析](https://zhuanlan.zhihu.com/p/30413803?group_id=906220704115974144)
+* [Vue2.0的过滤器](https://www.w3cplus.com/vue/how-to-create-filters-in-vuejs.html)
