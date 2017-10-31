@@ -379,6 +379,9 @@ string.lower()           # 转为小写
 string.count(substr, begin, end) # 计算字符串中下表为begin到end的范围内，substr出现的次数，如果没有指定的话，即为0 - len(string)
 string.startswith() # 检查字符串是否以XXX开始
 string.endswith() # 检查字符串是否以XXX结束
+string.replace(a, b) # 将字符串中的a替换成b
+string.upper() # 将字符串替换为大写形式
+string.lower() # 将字符串替换为小写形式
 ```
 
 <br>43. python不允许修改字符串中间的一个字符，如果需要修改的话，需要用切片创建一个新字符串
