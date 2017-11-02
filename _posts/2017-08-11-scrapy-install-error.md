@@ -41,3 +41,7 @@ AttributeError: 'module' object has no attribute 'OP_NO_TLSv1_1'
 如果加上sudo依旧提示 Operation not permitted, 那就再加上--user选项
 
 `sudo pip install --upgrade --user pyOpenSSl`
+
+4.如何提示Pip安装依赖于six的库失败，参考下面这篇博客
+
+[[pip]Pip安装依赖于six的库失败的解决方法](http://www.jianshu.com/p/45fb07007ddc)
