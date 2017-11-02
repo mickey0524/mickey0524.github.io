@@ -13,11 +13,11 @@ tags:
 
 * 打开pycharm，选择上方tools -> deployment -> configurations
 
-[img](/img/in-post/1.jpg)
+![img](/img/in-post/1.jpg)
 
 * 输入服务器的地址，登陆username, password等
 
-[img](/img/in-post/2.jpg)
+![img](/img/in-post/2.jpg)
 
 * 选择上方tools -> deployment -> 勾选automatic upload
 
