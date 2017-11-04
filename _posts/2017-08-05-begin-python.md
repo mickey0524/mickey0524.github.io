@@ -719,3 +719,16 @@ sha1.update('python hashlib?')
 ```
 
 <br>70. python中快速建立集合的方法，`{()}`这样就建立了一个集合
+
+<br>71. python sqlalchemy 的常用API
+
+[sqlalchemy的API](http://docs.sqlalchemy.org/en/latest/orm/query.html)
+
+* query(Table) 查询
+* one() 返回一个确定的item，如果返回多个会报错，没有返回也会报错
+* first() 返回当前查询排行第一的结果，如果没有实体则返回None
+* order_by(Table.Field) 按照一个字段的数值从小到大的返回list
+* order_by(Table.Field.desc()) 反序
+* filter(Table.Field == num) 过滤函数，相当于sql中的where
+* from sqlalchemy.sql import func, func中有max，min，count等函数，可以用于查询，query(func.max(Table.Field))
+* scalar() 返回第一个元素的第一个结果（这就是和first的区别），如果没有行存在，返回None。如果返回多行，则引发MultipleResultsFound，session.query(Item.id, Item.name).scalar() == 1，只返回id，经常和func共同使用
