@@ -688,8 +688,10 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 
 	```
 	>>> from collections import Counter
-	>>> Counter('programmer')
+	>>> a = Counter('programmer')
 	Counter({'r': 3, 'm': 2, 'a': 1, 'e': 1, 'g': 1, 'o': 1, 'p': 1})
+	>>> a.most_common(2)
+	[('r', 3), ('m', 2)]
 	```
 
 5. defaultdict: 给字典设置初始值，可以减少代码的书写量
