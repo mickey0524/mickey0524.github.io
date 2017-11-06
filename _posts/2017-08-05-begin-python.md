@@ -692,6 +692,18 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 	Counter({'r': 3, 'm': 2, 'a': 1, 'e': 1, 'g': 1, 'o': 1, 'p': 1})
 	```
 
+5. defaultdict: 给字典设置初始值，可以减少代码的书写量
+
+	```
+	>>> from collections import defaultdict
+	>>> a = defaultdict(int)
+	>>> a['a'] += 1
+	>>> a['a'] # 1
+	>>> a = defaultdict(str)
+	>>> a['a'] += 'a'
+	>>> a['a'] # 'a'
+	```
+
 <br>68. 常用内建模块 -- base64
 
 * base64.b64encode()
