@@ -9,7 +9,7 @@ tags:
     - 实用开发工具
 ---
 
-###Tmux终端复用
+### Tmux终端复用
 
 你是否曾经开过一大堆的Terminal？有没有把它们都保存下来的冲动？Tmux 的Session就是做这件事情的！你可以随时退出或者进入任何一个Session。每个Session有若干个Window，每个Window又可以分成多个窗格（Pane）。
 
