@@ -74,7 +74,7 @@ datetime.date(2017, 11, 17)
 
 ## datetime基本操作
 
-## 1. 获取当前datetime
+### 1. 获取当前datetime
 
 ```
 >>> from datetime import datetime
@@ -82,7 +82,7 @@ datetime.date(2017, 11, 17)
 datetime.datetime(2017, 11, 17, 11, 29, 44, 748590)
 ```
 
-## 2. 获取当天date
+### 2. 获取当天date
 
 ```
 >>> from datetime import datetime
@@ -90,7 +90,7 @@ datetime.datetime(2017, 11, 17, 11, 29, 44, 748590)
 datetime.date(2017, 11, 17)
 ```
 
-## 3. 获取明天/前N天
+### 3. 获取明天/前N天
 
 ```
 >>> from datetime import datetime, timedelta
@@ -100,7 +100,7 @@ datetime.date(2017, 11, 18)
 datetime.datetime(2017, 11, 18, 13, 39, 17, 495497)
 ```
 
-## 4. 获取当天开始和结束时间(00:00:00 23:59:59)
+### 4. 获取当天开始和结束时间(00:00:00 23:59:59)
 
 ```
 >>> from datetime import datetime, time
@@ -110,7 +110,7 @@ datetime.datetime(2017, 11, 17, 0, 0)
 datetime.datetime(2017, 11, 17, 23, 59, 59, 999999)
 ```
 
-## 5. 获取两个datetime的时间差
+### 5. 获取两个datetime的时间差
 
 ```
 >>> from datetime import datetime
