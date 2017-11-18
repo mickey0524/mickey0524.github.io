@@ -49,3 +49,14 @@ tags:
   group by Email
   having Count(*) > 1         
   ```
+  
+ * 查询Weather表中所有比昨天温度高的日期的id
+
+ ```
+ SELECT w1.Id
+FROM Weather AS w1, Weather AS w2
+WHERE w1.Temperature > w2.Temperature AND
+      TO_DAYS(w1.Date) - TO_DAYS(w2.Date) = 1;
+ ```
+ 
+ 开始的话，我直接用w2.Date - w1.Date = 1去filter，后来发现会有问题，TO_DAYS()可以返回一个date离0的天数，适合于这个场景
