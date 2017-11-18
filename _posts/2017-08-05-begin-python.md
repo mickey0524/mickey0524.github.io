@@ -746,3 +746,4 @@ sha1.update('python hashlib?')
 * filter(Table.Field == num) 过滤函数，相当于sql中的where
 * from sqlalchemy.sql import func, func中有max，min，count等函数，可以用于查询，query(func.max(Table.Field))
 * scalar() 返回第一个元素的第一个结果（这就是和first的区别），如果没有行存在，返回None。如果返回多行，则引发MultipleResultsFound，session.query(Item.id, Item.name).scalar() == 1，只返回id，经常和func共同使用
+* limit(int) 和sql中的limit的用法一样，最多返回limit()参数的记录
