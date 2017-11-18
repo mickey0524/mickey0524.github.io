@@ -1,13 +1,16 @@
 ---
 layout:     post
 title:      "superior-fe-article"
-subtitle:   "优秀的前端开发文章(长期更新)"
+subtitle:   "优秀的开发文章(长期更新)"
 date:       2017-10-20 16:00:00
 author:     "Mickey"
 header-img: "img/post-bg-2015.jpg"
 tags:
     - 前端开发
+    - python
 ---
+
+## 前端
 
 前端有很多活跃的社区，也有很多大牛经常分享自己的文章，阅读后都会有一定的感悟，在这里收集一些自己认为好的文章～
 
@@ -18,3 +21,8 @@ tags:
 * [超实用压力测试工具－ab工具](http://www.jianshu.com/p/43d04d8baaf7)
 * [10道典型的JavaScript面试题](http://www.css88.com/archives/7052)
 * [前端开发中cookie的那些事情](http://www.css88.com/archives/4637)
+* [移动端position: fixed的坑](http://efe.baidu.com/blog/mobile-fixed-layout/)
+
+## python
+
+* [python字符串和编码](字符串和编码)
