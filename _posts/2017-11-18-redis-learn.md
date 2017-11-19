@@ -33,7 +33,7 @@ tags:
 
 * Redis 哈希(Hash)
 
-  * HSET KEY value 设置哈希表中key值为value
+  * HSET KEY field value 设置哈希表中key值为value
   * HGET KEY field 获取key值的哈希表的field字段的数值
   * HMSET key field1 value1 [field2 value2 ] 同时将多个 field-value (域-值)对设置到哈希表 key 中
   * HMGET key field1 [field2] 获取所有给定字段的值
