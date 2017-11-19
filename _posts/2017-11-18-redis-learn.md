@@ -43,6 +43,8 @@ tags:
 
 * Redis 列表(List)
 
+  * LLEN key 获取列表的长度
+  * LRANGE key start stop 获取列表指定索引的元素
   * LINDEX key index 通过索引获取列表中的元素
   * LINSERT key BEFORE|AFTER pivot value 在列表的元素前或者后插入元素
   * LPUSH key value1 [value2] 将一个或多个值插入到列表头部
