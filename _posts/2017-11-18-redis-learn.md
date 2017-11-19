@@ -123,3 +123,18 @@ tags:
      2) "C++"
      3) "Programming"
   ```
+
+* python中使用redis
+
+	首先安装 redis 和 hiredis 两个python库，redis封装了所有redis的api，hiredis是用c语言编写的接收redis server response的库，速度是python原生实现的10倍
+
+	```
+	import redis
+	pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
+	r = redis.Redis(connection_pool=pool) # redis默认为每一次连接创建一个connection，这样非常浪费，我们显示的给Redis的构造函数中传入一个连接池参数，这样操作可以复用，提高效率
+	r.key() # []
+	r.set('name', 'bupt')
+	r.get('name') # bupt
+	pipe = r.pipeline() # redis-py用pipeline实现了redis中的事务(multi，exec)
+	pipe.set('age', '21').rpush('list', 'hello').lpush('list', 'world').execute()
+	```
