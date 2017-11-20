@@ -138,3 +138,29 @@ tags:
 	pipe = r.pipeline() # redis-py用pipeline实现了redis中的事务(multi，exec)
 	pipe.set('age', '21').rpush('list', 'hello').lpush('list', 'world').execute()
 	```
+
+* nodejs中使用redis
+
+	首先安装 redis 和 bluebird 两个npm包，redis封装了几乎所有redis的API，bluebird是用来处理redis的callback函数，使之用promise的形式返回
+
+	```
+	const redis = require('redis')
+	const bluebird = require('bluebird')
+
+	bluebird.promisifyAll(redis.redisClient.prototype)
+	bluebird.promisifyAll(redis.Multi.prototype)
+
+	const client = redis.redisClient(host, port, configs)
+
+	client.set('key', 'value', redis.print)
+	client.hmset('key', { name: 'bai', age: 21 }).then(res => console.log(res))
+
+	let pipe = client.multi();
+
+	pipe.set('asd', 'as')
+	pipe.lpush('list', 'asdasd')
+	pipe.hset('stu', 'h', 'm')
+	pipe.hgetall('stu')
+
+	pipe.exec_atomic(); // 和exec()差不多，区别是只有一个操作的时候不采用事务的方式
+	```
