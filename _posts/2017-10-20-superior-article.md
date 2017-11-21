@@ -22,6 +22,7 @@ tags:
 * [10道典型的JavaScript面试题](http://www.css88.com/archives/7052)
 * [前端开发中cookie的那些事情](http://www.css88.com/archives/4637)
 * [移动端position: fixed的坑](http://efe.baidu.com/blog/mobile-fixed-layout/)
+* [移动前端开发需要注意的20个要点](http://www.jianshu.com/p/8df1a9824eeb)
 
 ## python
 
