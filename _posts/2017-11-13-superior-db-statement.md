@@ -50,24 +50,24 @@ tags:
   having Count(*) > 1         
   ```
   
- * 查询Weather表中所有比昨天温度高的日期的id
+* 查询Weather表中所有比昨天温度高的日期的id
 
- ```
- SELECT w1.Id
-FROM Weather AS w1, Weather AS w2
-WHERE w1.Temperature > w2.Temperature AND
-      TO_DAYS(w1.Date) - TO_DAYS(w2.Date) = 1;
- ```
+	 ```
+	 SELECT w1.Id
+	 FROM Weather AS w1, Weather AS w2
+	 WHERE w1.Temperature > w2.Temperature AND
+	      TO_DAYS(w1.Date) - TO_DAYS(w2.Date) = 1;
+	 ```
  
- 开始的话，我直接用w2.Date - w1.Date = 1去filter，后来发现会有问题，TO_DAYS()可以返回一个date离0的天数，适合于这个场景
+	 开始的话，我直接用w2.Date - w1.Date = 1去filter，后来发现会有问题，TO_DAYS()可以返回一个date离0的天数，适合于这个场景
  
- * 删除Person表格中的重复记录(这道题的难点在于delete 语句不能给表格赋别名)
+* 删除Person表格中的重复记录(这道题的难点在于delete 语句不能给表格赋别名)
 
- ```
- DELETE FROM Person
- WHERE Id NOT IN ( SELECT P.Id FROM 
- 					  ( SELECT MIN(Id) as Id FROM Person group by Email ) P
- 					)
- ```
+	 ```
+	 DELETE FROM Person
+	 WHERE Id NOT IN ( SELECT P.Id FROM 
+	 					( SELECT MIN(Id) as Id FROM Person group by Email ) P
+	 				 )
+	 ```
  
- sql查询可以给SELECT 选中的语句赋别名的，比如👆就给SELECT MIN(Id)...赋予了别名P，因此外面一层的SELECT语句才能通过P.Id拿到选中的数值，秀
+	 sql查询可以给SELECT 选中的语句赋别名的，比如👆就给SELECT MIN(Id)...赋予了别名P，因此外面一层的SELECT语句才能通过P.Id拿到选中的数值，秀
