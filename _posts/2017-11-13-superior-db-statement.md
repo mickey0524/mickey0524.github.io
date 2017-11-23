@@ -71,3 +71,11 @@ tags:
 	 ```
  
 	 sql查询可以给SELECT 选中的语句赋别名的，比如👆就给SELECT MIN(Id)...赋予了别名P，因此外面一层的SELECT语句才能通过P.Id拿到选中的数值，秀
+
+* 为Scores表格按Score数值从大到小进行排序，如果两个记录的Score数值相同，Rank数值也要相同，然后依次顺下
+
+	```
+	SELECT Score, (SELECT count(*) FROM (SELECT distinct Score s FROM Scores) tmp WHERE s >= Score) AS Rank
+	FROM Scores
+	ORDER BY Score DESC;
+	```
