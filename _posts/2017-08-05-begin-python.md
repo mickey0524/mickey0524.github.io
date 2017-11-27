@@ -749,3 +749,79 @@ sha1.update('python hashlib?')
 * limit(int) 和sql中的limit的用法一样，最多返回limit()参数的记录
 * offset(int) 从int索引开始返回
 * slice(head, tail)和前端的slice一样的用法，返回索引从head到tail-1的记录
+
+<br>72. python中的堆排序heapq模块
+
+heapq模块实现了python中的堆排序，并提供了有关方法。让用Python实现堆排序有了简单快捷的方式。
+	
+[heapq官方文档](https://docs.python.org/2/library/heapq.html)
+	
+* 实现堆排序
+
+	```
+	#!/usr/bin/env python
+	# -*- coding: utf-8 -*-
+	
+	from heapq import *
+	
+	def heapsort(iterable):
+		h = []
+		for value in iterable:
+			heappush(h, value)
+		return [heappop(h) for i in range(len(h))]
+	
+	if __name__ == '__main__':
+		print heapsort([1, 3, 5, 9, 2])
+	```
+
+* heappush(heap, item)
+
+	将item压入堆数组
+	
+* heappop(heap)
+
+	返回heap堆中当前的最小元素
+
+* heappushpop(heap, item)
+
+	先将item压入堆数组，然后再返回heap堆中当前的最小元素
+	
+* heapreplace(heap, item)
+
+	先返回heap堆中当前的最小元素，再将item压入堆数组
+	
+* heapify(arr)
+
+	arr必须是list，此函数将list变成堆，实时操作。从而能在任何情况下使用堆的函数。
+	
+	```
+	>>> a = [1, 5, 3]
+	>>> heapify(a)
+	>>> heappop(a)
+	1
+	>>> b = [4, 2, 5]
+	>>> heappop(b) # 因为不是heap堆数组
+	4
+	```
+
+* merge(*iterables)
+
+	```
+	>>> a = [1, 3, 5]
+	>>> b = [2, 4, 6]
+	>>> c = merge(a, b) # 生成一个generator
+	>>> list(c)
+	[1, 2, 3, 4, 5, 5]
+	```
+
+* nlargest(n, iterable[, key])，nsmallest(n, iterable[, key])，获取列表中最大、最小的几个值。与sorted(iterable, key=key, reverse=True)[:n]等价
+
+	```
+	>>> a
+	[2, 4, 6]
+	>>> nlargest(2, a)
+	[6, 4]
+	```
+
+	
+	
