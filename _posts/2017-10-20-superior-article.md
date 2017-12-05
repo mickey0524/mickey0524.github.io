@@ -25,6 +25,7 @@ tags:
 * [移动前端开发需要注意的20个要点](http://www.jianshu.com/p/8df1a9824eeb)
 * [webpack3下react的proc模式的配置](https://medium.com/netscape/webpack-3-react-production-build-tips-d20507dba99a)
 * [CSS3景深效果例子](http://www.daqianduan.com/6134.html)
+* [特殊字符\u2028导致的Javascript脚本异常](http://www.cnblogs.com/rrooyy/p/5349978.html)
 
 ## python
 
