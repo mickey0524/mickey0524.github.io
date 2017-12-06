@@ -11,6 +11,14 @@ tags:
 
 最近在系统的过一遍redis的API，虽然在实际编程中这些API很少被用到，但是和mysql一样，基本的命令行操作还是要会的～于是总结了这篇博客，用以温故知新
 
+* Redis安装
+
+  [mac下redis的安装](http://www.jianshu.com/p/6b5eca8d908b)
+
+* Redis GUI rdm的安装
+
+  [rdm安装](http://www.jianshu.com/p/214baa511f2e)
+
 * Redis keys命令
 
   * DEL key 删除这个键值对
