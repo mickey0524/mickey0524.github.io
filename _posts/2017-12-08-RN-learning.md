@@ -2,7 +2,7 @@
 layout:     post
 title:      "RN-learning"
 subtitle:   "RN基础学习(长期更新)"
-date:       2017-11-27 21:30:00
+date:       2017-12-08 00:30:00
 author:     "Mickey"
 header-img: "img/post-bg-e2e-ux.jpg"
 tags:
