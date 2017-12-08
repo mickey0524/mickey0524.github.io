@@ -823,5 +823,6 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 	[6, 4]
 	```
 
-	
-	
+<br>73. python中的all函数
+
+	all(iterable)，如果iterable中的所有元素不为0，''，False或者iterable为空，返回True，反之。返回False
