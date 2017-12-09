@@ -150,3 +150,15 @@ tags:
 	```
 	
 	FlatList的data是一个由对象组成的数组，SectionList的sections是由分组对象组成的数组，每一个分组对象由分组名称和分组内容组成，renderSectionHeader代表渲染一个分组标题，renderItem用于渲染分组中的item，如果不同的分组需要不同的渲染方式，应该在分组对象中用renderItem表示出来，SectionSeparatorComponent在分组头部和尾部渲染一个分割组件
+
+* ProgressViewIOS组件在父亲组件为flex布局的情况下，不会正常显示，需要给组件设置如下的样式
+
+	```js
+	let totalWidth = require('Dimensions').get(window).width;
+	
+	{
+		width: totalWidth,
+		position: 'absolute',
+		top: 0,
+	}
+	```
