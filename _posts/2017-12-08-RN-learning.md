@@ -80,4 +80,73 @@ tags:
 	* multiline，布尔类型，为true时，可以多行输入as
 	* secureTextEntry，布尔类型，用于决定输入框是否用于输入密码，password好像没用
 
-* RN和react绑定DOM元素的方法一样，RN的组件包含一个setNativeProps函数，可以用于直接修改组件的属性，一般不建议这么用
+* RN和react绑定DOM元素的方法一样，RN的组件包含一个setNativeProps函数，可以用于直接修改组件的属性，一般不建议这么用，流程是先用ref绑定好组件，再this.component.setNativeProps({ property: value })来使用
+* RN提供ClipBoard组件来写入剪切板和从剪切板中读出
+
+	```js
+	import { ClipBoard } from 'react-native';
+	
+	...
+	
+	ClipBoard.setString('mickey');
+	
+	ClipBoard.getString().then(pasteText => { ... })
+	```
+
+* 我们都知道在H5页面上，有sessionStorage和localStorage两个浏览器端的API用于存储，RN也有类似的API--AsyncStorage
+
+	```js
+	import { AsyncStorage } from 'react-native';
+	
+	...
+	
+	AsyncStorage.setItem(key, value); // 这里需要注意key和value都要为string，不然会报错
+	
+	AsyncStorage.getItem(key)
+	.then(value => {
+		...
+	})
+	.catch(err => {
+		...
+	})
+	```
+
+* ScrollView和FlatList|SectionList（ListView是低版本用的）是RN中几个滚动组件，组件的属性都比较多，包含滑动到边界， 滑动过程中的事件监听，是否允许放大，事件监听时延等，具体可以使用的时候再进行查看
+
+* SrollView的组件成员函数，scrollTo({x, y, animated})，animated代表过去的时候是否需要动画
+
+* RN0.43之后，退出了高性能滚动列表FaltList，详细见官方文档，这里给出一个demo，[参考资料](http://blog.csdn.net/u011272795/article/details/74359305)
+
+	```js
+    <FlatList
+  refreshing={this.state.isRefreshing}
+  onRefresh={() => this.updateNum()}
+  ItemSeparatorComponent={ItemSeparator}
+  getItemLayout={(data, index) => ({ length: 40, offset: 41 * index, index})}
+  initialNumToRender={ Math.ceil(totalHeight / 40) }
+  ListFooterComponent={<View style={styles.header}/> }
+  ListHeaderComponent={<View style={styles.header} />}          
+  data={this.flatListTest}
+  renderItem={({ item }) => <Text style={styles.flatListItem}>{item.key}</Text> } />
+	```
+	
+	refreshing可以用于在向服务端请求数据的时候在顶部展示一个默认的加载菊花图，onRefresh的函数在滚动到顶部下拉的时候会执行，可以在这里去请求服务端数据，ItemSeparatorComponent描绘的是list之间的分割组件，ListHeaderComponent，ListFooterComponent是顶部和底部的组件（这三个组件没必要新写一个class，直接在当前class里写一个函数返回一个组件就行），initialNumToRender指代第一次渲染多少item，getItemLayout对组件滚动优化很有作用，指代的是每一个item的list中的位置，data是列表的数据源，renderItem是渲染的Item组件
+
+* SectionList和FlatList一样，是RN0.43之后发布的高性能分组组件，如果不用分组的话，FlatList无疑是更好的选择，SectionList大多数属性和FlatList相同，下面来讲一下不同的地方，[参考资料](http://www.jianshu.com/p/6302c4d48b97)
+
+	```
+	<SectionList 
+	SectionSeparatorComponent={() => this.genSectionHeaderSeparator()}
+	initialNumToRender={20}
+	refreshing={this.state.isRefreshing}
+	onRefresh={() => this.updateNum()}
+	ItemSeparatorComponent={ItemSeparator}
+	ListFooterComponent={() => <View style={styles.header} />}
+	ListHeaderComponent={<View style={styles.header} />}
+	sections={this.sectionTest}
+	renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.key}</Text> }
+	renderItem={({ item }) => <Text style={styles.flatListItem}>{item.key}</Text> }
+	/>
+	```
+	
+	FlatList的data是一个由对象组成的数组，SectionList的sections是由分组对象组成的数组，每一个分组对象由分组名称和分组内容组成，renderSectionHeader代表渲染一个分组标题，renderItem用于渲染分组中的item，如果不同的分组需要不同的渲染方式，应该在分组对象中用renderItem表示出来，SectionSeparatorComponent在分组头部和尾部渲染一个分割组件
