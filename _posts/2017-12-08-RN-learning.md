@@ -111,7 +111,7 @@ tags:
 	})
 	```
 
-* ScrollView和FlatList|SectionList（ListView是低版本用的）是RN中几个滚动组件，组件的属性都比较多，包含滑动到边界， 滑动过程中的事件监听，是否允许放大，事件监听时延等，具体可以使用的时候再进行查看
+* ScrollView和FlatList、SectionList（ListView是低版本用的）是RN中几个滚动组件，组件的属性都比较多，包含滑动到边界， 滑动过程中的事件监听，是否允许放大，事件监听时延等，具体可以使用的时候再进行查看
 
 * SrollView的组件成员函数，scrollTo({x, y, animated})，animated代表过去的时候是否需要动画
 
