@@ -2,7 +2,7 @@
 layout:     post
 title:      "webpack-learn"
 subtitle:   "webpack学习"
-date:       2017-09-26 18:30:00
+date:       2017-12-11 15:30:00
 author:     "Mickey"
 header-img: "img/post-bg-os-metro.jpg"
 tags:
@@ -73,6 +73,7 @@ resolve: {
   3. webpack.optimize.CommonsChunkPlugin 提取公共代码
   4. webpack.optimize.UglifyJsPlugin 压缩代码
   5. webpack.LoaderOptionsPlugin 最小化loader
+  6. webpack-stats-plugin中的StatsWriterPlugin 用一个JSON文件表示webpack打包出来的文件，在静态文件发CDN的时候，往往需要带上hash用以更新，这个时候，就需要在模版文件里引用带hash值的静态文件，pug开发的话，可以自定义一个filter，然后从stats.json中获取带hash值的打包出来的文件～
 
   [plugin-list](https://webpack.js.org/plugins/)
 
