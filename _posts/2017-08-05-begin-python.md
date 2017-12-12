@@ -2,7 +2,7 @@
 layout:     post
 title:      "begin-python"
 subtitle:   "python小白入门"
-date:       2017-08-05 20:00:00
+date:       2017-12-13 00:00:00
 author:     "Mickey"
 header-img: "img/post-bg-universe.jpg"
 tags:
@@ -344,7 +344,8 @@ chr(97) # 'a'
 
 ```
 from random import *
-randrange(1, 5) # 返回1-5之内的随机一个整数
+randrange(1, 5) # 返回1-5之内的随机一个整数，包括5
+randint(1, 5) # 返回1-5之内的随机一个整数，不包括5
 uniform(1, 5) # 返回1-5之内的随机一个浮点数
 random() # 和js中的random一样，返回0-1之间的一个浮点数
 choice() # 返回序列中的随机一个数值
@@ -826,3 +827,10 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 <br>73. python中的all函数
 	
 all(iterable)，如果iterable中的所有元素不为0，''，False或者iterable为空，返回True，反之。返回False
+
+<br>74. python中random模块的randint和randrange的区别
+	
+randrange([start,] stop [, step])：从start到stop中，以step为间隔中随机取一个整数，可以理解为choice(range(start, stop, step)
+
+randint(start, stop)：从start到stop（包括stop）中随机获取一个数字，相当于randrange(start, stop + 1)
+
