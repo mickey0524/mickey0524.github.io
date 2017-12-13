@@ -834,3 +834,16 @@ randrange([start,] stop [, step])：从start到stop中，以step为间隔中随�
 
 randint(start, stop)：从start到stop（包括stop）中随机获取一个数字，相当于randrange(start, stop + 1)
 
+<br>75. python的bisect模块，可以用于二分查找
+
+```
+from bisect import *
+
+def binary_search(iter, target):
+	index = bisect_left(iter, target)
+	if index != len(iter) and iter[index] == target:
+		return index
+	else:
+		return -1	
+```
+	
