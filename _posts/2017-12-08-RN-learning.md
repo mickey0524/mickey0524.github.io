@@ -162,3 +162,27 @@ tags:
 		top: 0,
 	}
 	```
+	
+* PanResponder，RN中用于提供手势监控的控件，首先需要使用PanResponder.create()创造一个watcher，create方法的参数是各种事件的回调，常用的事件回调为onPanResponderGrant和onPanResponderMove，分别用于监听单点和移动事件，回调函数有两个参数，一般用gestureState来获取x0，y0，moveX，moveY即可，需要将watcher.panHandlers透传到手势检测空间上，检测控件可以为一个界面上显示的控件，也可以是一个背景为transparent的控件，看需求而定
+
+	```js
+	componentWillMount() {
+	  this.watcher = PanResponder.create({
+	    onStartShouldSetPanResponder: () => true,
+	    onPanResponderGrant: this.onPanResponderGrant,
+	    onPanResponderMove: this.onPanResponderMove,
+	  });    
+	}
+	
+	...
+	
+	<View 
+    	style={styles.touchViewStyle}
+        {...this.watcher.panHandlers} />
+	```
+
+* NetInfo用于获取当前手机的网络信息
+	* NetInfo.getConnectionInfo: 用于获取当前手机的网络情况，返回一个promise
+	* NetInfo.addEventListener('change', handler, false): 用于监听手机网络状态的变化情况，需要在 cwum 中销毁监听器
+	* NetInfo.isConnected.fetch().done(): 用于判断当前手机是否有网络连接
+	* android端存在 NetInfo.isConnectionExpensive来获取当前网络是否计费
