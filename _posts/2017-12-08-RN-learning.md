@@ -186,3 +186,5 @@ tags:
 	* NetInfo.addEventListener('change', handler, false): 用于监听手机网络状态的变化情况，需要在 cwum 中销毁监听器
 	* NetInfo.isConnected.fetch().done(): 用于判断当前手机是否有网络连接
 	* android端存在 NetInfo.isConnectionExpensive来获取当前网络是否计费
+
+* Webview组件可以用于打开一个已经存在的网页，也可以用于打开RN项目中的静态文件
