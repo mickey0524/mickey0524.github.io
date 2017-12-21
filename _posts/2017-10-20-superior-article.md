@@ -27,6 +27,7 @@ tags:
 * [CSS3景深效果例子](http://www.daqianduan.com/6134.html)
 * [特殊字符\u2028导致的Javascript脚本异常](http://www.cnblogs.com/rrooyy/p/5349978.html)
 * [前端本地文件操作与上传的三种方法](https://www.itcodemonkey.com/article/1509.html)
+* [webpack优化打包速度](https://molunerfinn.com/Webpack-Optimize/)
 
 ## python
 
