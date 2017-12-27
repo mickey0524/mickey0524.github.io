@@ -2,7 +2,7 @@
 layout:     post
 title:      "RN-learning"
 subtitle:   "RN基础学习(长期更新)"
-date:       2017-12-08 00:30:00
+date:       2017-12-27 22:30:00
 author:     "Mickey"
 header-img: "img/post-bg-e2e-ux.jpg"
 tags:
@@ -188,3 +188,7 @@ tags:
 	* android端存在 NetInfo.isConnectionExpensive来获取当前网络是否计费
 
 * Webview组件可以用于打开一个已经存在的网页，也可以用于打开RN项目中的静态文件
+
+* RN中强制app竖屏显示的方法
+    * IOS把info.plist的UISupportedInterfaceOrientations中UIInterfaceOrientationLandscapeLeft、UIInterfaceOrientationLandscapeRight注释掉
+    * Android在AndroidManifest中的MainActivity后面增加android:screenOrientation="portrait"
