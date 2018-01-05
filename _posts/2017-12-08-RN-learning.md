@@ -192,3 +192,8 @@ tags:
 * RN中强制app竖屏显示的方法
     * IOS把info.plist的UISupportedInterfaceOrientations中UIInterfaceOrientationLandscapeLeft、UIInterfaceOrientationLandscapeRight注释掉
     * Android在AndroidManifest中的MainActivity后面增加android:screenOrientation="portrait"
+
+* RN中drawerNavigation初始化报routeName undefined，^1.0.0-beta.22版本，需要手动添加drawerOpenRoute，drawerCloseRoute，drawerToggleRoute贼坑
+
+    [https://github.com/react-navigation/react-navigation/issues/3095]
+
