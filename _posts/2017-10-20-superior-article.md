@@ -33,3 +33,4 @@ tags:
 
 * [python字符串和编码](字符串和编码)
 * [为什么python慢](https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/)
+* [为什么用 Numpy 还是慢, 你用对了吗?](https://zhuanlan.zhihu.com/p/28626431)
