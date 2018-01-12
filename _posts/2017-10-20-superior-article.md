@@ -31,6 +31,6 @@ tags:
 
 ## python
 
-* [python字符串和编码](字符串和编码)
+* [python字符串和编码](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819196283586a37629844456ca7e5a7faa9b94ee8000)
 * [为什么python慢](https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/)
 * [为什么用 Numpy 还是慢, 你用对了吗?](https://zhuanlan.zhihu.com/p/28626431)
