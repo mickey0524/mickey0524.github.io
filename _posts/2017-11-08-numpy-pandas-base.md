@@ -51,4 +51,27 @@ tags:
 
 * pandas(import pandas as pd; import numpy as np)
 
-	* 
+	* pd.Series([1, 2, 3]) 创建一维Series
+	* pd.DataFrame(np.random.randn(6, 4), index=np.arange(6), columns=['a', b', 'c', 'd']) 创建二维DateFrame，index是横轴标签，columns是纵轴标签
+	* DataFrame的每列的数据类型可以是不一样的
+	
+		```
+		df = pd.DataFrame({'A' : 1.,
+                    'B' : pd.Timestamp('20130102'),
+                    'C' : pd.Series(1,index=list(range(4)),dtype='float32'),
+                    'D' : np.array([3] * 4,dtype='int32'),
+                    'E' : pd.Categorical(["test","train","test","train"]),
+                    'F' : 'foo'})	
+		```
+	
+	* df.sort_index(axis=0/1, ascending=True/False) 按照横轴或纵轴进行排序，可以是升序或者降序
+	* df.sort_values(by='B') 按照纵轴对应列的数值进行排序
+	* df['a'] 选择一列的数据
+	* df.loc[][] 按照标签进行选择
+	* df.iloc[][] 按照位置/索引进行选择
+	* df.dropna(axis=0/1, how='any'/'all') 对行/列操作，any代表只要存在NaN就drop掉，all代表全部是NaN才drop
+	* df.fillna(value=0) 将df中的nan替换为0
+	* pd.concat([df, df1, df2], axis=0/1, ignore\_index=True/False, join='outer/inner', join_axes=[df1.index]) 第一个参数代表要concat的df组成的list，axis代表是行扩展还是列扩展，ignore\_index代表扩展后坐标是否重置，join='outer/inner'代表碰到了df中不存在的坐标"全部显示，不存在坐标显示NaN/剔除，只保存公共的坐标，join\_axes代表遇到不存在的保留哪几个df
+	* pd.append() 纵向合并，功能和concat有所重叠
+	* pd.merge(df1, df2, on=['key'], how='outer/inner/left/right', suffixes=['\_boy', '_girl']) pandas中的merge和concat类似，我理解concat多用于合并，而merge和其中文意思一样，是用于数据合并，如果不特别制定，merge是按照columns进行的，df1，df2代表要merge的df，on代表合并的column，how和concat中的join功能类似，代表merge冲突的时候保留的方式，suffixes代表没merge的列中存在名字冲突的时候，列名后加上suffix以区分，未设置的话会自动加上'\_x'和'\_y'以区分
+	* pd.merge(df1, df2, left_index=True, right_index=True, how='outer/inner') 代表按照index进行merge
