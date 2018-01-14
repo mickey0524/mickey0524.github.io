@@ -12,10 +12,11 @@ tags:
 
 入门python之后，作为python的两大招牌，爬虫和数据分析是肯定要去尝试滴，爬虫的话，在我的[python爬虫基础](https://github.com/mickey0524/web-crawler)仓库中，有由简到繁的示例，下面在这篇博客中，记录一些numpy和pandas的基础，以便温故知新~
 
-* numpy(from numpy import *)
+* numpy(from numpy import \*)
 
 	* a = array([1, 2, 3]) 创建一个np对象
 	* a.dtype 查看数据类型
+    * np.astype() 改变numpy数组的类型
 	* a.shape 一个元组，描述np对象每个维度的长度
 	* a.size np对象元素个数
 	* a.nbytes np对象消耗的字节数
@@ -30,10 +31,12 @@ tags:
 	* a.round(decimals=1) 取整，可以带decimals参数选择保留几位小数
 	* np.zeros((2, 3), dtype='int64') 创建一个全0的np对象，第一个参数为代表维度的元组，dtype可以选择类型，默认的类型是float64
 	* np.ones() 参数和zeros一样
+    * np.empty((2, 3)) 一般用于创建一个2\*3的空白np矩阵 
+    * np.eye(n) 创建一个n\*n对角线为1.的数组
     * np.arange(10, 20, 2) array([10, 12, 14, 16, 18]), 创建连续数组
     * np.reshape((row, col)) np.arange(12).reshape((3, 4)), 改变数据的形状
     * np.linspace(1, 10, 20) 开始端1，结束端10，且分割成20个数据，生成线段
-    * np.dot(a, b) 矩阵a和矩阵b进行矩阵乘法，直接对np矩阵进行*是对矩阵中的每个元素进行乘法，这个需要记一下
+    * np.dot(a, b) 矩阵a和矩阵b进行矩阵乘法，直接对np矩阵进行\*是对矩阵中的每个元素进行乘法，这个需要记一下
     * np.clip(a, 5, 9) 将a中比5小的元素替换为5，比9大的元素替换为9
     * a.flatten() 获得a的一维数组形式，是copy的返回
     * a.flat 迭代器，类似于xrange
@@ -48,6 +51,16 @@ tags:
     * np.random.randn() 参数和前面一样，从标准正态分布中返回随机数值
     * np.random.randint(low[, high, size, dtype])
     * np.random.random(size) 返回[0, 1)的size为size的数组
+    * numpy中bool比较与操作是 & 或操作是 |，不是python中and和or，需要记一下
+    * 利用bool型索引选取数组中的数据，总是创建数据的副本，而不是切片创建的view，性能上不如view
+    * numpy的花式切片，创建的也是数据的副本
+    
+        ```
+        a = np.arange(32).reshape(4, 8)
+        a[[3, 1], [2, 4]] # 选出来的是由(3, 2)和(1, 4)元素组成的一位数组
+        a[[3, 1]][:, [2, 4]] # 这样选择出来的才是矩形
+        a[np.ix_([3, 1], [2, 4])] # 效果和上面一样
+        ```
 
 * pandas(import pandas as pd; import numpy as np)
 
@@ -73,5 +86,5 @@ tags:
 	* df.fillna(value=0) 将df中的nan替换为0
 	* pd.concat([df, df1, df2], axis=0/1, ignore\_index=True/False, join='outer/inner', join_axes=[df1.index]) 第一个参数代表要concat的df组成的list，axis代表是行扩展还是列扩展，ignore\_index代表扩展后坐标是否重置，join='outer/inner'代表碰到了df中不存在的坐标"全部显示，不存在坐标显示NaN/剔除，只保存公共的坐标，join\_axes代表遇到不存在的保留哪几个df
 	* pd.append() 纵向合并，功能和concat有所重叠
-	* pd.merge(df1, df2, on=['key'], how='outer/inner/left/right', suffixes=['\_boy', '_girl']) pandas中的merge和concat类似，我理解concat多用于合并，而merge和其中文意思一样，是用于数据合并，如果不特别制定，merge是按照columns进行的，df1，df2代表要merge的df，on代表合并的column，how和concat中的join功能类似，代表merge冲突的时候保留的方式，suffixes代表没merge的列中存在名字冲突的时候，列名后加上suffix以区分，未设置的话会自动加上'\_x'和'\_y'以区分
+	* pd.merge(df1, df2, on=['key'], how='outer/inner/left/right', suffixes=['\_boy', '\_girl']) pandas中的merge和concat类似，我理解concat多用于合并，而merge和其中文意思一样，是用于数据合并，如果不特别制定，merge是按照columns进行的，df1，df2代表要merge的df，on代表合并的column，how和concat中的join功能类似，代表merge冲突的时候保留的方式，suffixes代表没merge的列中存在名字冲突的时候，列名后加上suffix以区分，未设置的话会自动加上'\_x'和'\_y'以区分
 	* pd.merge(df1, df2, left_index=True, right_index=True, how='outer/inner') 代表按照index进行merge
