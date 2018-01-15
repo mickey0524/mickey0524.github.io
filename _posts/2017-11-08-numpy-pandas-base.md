@@ -22,12 +22,15 @@ tags:
 	* a.nbytes np对象消耗的字节数
 	* a.dims np对象的维度数
 	* a.T 矩阵对象的转置
-	* sum(a[, axis = 0, 1]) 求和函数，0为列求和，1位行求和
+	* np.sum(a[, axis = 0, 1]) 求和函数，0为列求和，1位行求和，可以用sum()处理bool数组，计算值为True的数量
+    * np.argmax()/np.argmin() 求当前矩阵的最值的第一个索引，如果是bool数组，就是找第一个值为True的索引
 	* a.min() 求最小值，同样可以带axis参数
 	* a.mean() 求算数平均值，同样可以带axis参数
-	* a.median() 求中位数
+	* np.median(a) 求中位数
 	* a.var() 求方差，同样可以带axis参数
 	* a.std() 求标准差，同样可以带axis参数
+    * a.cumsum() 求累计和
+    * a.cumprod() 求累计积
 	* a.round(decimals=1) 取整，可以带decimals参数选择保留几位小数
 	* np.zeros((2, 3), dtype='int64') 创建一个全0的np对象，第一个参数为代表维度的元组，dtype可以选择类型，默认的类型是float64
 	* np.ones() 参数和zeros一样
@@ -51,7 +54,7 @@ tags:
     * np.random.randn() 参数和前面一样，从标准正态分布中返回随机数值
     * np.random.randint(low[, high, size, dtype])
     * np.random.random(size) 返回[0, 1)的size为size的数组
-    * numpy中bool比较与操作是 & 或操作是 |，不是python中and和or，需要记一下
+    * numpy中bool比较与操作是 & 或操作是 \|，不是python中and和or，需要记一下
     * 利用bool型索引选取数组中的数据，总是创建数据的副本，而不是切片创建的view，性能上不如view
     * numpy的花式切片，创建的也是数据的副本
     
@@ -61,6 +64,49 @@ tags:
         a[[3, 1]][:, [2, 4]] # 这样选择出来的才是矩形
         a[np.ix_([3, 1], [2, 4])] # 效果和上面一样
         ```
+    * np.meshgrid() 接受两个一维数组，返回两个二维数组，代表这两个一维数组的所有点对1
+        
+        ```
+        
+        In [12]: p = np.arange(-5, 5)
+
+		In [13]: p
+		Out[13]: array([-5, -4, -3, -2, -1,  0,  1,  2,  3,  4])
+		
+		In [14]: x, y = np.meshgrid(p ,p)
+		
+		In [15]: x
+		Out[15]:
+		array([[-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4],
+		       [-5, -4, -3, -2, -1,  0,  1,  2,  3,  4]])
+		
+		In [16]: y
+		Out[16]:
+		array([[-5, -5, -5, -5, -5, -5, -5, -5, -5, -5],
+		       [-4, -4, -4, -4, -4, -4, -4, -4, -4, -4],
+		       [-3, -3, -3, -3, -3, -3, -3, -3, -3, -3],
+		       [-2, -2, -2, -2, -2, -2, -2, -2, -2, -2],
+		       [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+		       [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0],
+		       [ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1],
+		       [ 2,  2,  2,  2,  2,  2,  2,  2,  2,  2],
+		       [ 3,  3,  3,  3,  3,  3,  3,  3,  3,  3],
+		       [ 4,  4,  4,  4,  4,  4,  4,  4,  4,  4]])
+       
+        ```
+
+    * np.where(cond, xarr, yarr) np.where函数是三元表达式x if condition else y的矢量化版本，当cond中的值为True时，选取xarr的值，否则从yarr中选取，例如np.where(arr > 0, 2, -2)将arr中的正数替换为2，负数替换为-2
+    * np.unique(a) 去重，并返回有序结果
+    * np.in1d(a, b) 返回一个bool数组，表示a中的元素是否在b中存在
+    * np.intersect1d(a, b)/np.union1d(a, b)/setdiff1d(a, b)/setxorid(a, b) 两个集合的交，并，差，对称差操作
 
 * pandas(import pandas as pd; import numpy as np)
 
@@ -83,6 +129,7 @@ tags:
 	* df.loc[][] 按照标签进行选择
 	* df.iloc[][] 按照位置/索引进行选择
 	* df.dropna(axis=0/1, how='any'/'all') 对行/列操作，any代表只要存在NaN就drop掉，all代表全部是NaN才drop
+    * df.isnull() / df.notnull() 用于检测缺失数据
 	* df.fillna(value=0) 将df中的nan替换为0
 	* pd.concat([df, df1, df2], axis=0/1, ignore\_index=True/False, join='outer/inner', join_axes=[df1.index]) 第一个参数代表要concat的df组成的list，axis代表是行扩展还是列扩展，ignore\_index代表扩展后坐标是否重置，join='outer/inner'代表碰到了df中不存在的坐标"全部显示，不存在坐标显示NaN/剔除，只保存公共的坐标，join\_axes代表遇到不存在的保留哪几个df
 	* pd.append() 纵向合并，功能和concat有所重叠
