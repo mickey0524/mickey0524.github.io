@@ -28,6 +28,7 @@ tags:
 * [特殊字符\u2028导致的Javascript脚本异常](http://www.cnblogs.com/rrooyy/p/5349978.html)
 * [前端本地文件操作与上传的三种方法](https://www.itcodemonkey.com/article/1509.html)
 * [webpack优化打包速度](https://molunerfinn.com/Webpack-Optimize/)
+* [快速掌握JS面试基础知识](https://blog.fundebug.com/2018/01/15/the-definitive-javascript-handbook-for-a-developer-interview/)
 
 ## python
 
