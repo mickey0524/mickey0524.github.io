@@ -131,7 +131,38 @@ tags:
 	* df.dropna(axis=0/1, how='any'/'all') 对行/列操作，any代表只要存在NaN就drop掉，all代表全部是NaN才drop
     * df.isnull() / df.notnull() 用于检测缺失数据
 	* df.fillna(value=0) 将df中的nan替换为0
+	* df.fillna({'b': 0.5, 'c': 2}) 对df中'b'列的nan替换为0.5，'c'列的nan替换为2
+	* df.fillna默认会返回新对象，但也可以对现有对象进行修改
+		
+		```
+		_ = df.fillna(0, inplace=True)
+		```
+	
+	* df.fillna(method="ffill/bfill", limit=2) method代表前向补充，limit代表最多补全多少个
+		 
 	* pd.concat([df, df1, df2], axis=0/1, ignore\_index=True/False, join='outer/inner', join_axes=[df1.index]) 第一个参数代表要concat的df组成的list，axis代表是行扩展还是列扩展，ignore\_index代表扩展后坐标是否重置，join='outer/inner'代表碰到了df中不存在的坐标"全部显示，不存在坐标显示NaN/剔除，只保存公共的坐标，join\_axes代表遇到不存在的保留哪几个df
 	* pd.append() 纵向合并，功能和concat有所重叠
 	* pd.merge(df1, df2, on=['key'], how='outer/inner/left/right', suffixes=['\_boy', '\_girl']) pandas中的merge和concat类似，我理解concat多用于合并，而merge和其中文意思一样，是用于数据合并，如果不特别制定，merge是按照columns进行的，df1，df2代表要merge的df，on代表合并的column，how和concat中的join功能类似，代表merge冲突的时候保留的方式，suffixes代表没merge的列中存在名字冲突的时候，列名后加上suffix以区分，未设置的话会自动加上'\_x'和'\_y'以区分
-	* pd.merge(df1, df2, left_index=True, right_index=True, how='outer/inner') 代表按照index进行merge
+	* pd.merge(df1, df2, left\_index=True, right\_index=True, how='outer/inner') 
+    * pandas对象一个重要方法是reindex，其作用是创建一个适应新索引的新对象 obj.reindex(newIndex, fill\_value=0, method="ffill/bfill")，newIndex代表新的索引，fill\_value代表原先不存在的索引用该值填充，ffill代表前向填充，bfill代表后向填充
+    * df.drop(['a', 'b'], axis=1) 删除结构中的行/列
+    * df.apply(func) 将函数应用到由各列或行所形成的一维数组上
+
+    	```js
+    	f = lambda x: x.max() - x.min()
+    	df = DateFrame(np.random.randn(4, 3), columns=list('abd'))
+    	df.apply(f, axis=0/1)
+    	```
+    * df.applymap(f) df中元素级别的操作
+    * series.map() series中元素级别的操作
+    * df与series在列上操作，series与df有相同的columns，直接+/-即可，df的每一行对应的columns都会减去对应的数值，如果在行上操作，需要使用算数函数，df.sub(series, axis=0)
+    * series.unique() 去重
+    * series.value_counts() 计算各值出现的频率
+    * series.isin(['b', 'c']) 返回一个bool数组，指代相应位置的元素是否出现在后面的arr中
+    * Series和DataFrame可以存在层次索引
+    
+    	```
+    	series = Series([1, 2, 3, 4], index=[[0, 0, 1, 1], [0, 1, 2, 3]])
+    	```
+	
+    
