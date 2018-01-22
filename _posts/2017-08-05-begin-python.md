@@ -69,8 +69,8 @@ func = deco2(deco1(func))
 
 <br>12. isinstance() < = > instanceof 同样用来判断类和引用类型（js中） type() < = > typeof  同样用来判断基本类型
 
-<br>13. python可以通过hasattr(), setattr(), getattr()来操作对象实例，有点类似DOM了，同样和字典一样，通过get()操作对象可能不存在，可以返回一个默认值
-
+<br>13. python可以通过hasattr(obj, 'attribute_name'), setattr(), getattr()来操作对象实例，有点类似DOM了，同样和字典一样，通过get()操作对象可能不存在，可以返回一个默认值
+    
 <br>14. python作为一门动态语言，能够在程序运行过程中对类和实例对象绑定方法，贼强，这里需要从types里引入MethodType
 
 Class.way = MethodType(way,None, Student) 类

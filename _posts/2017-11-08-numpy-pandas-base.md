@@ -148,7 +148,7 @@ tags:
     * df.drop(['a', 'b'], axis=1) 删除结构中的行/列
     * df.apply(func) 将函数应用到由各列或行所形成的一维数组上
 
-    	```js
+    	```
     	f = lambda x: x.max() - x.min()
     	df = DateFrame(np.random.randn(4, 3), columns=list('abd'))
     	df.apply(f, axis=0/1)
