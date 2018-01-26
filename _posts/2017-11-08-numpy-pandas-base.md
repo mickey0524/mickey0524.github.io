@@ -52,6 +52,7 @@ tags:
     * b = a.copy() 深复制
     * np.random.rand(a, b，c) 从[0, 1)中返回三维数组的随机数值 
     * np.random.randn() 参数和前面一样，从标准正态分布中返回随机数值
+    * np.random.normal(loc, scale, size=None) randn(size) 等于 normal(loc=0, scale=1, size)
     * np.random.randint(low[, high, size, dtype])
     * np.random.random(size) 返回[0, 1)的size为size的数组
     * numpy中bool比较与操作是 & 或操作是 \|，不是python中and和or，需要记一下
