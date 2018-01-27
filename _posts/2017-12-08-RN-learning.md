@@ -39,7 +39,7 @@ tags:
 	
 * View组件有一个属性removeClippedSubviews，这是一个用于性能优化的属性，通常用于ScrollView或者ListView中，当组件有很多子组件的时候，将这个属性设为true让RN释放不在视口的子组件，类似于懒加载，要让此属性生效，需要将组件和子组件的overflow都设为hidden
 
-* View组件有一个pointerEvents属性，用于决定由组件的什么部位响应触摸事件，某些继承于View的组件支持性可能没有那么好，pointerEvents为null的时候为默认行为，none的时候本组件和子组件触摸事件由父组件处理，box-none的时候本组件由父亲组件响应，子组件由本组件响应，box-none的时候本组件和子组件的事件由本组件响应
+* View组件有一个pointerEvents属性，用于决定由组件的什么部位响应触摸事件，某些继承于View的组件支持性可能没有那么好，pointerEvents为null的时候为默认行为，none 发生在本组件与本组件的子组件上的触摸事件都会交给本组件的父组件处理，box-none 发生在本组件显示范围内,但不是子组件显示范围内的事件交给本组件,在子组件显示范围内交给子组件处理，box-only 发生在本组件显示范围内的触摸事件将全部由本组件处理,即使触摸事件发生在本组件的子组件显示范围内，auto 视组件的不同而不同,并不是所有的子组件都支持box-none和box-only两个值,使用时最好测试下
 
 * Dimensions只能获取应用启动时的长度和宽度，onLayout可以在组件加载和旋转的时候动态更新
 
