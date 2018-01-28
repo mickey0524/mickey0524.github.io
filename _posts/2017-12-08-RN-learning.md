@@ -11,6 +11,10 @@ tags:
 
 很早之前就想学习RN了，最近终于有时间，陆陆续续的开始学习，这里是一些知识点，用以温故知新～
 
+* [一些RN的小知识点](https://github.com/mickey0524/front-end-knowledge#RN)
+
+* 在android上开发RN程序，首先，下载android studio，adb shell，android sdk，然后将安卓手机连接到电脑上，查看adb devices，出现设备id且没有显示无权限即为ok，然后在命令行react-native run-android，这时候在android手机上应该会红屏，因为还要在android 手机上设置host:ip，然后reload就行了
+
 * react-native中存在一个forceUpdate(function callback)方法，如果开发者由于某种原因，使得UI中可变数据的来源必须从state和prop外获取，那么可以手动调用forceUpdate()方法，需要注意这个方法不会调用shouldComponentUpdate()方法来检查是否更新
 
 * 从0.44版本开始，Navigator被从react native的核心组件库中剥离到了一个名为react-native-deprecated-custom-components的单独模块中，现在社区主推的导航包是`React Navigation`，另外，如果仅仅是在ios上开发，可以选用`NavigatorIOS`这个包
