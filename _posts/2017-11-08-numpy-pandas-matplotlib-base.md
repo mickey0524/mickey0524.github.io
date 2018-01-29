@@ -2,7 +2,7 @@
 layout:     post
 title:      "numpy-pandas-base"
 subtitle:   "numpy，pandas基础"
-date:       2018-1-11 18:00:00
+date:       2018-1-29 18:00:00
 author:     "Mickey"
 header-img: "img/post-bg-2015.jpg"
 tags:
@@ -165,5 +165,19 @@ tags:
     	```
     	series = Series([1, 2, 3, 4], index=[[0, 0, 1, 1], [0, 1, 2, 3]])
     	```
-	
-    
+ 
+* matplotlib(import matplotlib.pyplot as plt)
+
+	* fig, axes = plt.subplots(nrows=2, ncols=3, sharex(所有subplot应该使用相同的X轴刻度), sharey(所有subplot应该使用相同的Y轴刻度)) 创建一个figure，同时返回一个2*3的axes数组的引用
+	* plt.subplots_adjust(left, bottom, right, top, wspace, hspace)，其中wspace和hspace用于控制宽度和高度的百分比
+	* ax.plot(x, y, 'ko--')，k代表颜色，--代表虚线，o代表实心点，完整的应该是，plt.plot(x, y, color='k', linestyle='dashed', marker='o', label='one')
+	* ax.legend(loc='best') 选择最佳位置进行线的标示（添加图例），`需要plot中的label参数`
+	* ax.set_xlim(['1/1/2007', '1/1/2011']) 设置x轴范围
+	* ax.set_xticks([0, 250...]) 修改x轴的刻度值
+	* ax.set_xticklabels(['one', 'two'...], rotation=30, fontsize='small') 将其他值映射为标签
+	* ax.set_title('') 为图标设置标题
+	* ax.set_xlabel('Stages') 为x轴设置一个名称
+	* Series.plot(label'标签', ax='要在其上进行绘制的matplotlib subplot对象', style='ko--', alpha='0.3'不透明度, kind='line/bar(柱状图)/barh(水平柱状图)/kde(曲线密度图)', rot='旋转刻度标签', xticks='用作X轴刻度的值', yticks='用作Y轴刻度的值', xlim='X轴的界限，如[0, 10]', ylim='y轴的界限')
+	* Series.hist(bins=100) 直方密度图
+	* plt.scatter(df['A'], df['C']) 简单散步图
+	* pd.plotting.scatter_matrix(df, diagonal='kde') 一个df的相关列的关系，对角线可以看趋势，不设diagonal默认为密度直方图
