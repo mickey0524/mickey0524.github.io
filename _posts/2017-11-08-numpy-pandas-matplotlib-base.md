@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "numpy-pandas-base"
-subtitle:   "numpy，pandas基础"
+title:      "numpy-pandas-matplotlib-base"
+subtitle:   "numpy，pandas，matplotlib基础"
 date:       2018-1-29 18:00:00
 author:     "Mickey"
 header-img: "img/post-bg-2015.jpg"
@@ -154,6 +154,7 @@ tags:
     	df = DateFrame(np.random.randn(4, 3), columns=list('abd'))
     	df.apply(f, axis=0/1)
     	```
+
     * df.applymap(f) df中元素级别的操作
     * series.map() series中元素级别的操作
     * df与series在列上操作，series与df有相同的columns，直接+/-即可，df的每一行对应的columns都会减去对应的数值，如果在行上操作，需要使用算数函数，df.sub(series, axis=0)
