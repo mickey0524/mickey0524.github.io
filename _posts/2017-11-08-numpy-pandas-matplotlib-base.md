@@ -166,10 +166,12 @@ tags:
     	```
     	series = Series([1, 2, 3, 4], index=[[0, 0, 1, 1], [0, 1, 2, 3]])
     	```
- 
+    
+    * groupby()操作，可以对数据进行分类，然后执行value_counts(), max(), mean()等操作 
+
 * matplotlib(import matplotlib.pyplot as plt)
 
-	* fig, axes = plt.subplots(nrows=2, ncols=3, sharex(所有subplot应该使用相同的X轴刻度), sharey(所有subplot应该使用相同的Y轴刻度)) 创建一个figure，同时返回一个2*3的axes数组的引用
+	* fig, axes = plt.subplots(nrows=2, ncols=3, sharex(所有subplot应该使用相同的X轴刻度), sharey(所有subplot应该使用相同的Y轴刻度)) 创建一个figure，同时返回一个2\*3的axes数组的引用
 	* plt.subplots_adjust(left, bottom, right, top, wspace, hspace)，其中wspace和hspace用于控制宽度和高度的百分比
 	* ax.plot(x, y, 'ko--')，k代表颜色，--代表虚线，o代表实心点，完整的应该是，plt.plot(x, y, color='k', linestyle='dashed', marker='o', label='one')
 	* ax.legend(loc='best') 选择最佳位置进行线的标示（添加图例），`需要plot中的label参数`
