@@ -805,7 +805,7 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 	4
 	```
 
-* merge(*iterables)
+* merge(\*iterables)
 
 	```
 	>>> a = [1, 3, 5]
@@ -847,3 +847,11 @@ def binary_search(iter, target):
 		return -1	
 ```
 	
+<br>74. python中[[False] * 3] * 3创建的2维数组，其实每一行指向的内存地址是一样，可以通过id()查看内存, 通过索引修改一个位置的元素，会将一列全部修改，可以通过[[False] * 3 for i in xrange(3)]来创建不同的
+
+```
+arr = [[False] * 3] * 3
+arr1 = [[False] * 3 for i in xrange(3)]
+arr[0] is arr[1] # True
+arr1[0] is arr1[1] # False
+```
