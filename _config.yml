@@ -16,9 +16,6 @@ weibo_username:     3756255342
 zhihu_username:     fen-dou-de-tuo-ge
 github_username:    mickey0524
 leetcode_username:  dong-xue-qian-ceng-bu-fu-qing
-# twitter_username:   huxpro
-#facebook_username:  huxpro
-# linkedin_username:  firstname-lastname-idxxxx
 
 
 
@@ -87,16 +84,14 @@ service-worker: true
 # Friends
 friends: [
     {
-    #     title: "Su",
-    #     href: "http://su.gallery/"
-    # },{
         title: "if-true",
         href: "http://if-true.com/"
+    },
+    {
+        title: "shihunyewu",
+        href: "https://shihunyewu.github.io/"
     }
-    # },{
-    #     title: "前端外刊评论",
-    #     href: "http://qianduan.guru/"
-    # },{
+    # ,{
     #     title: "天镶的博客",
     #     href: "http://lingyu.wang/"
     # },{
