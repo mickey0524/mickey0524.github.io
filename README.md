@@ -43,3 +43,4 @@
 * [初识CSS抛物线动画](https://mickey0524.github.io/2017/08/06/cubic-bezier/)
 * [CSS之线性变化](https://mickey0524.github.io/2017/07/29/two-css-property/)
 * [如何成为一名前端工程师？](https://mickey0524.github.io/2017/07/18/how-to-become-fe/)
+* [2017年终总结](https://mickey0524.github.io/2018/02/15/2017-summary/)
