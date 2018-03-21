@@ -20,7 +20,7 @@ tags:
 	* a.shape 一个元组，描述np对象每个维度的长度
 	* a.size np对象元素个数
 	* a.nbytes np对象消耗的字节数
-	* a.dims np对象的维度数
+	* a.ndim np对象的维度数
 	* a.T 矩阵对象的转置
 	* np.sum(a[, axis = 0, 1]) 求和函数，0为列求和，1位行求和，可以用sum()处理bool数组，计算值为True的数量
     * np.argmax()/np.argmin() 求当前矩阵的最值的第一个索引，如果是bool数组，就是找第一个值为True的索引
@@ -130,7 +130,7 @@ tags:
 	* df.loc[][] 按照标签进行选择
 	* df.iloc[][] 按照位置/索引进行选择
 	* df.dropna(axis=0/1, how='any'/'all') 对行/列操作，any代表只要存在NaN就drop掉，all代表全部是NaN才drop
-    * df.isnull() / df.notnull() 用于检测缺失数据
+    * df.isnull() / df.notnull() / df.isna() 用于检测缺失数据
 	* df.fillna(value=0) 将df中的nan替换为0
 	* df.fillna({'b': 0.5, 'c': 2}) 对df中'b'列的nan替换为0.5，'c'列的nan替换为2
 	* df.fillna默认会返回新对象，但也可以对现有对象进行修改
