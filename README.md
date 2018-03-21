@@ -46,3 +46,7 @@
 * [2017年终总结](https://mickey0524.github.io/2018/02/15/2017-summary/)
 * [leetcode-日常温度计算](https://mickey0524.github.io/2018/03/05/daily-temperatures/)
 * [Icommon生成自定义字体](https://mickey0524.github.io/2018/03/06/icommon/)
+* [链表的排序(归并)](https://mickey0524.github.io/2018/03/14/sort-list/)
+* [Promise的实现](https://mickey0524.github.io/2018/03/17/promise-implement/)
+* [买卖股票的最佳时机](https://mickey0524.github.io/2018/03/19/best-time-to-buy-and-sell-stock/)
+* [有小费的买卖股票的最佳时机](https://mickey0524.github.io/2018/03/21/best-time-to-buy-and-sell-stock-with-fee/)
