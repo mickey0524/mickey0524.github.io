@@ -168,7 +168,24 @@ tags:
     	```
     
     * groupby()操作，可以对数据进行分类，然后执行value_counts(), max(), mean()等操作 
-
+    * pd.get_dummies是将拥有不同值的变量转换为0/1的的数值
+        
+        ```
+        xiaoming=pd.DataFrame([1,2,3],index=['yellow','red','blue'],columns=['hat'])
+        print(xiaoming)
+        hat_ranks=pd.get_dummies(xiaoming['hat'],prefix='hat')
+        print(hat_ranks.head())
+        
+                hat
+        yellow    1
+        red       2
+        blue      3
+                hat_1  hat_2  hat_3
+        yellow      1      0      0
+        red         0      1      0
+        blue        0      0      1
+        ```
+    
 * matplotlib(import matplotlib.pyplot as plt)
 
 	* fig, axes = plt.subplots(nrows=2, ncols=3, sharex(所有subplot应该使用相同的X轴刻度), sharey(所有subplot应该使用相同的Y轴刻度)) 创建一个figure，同时返回一个2\*3的axes数组的引用
