@@ -34,6 +34,7 @@ tags:
 * [纯CSS实现代码行数显示实例页面](http://www.zhangxinxu.com/study/201801/pure-css-line-number.html)
 * [图片预览和裁剪](https://www.itcodemonkey.com/article/2167.html)
 * [Promise原理](https://mengera88.github.io/2017/05/18/Promise%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/)
+* [浏览器跨窗口通信的几种方法](https://blog.csdn.net/yiifaa/article/details/51918656)
 
 ## python
 
