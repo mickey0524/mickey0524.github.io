@@ -855,3 +855,12 @@ arr1 = [[False] * 3 for i in xrange(3)]
 arr[0] is arr[1] # True
 arr1[0] is arr1[1] # False
 ```
+
+<br>75. python2.6新增了一种格式化字符串函数format()
+
+```
+"{0} {1}".format("hello", "world") # hello world
+"{str1} {str2}".format(str1 = 'hello', str2 = 'world') # hello world
+obj = {'str1': 'hello', 'str2': 'world'}
+"{str1} {str2}".format(**obj) # hello world
+```
