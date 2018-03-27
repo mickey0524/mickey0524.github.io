@@ -834,19 +834,40 @@ randrange([start,] stop [, step])：从start到stop中，以step为间隔中随�
 
 randint(start, stop)：从start到stop（包括stop）中随机获取一个数字，相当于randrange(start, stop + 1)
 
-<br>75. python的bisect模块，可以用于二分查找
+<br>75. python的bisect模块，可以用于二分查找，存在以下6种方法
 
-```
-from bisect import *
+* 实现二分查找
 
-def binary_search(iter, target):
-	index = bisect_left(iter, target)
-	if index != len(iter) and iter[index] == target:
-		return index
-	else:
-		return -1	
-```
+    ```
+    from bisect import *
+
+    def binary_search(iter, target):
+	    index = bisect_left(iter, target)
+	    if index != len(iter) and iter[index] == target:
+		    return index
+	    else:
+		    return -1	
+    ```
+
+* insort(arr, target)，将target插入arr数组
+
+    ```
+    arr = [1, 2, 4]
+    insort(arr, 3)
+    print arr # [1, 2, 3, 4]
+    ```
 	
+* insort\_left(arr, target)以及insort\_right(arr, target)，这两个函数分别从左右两个方向进行插入，多用于插入数组中已经存在的数值
+
+* bisect(arr, target)，返回target应该插入arr的位置，但是不插入
+
+    ```
+    arr = [1, 2, 4]
+    print bisect(arr, 3) # 2
+    ```
+
+* bisect\_left(arr, target)以及bisect\_right(arr, target)，这两个函数类似于insort\_left和insort\_right，只返回索引，但是不插入
+
 <br>74. python中[[False] * 3] * 3创建的2维数组，其实每一行指向的内存地址是一样，可以通过id()查看内存, 通过索引修改一个位置的元素，会将一列全部修改，可以通过[[False] * 3 for i in xrange(3)]来创建不同的
 
 ```
