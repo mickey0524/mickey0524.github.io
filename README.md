@@ -51,3 +51,5 @@
 * [买卖股票的最佳时机](https://mickey0524.github.io/2018/03/19/best-time-to-buy-and-sell-stock/)
 * [有小费的买卖股票的最佳时机](https://mickey0524.github.io/2018/03/21/best-time-to-buy-and-sell-stock-with-fee/)
 * [最小窗口子字符串](https://mickey0524.github.io/2018/03/24/minimum-window-substring/)
+* [接最多的雨水](https://mickey0524.github.io/2018/04/03/trapping-rain-water/)
+* [寻找不重复的元素](https://mickey0524.github.io/2018/04/09/find-no-repeat-element/)
