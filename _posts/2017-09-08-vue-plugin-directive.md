@@ -26,10 +26,10 @@ tags:
 
 首先依然是创建一个Notice.vue的文件
 
-```js
+```java
 <template>
   <div class="notice">
-    <div class="content" v-text="text"></div>
+    <div class="content">{{ text }}</div>
   </div>
 </template>
 
@@ -47,18 +47,18 @@ tags:
       setTimer() {
         setTimeout(() => {
           this.close() // 3000ms之后调用关闭方法
-        }, this.duration)
+        }, this.duration);
       },
       close() {
         this.visible = false
         setTimeout(() => {
-          this.$destroy(true)
-          this.$el.parentNode.removeChild(this.$el) // 从DOM里将这个组件移除
-        }, 500)
+          this.$destroy(true);
+          this.$el.parentNode.removeChild(this.$el); // 从DOM里将这个组件移除
+        }, 500);
       }
     },
     mounted() {
-      this.setTimer() // 挂载的时候就开始计时，3000ms后消失
+      this.setTimer(); // 挂载的时候就开始计时，3000ms后消失
     }
   }
 </script>
@@ -77,7 +77,7 @@ tags:
 
 接下来，需要创建一个index.js文件，将该组件注册到Vue的prototype上去，如下所示
 
-```
+```js
 import Vue from 'vue';
 
 const noticeConstructor = Vue.extend(require('./Notice.vue'));
@@ -109,7 +109,7 @@ export default {
 
 最后，到main.js中，使用Vue提供的Vue.use()方法注册该插件，然后就能愉快的时候了，这里需要注意以下，Vue.use()接受一个install函数，用于将该Vue实例注册到原型链上去
 
-```
+```js
 import Notice from './components/notice';
 Vue.use(Notice);
 ```
@@ -126,7 +126,7 @@ Vue中，自定义指令的开发主要涉及Vue.directive()这个方法，其�
 
 首先我们需要写一下loading的Vue组件。新建一个Loading.vue文件
 
-```
+```java
 <template>
   <transition
     name="loading"
@@ -186,7 +186,7 @@ Loading关键是实现两个效果：
 
 所以在当前目录下创建一个index.js的文件，用来声明我们的directive的逻辑。
 
-```
+```js
 import Vue from 'vue'
 const LoadingConstructor = Vue.extend(require('./Loading.vue'))
 export default {
@@ -205,13 +205,13 @@ export default {
         toggleLoading(el, binding);
       },
       update: (el, binding) => {
-        if(binding.oldValue !== binding.value) {
+        if (binding.oldValue !== binding.value) {
           toggleLoading(el, binding)
         }
       },
       unbind: (el, binding) => { // 解绑
-        if(el.domInserted) {
-          if(binding.modifiers.fullscreen) {
+        if (el.domInserted) {
+          if (binding.modifiers.fullscreen) {
             document.body.removeChild(el.loading);
           }
           else {
@@ -223,7 +223,7 @@ export default {
       }
     })
     const toggleLoading = (el, binding) => { // 用于控制Loading的出现与消失
-      if(binding.value) {
+      if (binding.value) {
         Vue.nextTick(() => {
           if (binding.modifiers.fullscreen) { // 如果是全屏
             el.originalPosition = document.body.style.position;
@@ -252,12 +252,12 @@ export default {
       }
     }
     const insertDom = (parent, el, binding) => { // 插入dom的逻辑
-      if(!el.domVisible) {
-        if(el.originalPosition !== 'absolute') {
-          parent.style.position = 'relative'
+      if (!el.domVisible) {
+        if (el.originalPosition !== 'absolute') {
+          parent.style.position = 'relative';
         }
         if (binding.modifiers.fullscreen) {
-          parent.style.overflow = 'hidden'
+          parent.style.overflow = 'hidden';
         }
         el.domVisible = true;
         if (!el.domInserted) {
@@ -275,7 +275,7 @@ export default {
 
 同样，写完整个逻辑，我们需要将其注册到项目里的Vue下：
 
-```
+```js
 // main.js
 // ...
 import Loading from 'loading/index.js'
@@ -294,7 +294,7 @@ Vue.use(Loading)
 
 首先，编写两个简单到不能再简单的Vue组件，Hello.vue和World.vue，prefix只是一个前缀，就和element-ui中的el一样
 
-```
+```java
 <template>
   <div class="hello">
     hello
@@ -309,7 +309,7 @@ Vue.use(Loading)
 </script>
 ```
 
-```
+```java
 <template>
   <div class="world">
     world
@@ -326,7 +326,7 @@ Vue.use(Loading)
 
 然后给Hello.vue和World.vue两个组件增加install方法
 
-```
+```js
 import Hello from './Hello.vue';
 
 Hello.install = function(Vue) {
@@ -336,7 +336,7 @@ Hello.install = function(Vue) {
 export default Hello;
 ```
 
-```
+```js
 import World from './World.vue';
 
 World.install = function(Vue) {
@@ -348,7 +348,7 @@ export default World;
 
 最后，用一个整体的组件库入口文件index.js将所有组件进行注册
 
-```
+```js
 import Hello from './lib/components/hello/index.js';
 import World from './lib/components/world/index.js';
 
@@ -375,7 +375,7 @@ export {
 
 最后同样在main.js中使用Vue.use()注册，就可以愉快的使用了
 
-```
+```js
 import MickeyUI from 'mickey-ui';
 
 Vue.use(MickeyUI);  //整体注册
