@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Vue-plugin"
+title:      "Vue-plugin-directive"
 subtitle:   "Vue中的自定义插件和指令"
 date:       2017-09-08 20:00:00
 author:     "Mickey"
@@ -28,8 +28,10 @@ tags:
 
 ```java
 <template>
-  <div class="notice">
-    <div class="content">{{ text }}</div>
+  <div class="notice hide">
+    <div class="content">
+      {{ content }}
+    </div>
   </div>
 </template>
 
@@ -38,23 +40,23 @@ tags:
     name: 'notice',
     data() {
       return {
-        visible: false,
-        text: '',
-        duration: 3000
+        content: '',
+        duration: 3000,
+        transitionDuration: 1000,
       }
     },
     methods: {
       setTimer() {
         setTimeout(() => {
-          this.close() // 3000ms之后调用关闭方法
+          this.close(); // 3000ms之后调用关闭方法
         }, this.duration);
       },
       close() {
-        this.visible = false
+        this.$el.classList.add('hide');
+        this.$destroy(true); // 出发beforeDestory 和 destoryed 
         setTimeout(() => {
-          this.$destroy(true);
-          this.$el.parentNode.removeChild(this.$el); // 从DOM里将这个组件移除
-        }, 500);
+          this.$el.parentNode.removeChild(this.$el) // 从DOM里将这个组件移除
+        }, this.transitionDuration);
       }
     },
     mounted() {
@@ -65,12 +67,24 @@ tags:
 
 <style>
   .notice {
+    opacity: 1;
+    background: #21252B;
+    color: #FFF;
     position: fixed;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    line-height: 40px;
+    text-align: center;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 4px;
+    transition: all 1s ease-in-out;
+  }
+  .hide {
+    opacity: 0;
+  }
+  .notice .content {
+    display: inline-block;
   }
 </style>
 ```
@@ -79,21 +93,25 @@ tags:
 
 ```js
 import Vue from 'vue';
+import NoticeComponent from './Notice.vue';
 
-const noticeConstructor = Vue.extend(require('./Notice.vue'));
+const noticeConstructor = Vue.extend(NoticeComponent);
 
-const Notice = (content) => {
+const Notice = (content, duration) => {
   let noticeInstance = new noticeConstructor({
     data: {
-      text: content
+      content: content,
+      transitionDuration: duration,
     }
   });
   noticeInstance.vm = noticeInstance.$mount();
-  noticeInstance.vm.visible = true;
-  // noticeInstance.vm.content = content;
   noticeInstance.dom = noticeInstance.vm.$el;
   noticeInstance.dom.style.zIndex = '1000';
+  noticeInstance.dom.style.transitionDuration = `${duration / 1000}s`;
   document.body.appendChild(noticeInstance.dom);
+  setTimeout(() => {
+    noticeInstance.dom.classList.remove('hide');
+  }, 0);
   return noticeInstance.vm;
 }
 
@@ -102,7 +120,6 @@ export default {
     Vue.prototype.$notice = Notice;
   }
 }
-
 ```
 
 上述代码中，首先使用Vue.extend()生成了一个Notice组件的构建器，可以理解为一个class，然后实例化了一个noticeInstance，可以理解为一个Vue实例，通过手动$mount()方法挂载实例，这个时候，实例就拥有了自己的$el属性，也即要添加到DOM中的元素
