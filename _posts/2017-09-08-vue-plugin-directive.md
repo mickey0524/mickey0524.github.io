@@ -145,20 +145,13 @@ Vue中，自定义指令的开发主要涉及Vue.directive()这个方法，其�
 
 ```java
 <template>
-  <transition
-    name="loading"
-    @after-leave="handleAfterLeave">
     <div
       v-show="visible"
       :class="['loading-mask', fullscreen && 'fullscreen']">
-      <div class="loading">
-        ...
-      </div>
       <div class="loading-text" v-if="text">
         {{ text }}
       </div>
     </div>
-  </transition>
 </template>
 
 <script>
@@ -168,19 +161,14 @@ export default {
     return {
       visible: true,
       fullscreen: true,
-      text: null
-    }
-  },
-  methods: {
-    handleAfterLeave() {
-      this.$emit('after-leave');
+      text: '等待中',
     }
   }
 }
 </script>
 
 <style>
-  .loading-mask{
+  .loading-mask {
     position: absolute; /*非全屏模式下，position是absolute*/
     z-index: 10000;
     background-color: rgba(255,235,215, .8);
@@ -190,8 +178,11 @@ export default {
     bottom: 0;
     left: 0;
     transition: opacity .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .loading-mask.fullscreen{
+  .loading-mask.fullscreen {
     position: fixed;  /* 全屏模式下，position是fixed*/
   }
 </style>
@@ -204,8 +195,11 @@ Loading关键是实现两个效果：
 所以在当前目录下创建一个index.js的文件，用来声明我们的directive的逻辑。
 
 ```js
-import Vue from 'vue'
-const LoadingConstructor = Vue.extend(require('./Loading.vue'))
+import Vue from 'vue';
+import LoadingComponent from './Loading.vue';
+
+const LoadingConstructor = Vue.extend(LoadingComponent);
+
 export default {
   install: Vue => {
     Vue.directive('loading', { // 指令的关键
@@ -214,7 +208,7 @@ export default {
           el: document.createElement('div'),
           data: {
             text: el.getAttribute('loading-text'), // 通过loading-text属性获取loading的文字
-            fullscreen: !!binding.modifiers.fullscreen
+            fullscreen: !!binding.modifiers.fullscreen,
           }
         })
         el.instance = loading; // el.instance是个Vue实例
@@ -250,28 +244,28 @@ export default {
             el.originalPosition = el.style.position;
             insertDom(el, el, binding); // 如果非全屏，插入元素自身
           }
-        })
+        });
       } else {
         if (el.domVisible) {
-          el.instance.$on('after-leave', () => {
-            el.domVisible = false;
-            if (binding.modifiers.fullscreen && el.originalOverflow !== 'hidden') {
-              document.body.style.overflow = el.originalOverflow;
-            }
-            if (binding.modifiers.fullscreen) {
-              document.body.style.position = el.originalPosition;
-            } else {
-              el.style.position = el.originalPosition;
-            }
+          el.domVisible = false;
+          if (binding.modifiers.fullscreen && el.originalOverflow !== 'hidden') {
+            document.body.style.overflow = el.originalOverflow;
+          }
+          if (binding.modifiers.fullscreen) {
+            document.body.style.position = el.originalPosition;
+          } else {
+            el.style.position = el.originalPosition;
+          }
+          Vue.nextTick(() => {
+            el.instance.visible = false;
           });
-          el.instance.visible = false;
         }
       }
     }
     const insertDom = (parent, el, binding) => { // 插入dom的逻辑
       if (!el.domVisible) {
         if (el.originalPosition !== 'absolute') {
-          parent.style.position = 'relative';
+          parent.style.position = 'relative'
         }
         if (binding.modifiers.fullscreen) {
           parent.style.overflow = 'hidden';
