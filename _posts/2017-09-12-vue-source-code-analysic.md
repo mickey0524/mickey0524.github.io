@@ -135,15 +135,15 @@ class Watcher () {
     }
     
     get () {
-        Dep.target = this; 结合observer看，将watcher对象绑定到Dep上
-        var value = this.vm.data[this.exp]; 触发一次getter，等于触发依赖收集
+        Dep.target = this; //结合observer看，将watcher对象绑定到Dep上
+        var value = this.vm.data[this.exp]; //触发一次getter，等于触发依赖收集
         Dep.target = null;
         return value;
     }
 }
 ```
 
-看到这里，同学们可能会问，那什么时候该调用Watcher呢（何时注册观察者），我们知道，实例化Vue对象的时候，需要给出一个el的字段，同时，我们也知道，Vue的模版文件中有很多{{}}，那么，肯定需要一个Compile过程，来将{{}}包裹的字段替换为真实字符串，这里只给出最基本的代码
+看到这里，同学们可能会问，那什么时候该调用Watcher呢（何时注册观察者），我们知道，实例化Vue对象的时候，需要给出一个el的字段，同时，我们也知道，Vue的模版文件中有很多\{\{\}\}，那么，肯定需要一个Compile过程，来将\{\{\}\}包裹的字段替换为真实字符串，这里只给出最基本的代码
 
 ```js
 class Compile {
