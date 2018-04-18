@@ -36,6 +36,7 @@ tags:
 * [Promise原理](https://mengera88.github.io/2017/05/18/Promise%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/)
 * [浏览器跨窗口通信的几种方法](https://blog.csdn.net/yiifaa/article/details/51918656)
 * [grid布局](https://www.jianshu.com/p/d183265a8dad)
+* [WebSocket教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)
 
 ## python
 
