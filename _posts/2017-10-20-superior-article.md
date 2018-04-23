@@ -39,6 +39,7 @@ tags:
 * [WebSocket教程](http://www.ruanyifeng.com/blog/2017/05/websocket.html)
 * [CSS3新特性](https://segmentfault.com/a/1190000010780991)
 * [TCP，HTTP面试指南](https://juejin.im/post/5ad4094e6fb9a028d7011069?utm_source=gold_browser_extension)
+* [CSS渐变gradient专题(linear-gradient radial-gradient)](https://juejin.im/post/5ad9d43951882567236e5133?utm_source=gold_browser_extension)
 
 ## python
 
