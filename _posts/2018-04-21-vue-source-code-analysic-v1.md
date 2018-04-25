@@ -2,7 +2,7 @@
 layout:     post
 title:      "vue-source-code-analysic（1）"
 subtitle:   "阅读Vue源码有感（1）"
-date:       2017-09-12 23:00:00
+date:       2018-04-21 22:00:00
 author:     "Mickey"
 header-img: "img/post-bg-nextgen-web-pwa.jpg"
 tags:
@@ -16,7 +16,7 @@ tags:
 
 Vue实现响应式最重要的函数是Object.defineProperty()，这也是Vue为什么不支持IE8以下的原因，Vue通过设定对象属性的setter/getter方法来监听数据的变化，通过getter进行依赖收集，而每个setter方法就是一个观察者，在数据变更的时候通知订阅者更新视图。
 
-![Vue响应式示意图](/img/in-post/vue-source-code-analysic/1.png)
+![Vue响应式示意图](/img/in-post/vue-source-code-analysic-v1/1.png)
 
 下面就是Vue将data变为可观察的方法
 
