@@ -10,6 +10,7 @@
 
 # 目录：
 
+* [丑陋数](https://mickey0524.github.io/2018/05/05/ugly-num/)
 * [阅读Vue源码有感（3）](https://mickey0524.github.io/2017/09/12/vue-source-code-analysic-v3/)
 * [阅读Vue源码有感（2）](https://mickey0524.github.io/2017/09/12/vue-source-code-analysic-v2/)
 * [阅读Vue源码有感（1）](https://mickey0524.github.io/2017/09/12/vue-source-code-analysic-v1/)
