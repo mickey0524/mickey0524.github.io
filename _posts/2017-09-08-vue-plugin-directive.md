@@ -29,8 +29,8 @@ tags:
 ```js
 <template>
   <div class="notice hide">
-    <div class="content">
-      {{ content }}
+    <div class="text">
+      {{ text }}
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@ tags:
     name: 'notice',
     data() {
       return {
-        content: '',
+        text: '',
         duration: 3000,
         transitionDuration: 1000,
       }
@@ -97,10 +97,10 @@ import NoticeComponent from './Notice.vue';
 
 const noticeConstructor = Vue.extend(NoticeComponent);
 
-const Notice = (content, duration) => {
+const Notice = (text, duration) => {
   let noticeInstance = new noticeConstructor({
     data: {
-      content: content,
+      text: text,
       transitionDuration: duration,
     }
   });
