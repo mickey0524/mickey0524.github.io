@@ -26,7 +26,7 @@ tags:
 
 首先依然是创建一个Notice.vue的文件
 
-```java
+```js
 <template>
   <div class="notice hide">
     <div class="content">
