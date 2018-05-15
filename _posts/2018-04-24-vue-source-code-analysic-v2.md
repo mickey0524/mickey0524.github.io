@@ -16,7 +16,7 @@ tags:
 
 ![响应式原理](/img/in-post/vue-source-code-analysic-v2/1.png)
 
-这张图比较清晰的展现了Vue中的响应式原理，和前一篇博客中展示的一样，首先通过一次渲染触发Data的get函数进行依赖收集，每一个data中的key对应一个dep订阅者，dep中存在一个subs的数组，保存着该data所有的watcher观察者实例，在data发生改变的时候，触发set函数，进而触发dep的notify函数，通知所有的观察者对象进行更新，之后再根据diff算法判断是否更新视图。
+这张图比较清晰的展现了Vue中的响应式原理，和前一篇博客中展示的一样，首先通过一次渲染触发Data的get函数进行依赖收集，每一个data中的key对应一个dep观察者，dep中存在一个subs的数组，保存着该key所有的watcher实例，在data发生改变的时候，触发set函数，进而触发dep的notify函数，通知所有的watcher对象进行更新，之后再根据diff算法判断是否更新视图。
 
 Vue在初始化组件数据时，在生命周期的`beforeCreate`与`created`钩子函数之间实现了对data、props、computed、methods、events以及watch的处理
 
@@ -357,6 +357,9 @@ export default class Dep {
 
   /**
    * 依赖收集，当存在Dep.target的时候添加观察者对象
+   * 其实Watcher和Dep是完全双向数据互通的
+   * 只要Dep的subs里面存在watcher实例
+   * Watcher的Deps一定存在相应的dep实例
    */
   depend () {
     if (Dep.target) {
@@ -398,6 +401,13 @@ export default class Watcher {
   sync: boolean;
   dirty: boolean;
   active: boolean;
+  /**
+   * 用deps存储当前的依赖，而新一轮的依赖收集过程中收集到的依赖则会放到newDeps中
+   * 之所以要用一个新的数组存放新的依赖是因为当依赖变动后
+   * 比如由依赖a和b变成依赖a和c
+   * 那么需要把原先的依赖订阅清除掉，也就是从b的subs数组中移除当前的watcher，因为我已经不想监听b的变动
+   * 所以我要比对deps和newDeps，找出那些不再依赖的dep，然后dep.removeSub(当前watcher)
+   */
   deps: Array<Dep>;
   newDeps: Array<Dep>;
   depIds: ISet;
@@ -607,7 +617,9 @@ export default class Watcher {
   /**
    * Depend on all deps collected by this watcher.
    */
-   /*收集该watcher的所有deps依赖*/
+   /*
+    * 收集该watcher的所有deps依赖
+    */
   depend () {
     let i = this.deps.length;
     while (i--) {
