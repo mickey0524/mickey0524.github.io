@@ -608,7 +608,11 @@ export default class Watcher {
    * Evaluate the value of the watcher.
    * This only gets called for lazy watchers.
    */
-   /*获取观察者的值*/
+  /*
+   * 获取观察者的值
+   * 比如computed的this.lazy=true
+   * 只有到需要的时候才会调用evaluate方法
+   */
   evaluate () {
     this.value = this.get();
     this.dirty = false;
