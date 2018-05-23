@@ -133,7 +133,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
      * 如果是根数据则计数，后面Observer中的observe的asRootData非true
      */
     ob.vmCount += 1;
-  }
+  } 
   return ob;
 }
 ```
@@ -688,6 +688,9 @@ export function defineReactive (
 
   /**
    * 对象的子对象递归进行observe并返回子节点的Observer对象
+   * 如果val为对象或者数组，那么该对象和数组会有一个__ob__属性
+   * 用于存放Observer实例，当使用Vue.setthis.$set更改Array和Object的时候
+   * target.__ob__.dep.notity()能够触发更新，不会丢失
    */
   let childOb = observe(val);
   Object.defineProperty(obj, key, {
