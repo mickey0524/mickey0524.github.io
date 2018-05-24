@@ -10,7 +10,7 @@ tags:
     - Leetcode
 ---
 
-今天是自己的生日，先对自己说一声生日快乐吧🎂，希望新的一岁天天开心，生日健康，码力增强
+今天是自己的生日，先对自己说一声生日快乐吧🎂，希望新的一岁天天开心，身体健康，码力增强
 
 许久未写算法题，今天开了一道有关子序列的题目，题目给出一个长字符串S以及一个字符串数组words，求words中有多少元素是S串的子序列，[题目链接](https://leetcode.com/problems/number-of-matching-subsequences/description/)
 
