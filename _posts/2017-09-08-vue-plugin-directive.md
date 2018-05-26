@@ -26,67 +26,67 @@ tags:
 
 首先依然是创建一个Notice.vue的文件
 
-```js
+```html
 <template>
   <div class="notice hide">
     <div class="text">
-      {{ text }}
+      \{\{ text \}\}
     </div>
   </div>
 </template>
+```
 
-<script>
-  export default {
-    name: 'notice',
-    data() {
-      return {
-        text: '',
-        duration: 3000,
-        transitionDuration: 1000,
-      }
-    },
-    methods: {
-      setTimer() {
-        setTimeout(() => {
-          this.close(); // 3000ms之后调用关闭方法
-        }, this.duration);
-      },
-      close() {
-        this.$el.classList.add('hide');
-        this.$destroy(true); // 出发beforeDestory 和 destoryed 
-        setTimeout(() => {
-          this.$el.parentNode.removeChild(this.$el) // 从DOM里将这个组件移除
-        }, this.transitionDuration);
-      }
-    },
-    mounted() {
-      this.setTimer(); // 挂载的时候就开始计时，3000ms后消失
+```js
+export default {
+  name: 'notice',
+  data() {
+    return {
+      text: '',
+      duration: 3000,
+      transitionDuration: 1000,
     }
+  },
+  methods: {
+    setTimer() {
+      setTimeout(() => {
+        this.close(); // 3000ms之后调用关闭方法
+      }, this.duration);
+    },
+    close() {
+      this.$el.classList.add('hide');
+      this.$destroy(true); // 出发beforeDestory 和 destoryed 
+      setTimeout(() => {
+        this.$el.parentNode.removeChild(this.$el) // 从DOM里将这个组件移除
+      }, this.transitionDuration);
+    }
+  },
+  mounted() {
+    this.setTimer(); // 挂载的时候就开始计时，3000ms后消失
   }
-</script>
+}
+```
 
-<style>
-  .notice {
-    opacity: 1;
-    background: #21252B;
-    color: #FFF;
-    position: fixed;
-    width: 100px;
-    line-height: 40px;
-    text-align: center;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 4px;
-    transition: all 1s ease-in-out;
-  }
-  .hide {
-    opacity: 0;
-  }
-  .notice .content {
-    display: inline-block;
-  }
-</style>
+```less
+.notice {
+  opacity: 1;
+  background: #21252B;
+  color: #FFF;
+  position: fixed;
+  width: 100px;
+  line-height: 40px;
+  text-align: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  transition: all 1s ease-in-out;
+}
+.hide {
+  opacity: 0;
+}
+.notice .content {
+  display: inline-block;
+}
 ```
 
 接下来，需要创建一个index.js文件，将该组件注册到Vue的prototype上去，如下所示
@@ -143,18 +143,19 @@ Vue中，自定义指令的开发主要涉及Vue.directive()这个方法，其�
 
 首先我们需要写一下loading的Vue组件。新建一个Loading.vue文件
 
-```java
+```html
 <template>
     <div
       v-show="visible"
       :class="['loading-mask', fullscreen && 'fullscreen']">
       <div class="loading-text" v-if="text">
-        {{ text }}
+        \{\{ text \}\}
       </div>
     </div>
 </template>
+```
 
-<script>
+```js
 export default {
   name: 'loading',
   data () {
@@ -165,28 +166,28 @@ export default {
     }
   }
 }
-</script>
-
-<style>
-  .loading-mask {
-    position: absolute; /*非全屏模式下，position是absolute*/
-    z-index: 10000;
-    background-color: rgba(255,235,215, .8);
-    margin: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transition: opacity .3s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .loading-mask.fullscreen {
-    position: fixed;  /* 全屏模式下，position是fixed*/
-  }
-</style>
 ```
+
+```less
+.loading-mask {
+  position: absolute; /*非全屏模式下，position是absolute*/
+  z-index: 10000;
+  background-color: rgba(255,235,215, .8);
+  margin: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: opacity .3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading-mask.fullscreen {
+  position: fixed;  /* 全屏模式下，position是fixed*/
+}
+```
+
 Loading关键是实现两个效果：
 
 1. 全屏loading，此时可以通过插入body下，然后将Loading的position改为fixed，插入body实现。
@@ -305,34 +306,34 @@ Vue.use(Loading)
 
 首先，编写两个简单到不能再简单的Vue组件，Hello.vue和World.vue，prefix只是一个前缀，就和element-ui中的el一样
 
-```java
+```html
 <template>
   <div class="hello">
     hello
   </div>
 </template>
-
-<script>
-  import { prefix } from '../base.js';
-  export default {
-    name: `${prefix}hello`
-  }
-</script>
 ```
 
-```java
+```js
+import { prefix } from '../base.js';
+export default {
+  name: `${prefix}hello`
+}
+```
+
+```html
 <template>
   <div class="world">
     world
   </div>
 </template>
+```
 
-<script>
-  import { prefix } from '../base.js';
-  export default {
-    name: `${prefix}world`
-  }
-</script>
+```js
+import { prefix } from '../base.js';
+export default {
+  name: `${prefix}world`
+}
 ```
 
 然后给Hello.vue和World.vue两个组件增加install方法
