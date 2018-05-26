@@ -204,7 +204,7 @@ export const nextTick = (function () {
 ```html
 <template>
   <div class="container">
-    <div>{{ num }}</div>
+    <div>\{\{ num \}\}</div>
   </div>
 </template>
 ```
@@ -264,7 +264,7 @@ nextTick(flushSchedulerQueue)进行异步更新，那么我们放在this.$nextTi
 ```html
 <template>
   <div class="container">
-    <div ref="num">{{ num }}</div>
+    <div ref="num">\{\{ num \}\}</div>
     <button @click="onClickBtn">点我</button>
   </div>
 </template>
