@@ -43,6 +43,7 @@ tags:
 * [几道高级前端面试题解析](https://juejin.im/post/5aa8a07cf265da238a3022a4?utm_source=gold_browser_extension)
 * [从一道题浅说js的事件循环](https://github.com/dwqs/blog/issues/61)
 * [Vue组件间通信](https://github.com/answershuto/learnVue/blob/master/docs/Vue%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1.MarkDown)
+* [解决使用swiper4常见的问题](http://www.debug8.com/html/t_4959.html)
 
 ## python
 
