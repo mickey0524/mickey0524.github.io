@@ -128,11 +128,15 @@ VNodeData是VNode中data属性的定义，下面给出一个VNodeData的例子
 
 ```js
 {
+  staticClass: 'bupt',
   // 和`v-bind:class`一样的 API
   // 接收一个字符串、对象或字符串和对象组成的数组
-  'class': {
+  class: {
     foo: true,
     bar: false
+  },
+  staticStyle: {
+    border: '1px solid #000'
   },
   // 和`v-bind:style`一样的 API
   // 接收一个字符串、对象或对象组成的数组
