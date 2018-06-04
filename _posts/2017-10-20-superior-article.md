@@ -44,6 +44,8 @@ tags:
 * [从一道题浅说js的事件循环](https://github.com/dwqs/blog/issues/61)
 * [Vue组件间通信](https://github.com/answershuto/learnVue/blob/master/docs/Vue%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1.MarkDown)
 * [解决使用swiper4常见的问题](http://www.debug8.com/html/t_4959.html)
+* [JS内存机制(简介)](https://juejin.im/post/5b10ba336fb9a01e66164346?utm_source=gold_browser_extension)
+* [全新Chrome Devtool Performance使用指南](https://zhuanlan.zhihu.com/p/29879682)
 
 ## python
 
