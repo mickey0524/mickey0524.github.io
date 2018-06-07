@@ -46,6 +46,7 @@ tags:
 * [解决使用swiper4常见的问题](http://www.debug8.com/html/t_4959.html)
 * [JS内存机制(简介)](https://juejin.im/post/5b10ba336fb9a01e66164346?utm_source=gold_browser_extension)
 * [全新Chrome Devtool Performance使用指南](https://zhuanlan.zhihu.com/p/29879682)
+* [SEO简介](https://juejin.im/post/5b163fab5188257d571f1d17?utm_source=gold_browser_extension)
 
 ## python
 
