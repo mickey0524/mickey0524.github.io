@@ -47,6 +47,7 @@ tags:
 * [JS内存机制(简介)](https://juejin.im/post/5b10ba336fb9a01e66164346?utm_source=gold_browser_extension)
 * [全新Chrome Devtool Performance使用指南](https://zhuanlan.zhihu.com/p/29879682)
 * [SEO简介](https://juejin.im/post/5b163fab5188257d571f1d17?utm_source=gold_browser_extension)
+* [ajax原理](https://juejin.im/post/5b1cebece51d4506ae71addf?utm_source=gold_browser_extension)
 
 ## python
 
