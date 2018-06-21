@@ -49,6 +49,7 @@ tags:
 * [SEO简介](https://juejin.im/post/5b163fab5188257d571f1d17?utm_source=gold_browser_extension)
 * [ajax原理](https://juejin.im/post/5b1cebece51d4506ae71addf?utm_source=gold_browser_extension)
 * [一些CSS属性](https://juejin.im/post/5b1e2b50f265da6e5546c15d?utm_source=gold_browser_extension)
+* [Airbnb: RN 从选择到放弃](https://juejin.im/post/5b2a5368f265da595c0cf6d5?utm_source=gold_browser_extension)，我自己也有RN的实践项目，总的来说，了解一下挺好，实际线上使用至少还需要两年
 
 ## python
 
