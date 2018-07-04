@@ -10,6 +10,11 @@
 
 # 目录：
 
+* [打包工具基础](https://mickey0524.github.io/2018/07/04/bundle-tool-basis/)
+* [阅读Vue源码有感（7）](https://mickey0524.github.io/2018/06/02/vue-source-code-analysic-v7/)
+* [阅读Vue源码有感（6）](https://mickey0524.github.io/2018/05/27/vue-source-code-analysic-v6/)
+* [阅读Vue源码有感（5）](https://mickey0524.github.io/2018/05/26/vue-source-code-analysic-v5/)
+* [子序列总数](https://mickey0524.github.io/2018/05/24/number-of-matching-subsequences/)
 * [阅读Vue源码有感（4）](https://mickey0524.github.io/2018/05/13/vue-source-code-analysic-v4/)
 * [丑陋数](https://mickey0524.github.io/2018/05/05/ugly-num/)
 * [阅读Vue源码有感（3）](https://mickey0524.github.io/2018/05/03/vue-source-code-analysic-v3/)
@@ -58,4 +63,3 @@
 * [初识CSS抛物线动画](https://mickey0524.github.io/2017/08/06/cubic-bezier/)
 * [CSS之线性变化](https://mickey0524.github.io/2017/07/29/two-css-property/)
 * [如何成为一名前端工程师？](https://mickey0524.github.io/2017/07/18/how-to-become-fe/)
-
