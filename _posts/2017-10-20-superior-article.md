@@ -2,7 +2,7 @@
 layout:     post
 title:      "superior-fe-article"
 subtitle:   "优秀的开发文章(长期更新)"
-date:       2018-07-04 20:00:00
+date:       2018-07-05 12:00:00
 author:     "Mickey"
 header-img: "img/post-bg-2015.jpg"
 tags:
@@ -52,10 +52,11 @@ tags:
 * [Airbnb: RN 从选择到放弃](https://juejin.im/post/5b2a5368f265da595c0cf6d5?utm_source=gold_browser_extension)，我自己也有RN的实践项目，总的来说，了解一下挺好，实际线上使用至少还需要两年
 * [你不知道的浏览器back操作](http://if-true.com/2018/06/18/what-happened-when-browser-go-back.html)
 * [JS Date类](https://juejin.im/post/5b33269be51d4558cc35cfd7?utm_source=gold_browser_extension)
+* [阿里无线前端“架构”--半鸡汤文](https://juejin.im/entry/5b3b8ec1f265da0f6436a11a?utm_source=gold_browser_extension)
+* [Chrome调试工具常用功能整理](https://juejin.im/entry/5b3b3a3ff265da0f504a2edb?utm_source=gold_browser_extension)
 
 ## python
 
 * [python字符串和编码](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386819196283586a37629844456ca7e5a7faa9b94ee8000)
 * [为什么python慢](https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/)
 * [为什么用 Numpy 还是慢, 你用对了吗?](https://zhuanlan.zhihu.com/p/28626431)
-* [Chrome调试工具常用功能整理](https://juejin.im/entry/5b3b3a3ff265da0f504a2edb?utm_source=gold_browser_extension)
