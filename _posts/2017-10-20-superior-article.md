@@ -54,6 +54,7 @@ tags:
 * [JS Date类](https://juejin.im/post/5b33269be51d4558cc35cfd7?utm_source=gold_browser_extension)
 * [阿里无线前端“架构”--半鸡汤文](https://juejin.im/entry/5b3b8ec1f265da0f6436a11a?utm_source=gold_browser_extension)
 * [Chrome调试工具常用功能整理](https://juejin.im/entry/5b3b3a3ff265da0f504a2edb?utm_source=gold_browser_extension)
+* [黑科技：CSS定制多行省略](http://hai.li/2017/03/08/css-multiline-overflow-ellipsis.html)
 
 ## python
 
