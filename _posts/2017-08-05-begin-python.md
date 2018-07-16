@@ -10,12 +10,11 @@ tags:
 ---
 
 一直觉得前端工程师不能完全拘泥于前端开发，应该多关注关注后端领域，毕竟作为http的两端，缺一不可，233333，正好公司后端用的语言是python，加之想学习python数据抓取配合前端进行数据可视化的开发，于是义无反顾的开始学习啦，本博客的内容来自[《python核心编程》](https://book.douban.com/subject/3112503/)和[《廖雪峰python》](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000)，感谢🙏
-<br>
-<br>------------
-<br>
-<br><b>begin-python</b>
-<br>
-<br>下面列出一些python的知识点，总结一下，用来温故知新(本博客所用python版本为2.7)
+
+> 人生苦短，我用python
+
+下面列出一些python的知识点，总结一下，用来温故知新(本博客所用python版本为2.7)
+
 <br>1. python中 / 为浮点除，//为地板除, /只要有一个参数为浮点数，那么结果就是浮点数，//无论参数如何返回的都是整数
 想要让/ 和 //分工明确，可以和引入，`import division from __future__`，这样/返回的都是浮点数，//返回的都是整数
 
@@ -543,7 +542,9 @@ InstCc.count 0
 <br>58. python类的继承，子类可以调用父亲类中的所有方法，但是如果在子类中需要覆盖掉父亲类的方法，例如__init__方法，可以在子类中显示的调用父亲类的方法
 
 ```
-class P(object):	def __init__(self):		print "calling P's constructor"
+class P(object):
+	def __init__(self):
+		print "calling P's constructor"
 		
 class C(P):
 	def __init__(self):
