@@ -10,7 +10,7 @@ tags:
     - Vue
 ---
 
-上一篇博客中，我们介绍了在vue中非常重要VNode类，这是AST的基础，在这篇博客中，我们来介绍一下位于`vnode`目录下的`create-element.js`文件以及`create-component.js`两个文件，在这两个文件中，我们能够知道VNode节点是如何生成的
+上一篇博客中，我们介绍了在vue中非常重要VNode类，这是AST的基础，在这篇博客中，我们来介绍一下位于`vnode`目录下的`create-element.js`文件以及`create-component.js`两个文件，在这两个文件中，我们能够知道VNode节点是如何生成的
 
 ### create-element.js文件
 
@@ -49,7 +49,7 @@ export function createElement (
 }
 ```
 
-从上面的代码可以看到，`createElement`返回了一个`_createElement`函数，其实，核心的代码都是放在`_createElement`函数中，`createElement`函数做了一层兜底，兼容了不传`data`的情况(因为一个节点是`v-pre`的节点的子节点，那么`el.plain=true`，不会传`VNodeData`也就是`data`变量到`createElement`函数中)
+从上面的代码可以看到，`createElement`返回了一个`_createElement`函数，其实，核心的代码都是放在`_createElement`函数中，`createElement`函数做了一层兜底，兼容了不传`data`的情况(因为一个节点是`v-pre`的节点的子节点，那么`el.plain=true`，不会传`VNodeData`也就是`data`变量到`createElement`函数中)
 
 下面看看核心的`_createElement`方法，简单来说，`_createElement`方法的作用是在不同的条件下渲染不同的VNode节点，例如：空节点，普通节点，组件节点等
 
@@ -136,15 +136,15 @@ export function _createElement (
 }
 ```
 
-让我们细细来分析一下，首先如果传入`_createElement`函数的data存在`__ob__`属性，说明该`data`是被`Observer`注册过的`$options.data`，这种情况下，Vue会创建一个空的`VNode`节点
+让我们细细来分析一下，首先如果传入`_createElement`函数的data存在`__ob__`属性，说明该`data`是被`Observer`注册过的`$options.data`，这种情况下，Vue会创建一个空的`VNode`节点
 
-如果tag参数不存在的话，同样创建一个空的`VNode`节点，毕竟不知道tag，Vue也不知道给你生成啥节点啊，臣妾做不到啊，虽然`template`编译不会出现这些问题，但是还是要杜绝手写render可能引发的问题
+如果tag参数不存在的话，同样创建一个空的`VNode`节点，毕竟不知道tag，Vue也不知道给你生成啥节点啊，臣妾做不到啊，虽然`template`编译不会出现这些问题，但是还是要杜绝手写render可能引发的问题
 
-然后程序判断`tag`参数是否为`String`类型，如果不为`String`类型的话，Vue会认为tag是一个组件的构造器，那么会调用`create-component.js`内的createComponent函数生成一个组件节点；如果为`String`类型的话，如果tag为`reserveTag`也就是`div`之类的平台保留节点，Vue会生成一个普通的`VNode`节点，如果tag存在于`vm.$options.components`中的话，同样生成组件节点(这是Vue引入模块的最常见方法)，如果都不匹配的话，认为是未知的元素，在运行时检查，因为父组件可能在序列化子组件的时候分配一个名字空间
+然后程序判断`tag`参数是否为`String`类型，如果不为`String`类型的话，Vue会认为tag是一个组件的构造器，那么会调用`create-component.js`内的createComponent函数生成一个组件节点；如果为`String`类型的话，如果tag为`reserveTag`也就是`div`之类的平台保留节点，Vue会生成一个普通的`VNode`节点，如果tag存在于`vm.$options.components`中的话，同样生成组件节点(这是Vue引入模块的最常见方法)，如果都不匹配的话，认为是未知的元素，在运行时检查，因为父组件可能在序列化子组件的时候分配一个名字空间
 
 ### create-component.js
 
 🚧under construction🚧
 
 
-
+
