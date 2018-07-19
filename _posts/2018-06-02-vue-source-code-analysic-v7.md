@@ -241,4 +241,4 @@ export function cloneVNode (vnode: VNode): VNode {
 }
 ```
 
-以上就是VNode类的定义以及三个定义|操作VNode的基础函数，下一篇博客我们讲一下生成组件VNode的createComponent函数以及统一生成VNode节点的createElement函数
+以上就是VNode类的定义以及三个操作VNode的基础函数，下一篇博客我们讲一下生成组件VNode的createComponent函数以及统一生成VNode节点的createElement函数

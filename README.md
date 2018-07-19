@@ -10,6 +10,9 @@
 
 # 目录：
 
+* [阅读Vue源码有感（8）](https://mickey0524.github.io/2018/07/19/vue-source-code-analysic-v8/)
+* [effective python读后感](https://mickey0524.github.io/2018/07/19/effective-python/)
+* [go语言基础](https://mickey0524.github.io/2018/07/16/begin-go/)
 * [打包工具基础](https://mickey0524.github.io/2018/07/04/bundle-tool-basis/)
 * [阅读Vue源码有感（7）](https://mickey0524.github.io/2018/06/02/vue-source-code-analysic-v7/)
 * [阅读Vue源码有感（6）](https://mickey0524.github.io/2018/05/27/vue-source-code-analysic-v6/)
