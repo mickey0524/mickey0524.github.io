@@ -890,3 +890,21 @@ arr1[0] is arr1[1] # False
 obj = {'str1': 'hello', 'str2': 'world'}
 "{str1} {str2}".format(**obj) # hello world
 ```
+
+<br>76. python中十进制和二进制、八进制、十六进制的相互转换
+
+* 十进制转二、八、十六进制
+
+	```python
+	a = 10
+	bin(a) # '0b1010'
+	oct(a) # '012'
+	hex(a) # '0xa' 
+	```
+* 二、八、十六进制转十进制
+
+	```python
+	int('1010', 2) # 10
+	int('12', 8) # 10
+	int('a', 16) # 10
+	```
