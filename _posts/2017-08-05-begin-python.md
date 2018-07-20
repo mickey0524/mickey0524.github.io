@@ -128,10 +128,14 @@ AttributeError: 'Student' object has no attribute 'score'
 ```
 @property，@属性.setter，这样实例就能和操作属性一样操作方法了，s.birth，s.birth = 'XXX'
 
-<br>17. python里面\_\_XXX\_\_这样命名的属性都是有hin大作用的，前面我们已经知道了\_\_slots\_\_，在python里面print 实例或者直接输出实例是
+<br>17. python里面\_\_XXX\_\_这样命名的属性都是有hin大作用的，前面我们已经知道了\_\_slots\_\_
+
+在python里面print 实例或者直接输出实例是
 <\_\_main\_\_.Student object at 0x109afb310>，不好看，可以在class 里面定义\_\_str\_\_和\_\_repr\_\_，\_\_str\_\_定义print 返回的语句，\_\_repr\_\_定义在命令行直接输入显示的语句，偷懒的写法是\_\_repr\_\_ = \_
 \_str\_\_，这样只定义\_\_str\_\_就行了
+
 \_\_getattr\_\_：当python在类属性中寻找不到的话，python解释器会自动调用\_\_getattr\_\_方法，我们可以在\_\_getattr\_\_中做一些限制
+
 \_\_call\_\_: 实例初始化后，如果调用自身则访问该函数
 
 ```js
@@ -145,32 +149,32 @@ s() => 调用__call__方法
 <br>18. 大多数编程语言都有用于捕获代码中发生的错误的方法，JavaScript中的try catch之类的，python也不例外，python中对应的代码为try except finally
 
 ```js
-  try:
-  	res = 10 / 0;
-  	print res;
-  except BaseException, e:
-  	print e;
-  finally:
-  	print 'finally'
+try:
+	res = 10 / 0;
+	print res;
+except BaseException, e:
+	print e;
+finally:
+	print 'finally'
 ```
 BaseException是所有异常的父类，python的错误捕获有类似冒泡的性质，比如main中调用了boo，boo调用了two，two函数中出现了错误，在main中依然能够捕捉到，另一个性质是，异常捕获有先后之分，如果在其他exception前调用了except BaseException，那么后面的补获语句将永远不会生效，这里给出python2.7的异常类间的继承关系，<a href="https://docs.python.org/2/library/exceptions.html#exception-hierarchy" target="_blank">python异常类继承大全</a>
 
 <br>19. 在python中I/O可以这样写
 
 ```
-  try:
-  	f = open('path/to/file', 'r');
-  	print f.read();
-  except:
-  	...
-  finally:
-    f.close();
+try:
+	f = open('path/to/file', 'r');
+	print f.read();
+except:
+	...
+finally:
+	f.close();
 ```
 感觉十分的麻烦，于是python提供了with语句来简化IO的写法，比如上述代码可以简化为
 
 ```
-  with open('path/to/file', 'r') as f:
-  	print f.read();
+with open('path/to/file', 'r') as f:
+	print f.read();
 ```
 with语句自然会调用close()，这样就不用在finally中手动调用close()来关闭文件流
 

@@ -53,4 +53,33 @@ tags:
   print next(value) # 100
   ```
 
-  
+* python2.7的zip函数并不是生成一个generator，而是遍历完两个list得道元组的组合，可以使用itertools模块的izip方法代替，另外zip方法是以两个list中length小的为基准，如果要以length大的为基准的话，可以使用itertools中的izip_longest函数
+
+* python在闭包函数中无法访问上级函数的基础变量，只能通过list，dict，set或某个类的实例
+
+  ```python
+  def sort_priority(numbers, group):
+    found = False
+    def helper(x):
+      if x in group:
+        found = True
+        return (0, x)
+      return (1, x)
+    numbers.sort(key=helper)
+    return found
+  ```
+
+  上述函数，在闭包函数中found设为True，然而修改的不是外层函数的变量，而是在闭包函数的作用域中新定义了一个变量
+
+  ```python
+  def sort_priority(numbers, group):
+    found = [False]
+    def helper(x):
+      if x in group:
+        found[0] = True
+        return (0, x)
+      return (1, x)
+    numbers.sort(key=helper)
+    return found[0]
+  ```
+
