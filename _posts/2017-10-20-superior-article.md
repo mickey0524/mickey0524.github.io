@@ -56,6 +56,7 @@ tags:
 * [Chrome调试工具常用功能整理](https://juejin.im/entry/5b3b3a3ff265da0f504a2edb?utm_source=gold_browser_extension)
 * [黑科技：CSS定制多行省略](http://hai.li/2017/03/08/css-multiline-overflow-ellipsis.html)
 * [前端静态资源的增量更新](https://juejin.im/post/5b3efec1e51d4519610dbe30)
+* [不务正业的前端之SSO（单点登录）实践](https://juejin.im/post/5b51f39b5188251a9f24a264?utm_source=gold_browser_extension)
 
 ## python
 
