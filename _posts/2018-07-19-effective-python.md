@@ -83,3 +83,116 @@ tags:
     return found[0]
   ```
 
+* 考虑写生成器来改写直接返回列表的函数
+
+	👇这个函数的功能是得到一个由text中每个单词首字母的索引组成的list
+	
+	```python
+	def index_words(text):
+		result = []
+		if text:
+			result += 0,
+		for index, letter in enumerate(text):
+			if letter == ' ':
+				result += (index + 1),
+		return result
+	```
+	
+	可以改成迭代器
+	
+	```python
+	def index_words_iter(text):
+		if text:
+			yield 0
+		for index, letter in enumerate(text):
+			if letter == ' ':
+				yield index + 1
+	```
+
+* 同一个迭代器，在遍历过一遍之后，遍历第二遍是得不到结果的，奇怪的是，也不会报StopIteration的异常，需要记一下，因此如果要多次调用相同的迭代器，需要生成新的迭代器，或者是写一个class，实现`__iter__`方法，返回迭代器
+
+	```python
+	def iter():
+		yield 1
+		yield 2
+		yield 3
+	
+	def traverse_iter(nums):
+		print sum(nums)
+		
+		for num in nums:
+			print num
+	
+	traverse_iter(iter())
+	
+	# 6
+	# 
+	```
+
+	可以看到上面函数，第二次遍历的时候就取不到任何东西了
+	
+	```python
+	class MyIter(object):
+		def __init__(self):
+			pass
+		def __iter__(self):
+			yield 1
+			yield 2
+			yield 3
+	
+	traverse_iter(MyIter())
+	
+	# 6
+	# 1
+	# 2
+	# 3
+	```
+	
+	小tips，iter()方法可以得到一个collection的迭代器，可以通过iter(nums) is iter(nums)来判断实参是容器还是迭代器，如下
+	
+	```python
+	def traverse_iter(nums):
+		if iter(nums) is iter(nums):
+			raise TypeError('nums must be a container')
+		print sum(nums)
+		
+		for num in nums:
+			print num
+	```
+
+* python中函数的参数是可以赋予默认值的，当默认值不为静态数值，而是[], {}或者iife的时候，就会出现各函数调用的时候访问的是同一address的默认值，对于这种情况，我们应该使用None作为默认值，然后在代码中去赋予默认值
+
+	```python
+	def decode(data, default={}):
+		try:
+			return json.loads(data)
+		except ValueError:
+			return default
+	
+	foo = decode('bad data')
+	foo['stuff'] = 5
+	bar = decode('also bad')
+	bar['meep'] = 1
+	
+	# foo {'stuff': 5, 'meep': 1}
+ 	# bar {'stuff': 5, 'meep': 1}
+	```
+	
+	应该按如下书写
+	
+	```python
+	def decode(data, default=None):
+		default = {} if default is None else default
+		try:
+			return json.loads(data)
+		except ValueError:
+			return default
+	
+	foo = decode('bad data')
+	foo['stuff'] = 5
+	bar = decode('also bad')
+	bar['meep'] = 1
+	
+	# foo {'stuff': 5}
+	# bar {'meep': 1}
+	```
