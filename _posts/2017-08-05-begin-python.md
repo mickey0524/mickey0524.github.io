@@ -667,6 +667,11 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 	p.x // 1
 	p.y // 2
 	```
+
+    尽管namedtuple在很多场合都非常有用，但是在某些场合中，使用namedtuple反而不好
+
+    * namedtuple无法设置默认值
+    * namedtuple可以通过下标和key来读取，可能导致其他人以不符合设计者意图的方式使用这些元组
 	
 2. deque: 使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈
 
@@ -700,7 +705,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 	[('r', 3), ('m', 2)]
 	```
 
-5. defaultdict: 给字典设置初始值，可以减少代码的书写量
+5. defaultdict(function, init\_dict): 允许使用者提供一个函数，以后在查询本字典的时候，如果里面没有待查的key，那就用这个函数为该键创建新值 
 
 	```
 	>>> from collections import defaultdict
@@ -717,10 +722,10 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 * base64.b64encode()
 * base64.b64decode()
 
-由于标准的Base64编码后可能出现字符+和/，在URL中就不能直接作为参数，所以又有一种"url safe"的base64编码，其实就是把字符+和/分别变成-和_
+由于标准的Base64编码后可能出现字符+和/，在URL中就不能直接作为参数，所以又有一种"url safe"的base64编码，其实就是把字符+和/分别变成-和\_
 
-* base64.urlsafe_b64encode()
-* base64.urlsafe_b64decode()
+* base64.urlsafe\_b64encode()
+* base64.urlsafe\_b64decode()
 
 <br>69. 常用内建模块 -- hashlib
 
