@@ -144,6 +144,228 @@ export function _createElement (
 
 ### create-component.js
 
+在`create-element.js`中，我们可以看到当`tag`在components中注册过，或者`tag`是一个构造类的时候，调用了`createComponent`方法，下面我们就来看看定义了该方法的`create-component.js`文件
+
+```js
+/*创建一个组件节点，返回Vnode节点*/
+export function createComponent (
+  Ctor: Class<Component> | Function | Object | void,
+  data?: VNodeData,
+  context: Component,
+  children: ?Array<VNode>,
+  tag?: string
+): VNode | void {
+  /*没有传组件构造类直接返回*/
+  if (isUndef(Ctor)) {
+    return
+  }
+
+  /*_base存放了Vue,作为基类，可以在里面添加扩展*/
+  const baseCtor = context.$options._base
+
+  // plain options object: turn it into a constructor
+  if (isObject(Ctor)) {
+    Ctor = baseCtor.extend(Ctor)
+  }
+
+  // if at this stage it's not a constructor or an async component factory,
+  // reject.
+  /*如果在该阶段Ctor依然不是一个构造函数或者是一个异步组件工厂则直接返回*/
+  if (typeof Ctor !== 'function') {
+    if (process.env.NODE_ENV !== 'production') {
+      warn(`Invalid Component definition: ${String(Ctor)}`, context)
+    }
+    return
+  }
+
+  // async component
+  /*处理异步组件*/
+  if (isUndef(Ctor.cid)) {
+    Ctor = resolveAsyncComponent(Ctor, baseCtor, context)
+    if (Ctor === undefined) {
+      // return nothing if this is indeed an async component
+      // wait for the callback to trigger parent update.
+      /*如果这是一个异步组件则会不会返回任何东西（undifiened），直接return掉，等待回调函数去触发父组件更新。s*/
+      return
+    }
+  }
+
+  // resolve constructor options in case global mixins are applied after
+  // component constructor creation
+  resolveConstructorOptions(Ctor)
+
+  data = data || {}
+
+  // transform component v-model data into props & events
+  if (isDef(data.model)) {
+    transformModel(Ctor.options, data)
+  }
+
+  // extract props
+  const propsData = extractPropsFromVNodeData(data, Ctor, tag)
+
+  // functional component
+  if (isTrue(Ctor.options.functional)) {
+    return createFunctionalComponent(Ctor, propsData, data, context, children)
+  }
+
+  // extract listeners, since these needs to be treated as
+  // child component listeners instead of DOM listeners
+  const listeners = data.on
+  // replace with listeners with .native modifier
+  data.on = data.nativeOn
+
+  if (isTrue(Ctor.options.abstract)) {
+    // abstract components do not keep anything
+    // other than props & listeners
+    data = {}
+  }
+
+  // merge component management hooks onto the placeholder node
+  mergeHooks(data)
+
+  // return a placeholder vnode
+  const name = Ctor.options.name || tag
+  const vnode = new VNode(
+    `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
+    data, undefined, undefined, undefined, context,
+    { Ctor, propsData, listeners, tag, children }
+  )
+  return vnode
+}
+```
+
+`createComponent`方法如上所示，首先，让我们回忆一下，`Vue`有一个全局的`Vue.extend`的方法，用于创造一个构造器，在`createComponent`中，`context.$options._base`取出的就是该`extend`方法.
+
+如果传入的`Ctor`是一个函数，那么不会掉用`extend`方法，也就意味着不会得到`cid`，那么就会调用`resolveAsyncComponent `加载的就是一个异步组件，如果不了解Vue加载异步组件，可以先看看[官方文档](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6)，下面代码中的注释写的比较详细，可以结合官方文档看看
+
+```
+function ensureCtor (comp, base) {
+  return isObject(comp)
+    ? base.extend(comp)
+    : comp
+}
+
+export function resolveAsyncComponent (
+  factory: Function,
+  baseCtor: Class<Component>,
+  context: Component
+): Class<Component> | void {
+  /*出错组件工厂返回出错组件*/
+  if (isTrue(factory.error) && isDef(factory.errorComp)) {
+    return factory.errorComp
+  }
+
+  /*resoved时候返回resolved组件*/
+  if (isDef(factory.resolved)) {
+    return factory.resolved
+  }
+
+  /*加载组件过程中，显示loading组件*/
+  if (isTrue(factory.loading) && isDef(factory.loadingComp)) {
+    return factory.loadingComp
+  }
+
+  if (isDef(factory.contexts)) {
+    // already pending
+    factory.contexts.push(context)
+  } else {
+    const contexts = factory.contexts = [context]
+    let sync = true
+	 
+	 // 加载完成，异步更新context
+    const forceRender = () => {
+      for (let i = 0, l = contexts.length; i < l; i++) {
+        contexts[i].$forceUpdate()
+      }
+    }
+
+    const resolve = once((res: Object | Class<Component>) => {
+      // cache resolved
+      factory.resolved = ensureCtor(res, baseCtor)
+      // invoke callbacks only if this is not a synchronous resolve
+      // (async resolves are shimmed as synchronous during SSR)
+      if (!sync) {
+        forceRender()
+      }
+    })
+
+    const reject = once(reason => {
+      process.env.NODE_ENV !== 'production' && warn(
+        `Failed to resolve async component: ${String(factory)}` +
+        (reason ? `\nReason: ${reason}` : '')
+      )
+      if (isDef(factory.errorComp)) {
+        factory.error = true
+        forceRender()
+      }
+    })
+
+    const res = factory(resolve, reject)
+
+    if (isObject(res)) {
+    	// () => Promise类型
+      if (typeof res.then === 'function') {
+        if (isUndef(factory.resolved)) {
+          res.then(resolve, reject)
+        }
+      } else if (isDef(res.component) && typeof res.component.then === 'function') {
+		  // const AsyncComponent = () => ({
+			  // 需要加载的组件 (应该是一个 `Promise` 对象)
+			  // component: import('./MyComponent.vue'),
+			  // 异步组件加载时使用的组件
+			  // loading: LoadingComponent,
+			  // 加载失败时使用的组件
+			  // error: ErrorComponent,
+			  // 展示加载时组件的延时时间。默认值是 200 (毫秒)
+			  // delay: 200,
+			  // 如果提供了超时时间且组件加载也超时了，
+			  // 则使用加载失败时使用的组件。默认值是：`Infinity`
+			  // timeout: 3000
+		  })
+        res.component.then(resolve, reject)
+
+        if (isDef(res.error)) {
+          factory.errorComp = ensureCtor(res.error, baseCtor)
+        }
+
+        if (isDef(res.loading)) {
+          factory.loadingComp = ensureCtor(res.loading, baseCtor)
+          if (res.delay === 0) {
+            factory.loading = true
+          } else {
+            setTimeout(() => {
+              if (isUndef(factory.resolved) && isUndef(factory.error)) {
+                factory.loading = true
+                forceRender()
+              }
+            }, res.delay || 200)
+          }
+        }
+
+        if (isDef(res.timeout)) {
+          setTimeout(() => {
+            reject(
+              process.env.NODE_ENV !== 'production'
+                ? `timeout (${res.timeout}ms)`
+                : null
+            )
+          }, res.timeout)
+        }
+      }
+    }
+
+    sync = false
+    // return in case resolved synchronously
+    return factory.loading
+      ? factory.loadingComp
+      : factory.resolved
+  }
+}
+```
+
+当传入的`Ctor`是对象的时候，隐式的生成一个构造器，然后调用`resolveConstructorOptions`方法去获取最新的`options`
+
 🚧under construction🚧
 
 
