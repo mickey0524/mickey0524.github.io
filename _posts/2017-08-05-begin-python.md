@@ -913,3 +913,20 @@ obj = {'str1': 'hello', 'str2': 'world'}
 	int('12', 8) # 10
 	int('a', 16) # 10
 	```
+
+<br>76. python的lambda函数也会出现js中的函数陷阱
+
+```python
+func_list = []
+
+def func(i):
+    return i
+
+for i in xrange(10):
+    func_list.append(lambda :func(i))
+
+for fun in func_list:
+    print fun()
+```
+
+上述代码会打出10个9，如果想要正确显示，需要这样写`func_list.append(lambda j=i: func(j))`
