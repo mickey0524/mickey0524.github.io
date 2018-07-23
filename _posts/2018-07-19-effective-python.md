@@ -198,3 +198,35 @@ tags:
 	```
 
 * python中大多数场景用dict和tuple都可以cover，但是，当场景越来越复杂的时候(比如字典套字典，超过2个元素的元组)，这个时候就需要考虑使用类来抽象数据结构了；如果容器中包含简单而又不可变的数据，那么可以先使用namedtuple来表示
+
+* python中要少用多重继承，如果要复用不同class的方法，建议使用mix-in(个人理解就是不写\_\_init\_\_的class类)
+
+	```python
+	class Mixin1(object):
+   		def printName(self):
+     		print self.name
+   
+   class Mixin2(object):
+   		def printAge(self):
+   			print self.age
+   	
+   	class Stu(Mixin1, Mixin2):
+   		def __init__(self, name, age):
+   			self.name = name
+   			self.age = age
+	```
+	
+* python中应该多用public和protected属性，少用private属性，因为就算是private也不是完全封闭的，一样有方法可以在class外部调用
+
+	```python
+	class Stu(object):
+		def __init__(self, name):
+			self.__name = name
+	
+	student = Stu('mickey')
+	
+	student.__name # 'Stu' object has no attribute '__name'
+	student._Stu__name # 'mickey'
+	```
+	
+	如上所示，\_\_name在student中变成了\_Stu\_\_name，只要按照格式，private数据都能获取

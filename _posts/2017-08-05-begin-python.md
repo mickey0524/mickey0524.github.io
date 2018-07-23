@@ -552,8 +552,11 @@ class P(object):
 		
 class C(P):
 	def __init__(self):
-		P.__init__(self) / super(P, self).__init__() # 需要注意的是，super方法只有基类为新类才能有，如果基类为老类 class P: 这种类型的，只能用第一种方法显示的调用父亲类的重名方法
+		P.__init__(self) / super(C, self).__init__() # 需要注意的是，super方法只有基类为新类才能有，如果基类为老类 class P: 这种类型的，只能用第一种方法显示的调用父亲类的重名方法
 ```
+
+在类继承(super)的时候，存在方法解析顺序(mro)，引入`from pprint import pprint`能够查看class
+__init__的时候调用栈，python会按mro的反序来调用
 
 <br>59. 类、实例的一些内建函数
 
