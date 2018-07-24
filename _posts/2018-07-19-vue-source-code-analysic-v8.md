@@ -364,9 +364,26 @@ export function resolveAsyncComponent (
 }
 ```
 
-当传入的`Ctor`是对象的时候，隐式的生成一个构造器，然后调用`resolveConstructorOptions`方法去获取最新的`options`
+当传入的`Ctor`是对象的时候，隐式的生成一个构造器，然后调用`resolveConstructorOptions`方法去获取最新的`options`，这个方法定义在`core/instance/init.js`中
 
-🚧under construction🚧
+随后，Vue调用了`transformModel`方法，用于给`v-model`绑定处理函数，其实`v-model`就是一个语法糖，通过监听`input`事件，来响应式修改`value`数值，方法如下
 
+```js
+function transformModel (options, data: any) {
+  const prop = (options.model && options.model.prop) || 'value'
+  const event = (options.model && options.model.event) || 'input'
+  ;(data.props || (data.props = {}))[prop] = data.model.value
+  const on = data.on || (data.on = {})
+  if (isDef(on[event])) {
+    on[event] = [data.model.callback].concat(on[event])
+  } else {
+    on[event] = data.model.callback
+  }
+}
+```
 
+紧接着，Vue调用了`extractPropsFromVNodeData`方法，这个方法是生成propsData对象的。我们知道，一个Vue组件，在props中可以定义组件接收的变量，而propsData则是父组件真实传入的变量，剩余的变量，可以通过`default`定义
 
+当`Ctor.options.functional`为true的时候，Vue认为这是一个函数式组件，会调用`createFunctionalComponent`函数，至于什么是函数式组件，我们可以把函数式组件想像成组件里的一个函数，入参是渲染上下文(render context)，返回值是渲染好的HTML，函数式组件是没有this的，也就意味着组件本身是没有状态的，具体可以看看这篇[掘金blog](https://juejin.im/post/5b38f4bef265da59bc2cb921)
+
+在完成上述准备操作之后，Vue会执行`new VNode(...params)`，得到组件对应的一个VNode节点(占位所用)，不过该VNode在当前context中，没有elm，只有componentInstance，这也是ref的时候，获取的是vm，可以直接调用methods中方法的原因
