@@ -230,3 +230,58 @@ tags:
 	```
 	
 	如上所示，\_\_name在student中变成了\_Stu\_\_name，只要按照格式，private数据都能获取
+
+* python中操作public属性不用和java一样写getter，setter函数，当需要一些处理逻辑的时候，可以用@property关键字，但是@property有一个问题，不能复用处理逻辑，有多少个参数，就需要写多少套@property和@variable_name.setter，在python中，可以用自定义`__set__`和`__get__`来解决这个问题
+
+	```python
+	class Grade(object):
+		def __init__(self):
+			self._value = 0
+		def __get__(self, instance, instance_type):
+			return self._value
+		def __set__(self, instance, value):
+			self._value = value
+	
+	class Exam(object):
+		# class attributes
+		math_grade = Grade()
+		writing_grade = Grade()
+	
+	exam = Exam()
+	exam.writing_grade = 40
+	```
+	
+	当访问python实例的属性时，若属性在实例中不存在，python会将代码转换为
+	
+	```python
+	Exam.__dict__['writing_grade'].__set__(exam, 40)
+	```
+	
+	而获取属性的时候，python也会进行相应的转译
+	
+	```python
+	Exam.__dict__['writing_grade'].__get__(exam, Exam)
+	```
+	
+	这样处理的时候，还有一个问题，类属性在只会在初始的时候实例化一次，这样Exam类的实例都会共用一个数值，可以按如下方式更改，用instance做key存不同的value
+	
+	```python
+	class Grade(object):
+		def __init__(self):
+			self._values = {}
+		
+		def __get__(self, instance, instance_type);
+			if instance is None: return self
+			self._value.get(instance, 0);
+		
+		def __set__(self, instance, value):
+			self._value[instance] = value
+	```
+	
+	这样还是会有一个问题，会导致内存泄漏，当Exam类实例越来越多的时候，_value字典维护的key越来越多且不会释放，使用weakref模块的WeakKeyDictionary可以解决这个问题
+	
+	```python
+	class Grade(object):
+		def __init__(self):
+			self.values = WeakKeyDictionary()
+	```	
