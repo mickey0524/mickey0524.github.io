@@ -263,6 +263,8 @@ tags:
 	Exam.__dict__['writing_grade'].__get__(exam, Exam)
 	```
 	
+	之所以会有这样的转译，关键在于object类的`__getattribute__`方法，简单来说，如果实例对应的属性，那么Python就会转向Exam类
+	
 	这样处理的时候，还有一个问题，类属性在只会在初始的时候实例化一次，这样Exam类的实例都会共用一个数值，可以按如下方式更改，用instance做key存不同的value
 	
 	```python
@@ -285,3 +287,47 @@ tags:
 		def __init__(self):
 			self.values = WeakKeyDictionary()
 	```	
+	
+* python的	`__getattribute__`和`__setattr__`在python每次访问/设置属性的时候，都会调用，因此，如果要在这两个方法中访问实例属性的时候，应该通过`super()`来做，避免无限递归
+
+	```python
+	class DictionaryDB(object):
+		def __init__(self, data):
+			self._data = data
+		
+		def __getattribute__(self, name):
+			data_dict = super().__getattribute__('_data')
+			return data_dict[name]
+	```
+	
+	而`__getattr__`方法只有在实例属性和类属性不存在的时候，才会调用
+	
+* python中的元类
+
+	* 利用元类来验证子类
+
+		```python
+		class Meta(type):
+			def __new__(meta, name, bases, class_dict):
+				print '__new__'
+				return type.__new__(meta, name, bases, class_dict)
+		
+		class Line(object):
+			__metaclass__ = Meta
+			def __init__(self):
+				pass
+		
+		>>> __new__
+		```
+	
+		python在把子类的class语句处理完毕之后，就会调用其元类的__new__方法，上述代码中
+		
+		```python
+		meta = '__main__.Meta'
+		name = 'Line'
+		bases = (object,)
+		class_dict = {...}类属性
+		```
+	
+	* 元类可以用于在子类生成后进行注册，因为`type.__new__(meta, name, bases, class_dict)`生成的就是子类，可以对class进行一些操作
+	* 
