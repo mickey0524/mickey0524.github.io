@@ -330,4 +330,44 @@ tags:
 		```
 	
 	* 元类可以用于在子类生成后进行注册，因为`type.__new__(meta, name, bases, class_dict)`生成的就是子类，可以对class进行一些操作
-	* 
+	* 描述符与元类能够有效的组合起来，以便对某种行为做出修饰，或在程序运行时探查相关信息
+
+		在前面介绍`__set__`和`__get__`方便复用`@property`逻辑的时候，我们在`Grade`类中定义了一个`self.values`，以`instance`为key存储不同实例的属性，同时为了避免内存泄漏，我们引入了`WeakKeyDictionary`，下面我们来看一下将实例的属性存储在实例内的方法
+		
+		```python
+		class Grade(object):
+			def __init__(self, name):
+				self.name = name
+				self.internal_name = '_' + name
+			def __set__(self, instance, value):
+				setattr(instance, self.internal_name, value)
+			def __get__(self, instance, instance_type):
+				return getattr(instance, self.internal_name, '')
+			
+		class Exam(object):
+			math_grade = Grade('math_grade')
+			writing_grade = Grade('writing_grade')
+		```
+		
+		这样比使用`WeakKeyDictionary`方便了许多，但是，在`Exam`中初始化`Grade`属性的时候，要将`key`的名字书写两边，略显繁琐，不够优雅，可以采用元类来优化这一点，因为在元类的`__new__`的`class_dict`中，是可以拿到类的属性的
+		
+		```
+		class Meta(type):
+			def __new__(meta, name, bases, class_dict):
+				for k, v in class_dict.iteritems():
+					if isinstance(v, Grade):
+						v.name = k
+						v.internal_name = '_' + k
+				cls = type.__new__(meta, name, bases, class_dict)
+				return cls
+		
+		class Grade(object):
+			def __init__(self):
+				pass
+				
+		class Exam(object):
+			math_grade = Grade()
+			writing_grade = Grade()
+		```
+		
+		这样，就不用在Grade中再繁琐的初始化一遍，不过个人觉得最好写注释，不然不好理解
