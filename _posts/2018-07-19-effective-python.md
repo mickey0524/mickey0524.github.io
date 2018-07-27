@@ -371,3 +371,65 @@ tags:
 		```
 		
 		这样，就不用在Grade中再繁琐的初始化一遍，不过个人觉得最好写注释，不然不好理解
+	
+* python多线程的意义
+
+	因为受到全局解释器锁(GIL)的限制，所以多条Python线程不能在多个CPU核心上面平行地执行字节码，但是python的多线程功能依旧很有用，它可以轻松地模拟出同一时刻执行多项任务的效果(俗称并发，注意不是并行)，通过Python线程，我们也可以并行的执行多个系统调用，这使得程序能够在执行阻塞式I/O操作的同时，执行一些运算操作，由于Python线程在执行系统调用的时候会释放GIL，并且一直要等到执行完毕才会重新获取它，所以GIL是不会影响系统调用的，下面看一个栗子
+	
+	```python
+	import select
+	import time
+	
+	from threading import Thread
+	
+	def slow_systemcall():
+		select.select([], [], [], 0.1)
+		
+	start = time()
+	for _ in xrange(5):
+		slow_systemcall()
+	end = time()
+	print("Took %.3f seconds" % (end - start))
+	
+	>>> Took 0.503 seconds
+	
+	start = time()
+	threads = []
+	for _ in xrange(5):
+		thread = Thread(target=slow_systemcall)
+		thread.start()
+		threads += thread,
+	
+	for thread in threads:
+		thread.join()
+	
+	end = time()
+	print("Took %.3f seconds" % (end - start))
+	
+	>>> Took 0.102 seconds
+	```
+	
+* 多线程中的Lock
+
+	python的GIL锁虽然实现了在同一时间只允许一个python线程工作，但是还是需要锁来避免非原子操作带来的错误，`value += offset`其实不是一个原子操作，在多线程中，如果不加锁，这个语句就会出问题
+	
+
+	```python
+	from threading import Lock
+	
+	lock = Lock()
+	
+	# way1
+	
+	lock.acquire()
+	...
+	lock.release()
+	
+	# way2
+	with lock:
+		...
+	```
+	
+* python2.7中，multiprocessing和concurrent.futures中的ProcessPoolExexutor(底层是multiprocessing)来利用多进程并行计算
+	
+	
