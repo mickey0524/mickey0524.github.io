@@ -192,3 +192,19 @@ timestamp -> datetime
 >>> datetime.fromtimestamp(1510889000.69805)
 datetime.datetime(2017, 11, 17, 11, 23, 20, 698050)
 ```
+
+## python中时间的时区转换
+
+使用python做时区转换的时候，不要使用time模块，使用datetime + pytz(第三方模块)，既方便又准确，需要记住的是，做时区转换和做进制转换差不多，一般都是先转为UTC时间，然后再互相进行转换，下面给出一个例子 
+
+```python
+arrival_nyc = '2014-05-01 23:33:24'
+nyc_dt_naive = datetime.strptime(arrival_nyc, time_format)
+eastern = pytz.timezone('US/Eastern')
+nyc_dt = eastern.localize(nyc_dt_naive)
+utc_dt = pytz.utc.normalize(nyc_dt.astimezone(pytz.utc))
+
+pacific = pytz.timezone('US/Pacific')
+sf_dt = pacific.normalize(utc_dt.astimezone(pacific))
+```
+```
