@@ -430,6 +430,96 @@ tags:
 		...
 	```
 	
-* python2.7中，multiprocessing和concurrent.futures中的ProcessPoolExexutor(底层是multiprocessing)来利用多进程并行计算
+* python2.7中，`multiprocessing`和`concurrent.futures`中的`ProcessPoolExexutor`(底层是`multiprocessing`)来利用多进程并行计算，但是`multiprocessing`的开销较大，原因是因为在主进程和子进程之间，存在序列化和反序列化的操作(字节码 <-> python对象)
+
+* python中的装饰器非常有用，可以用于在程序运行前后执行操作，例如`metric`打点，但是用装饰器wrapper一层之后，python会修改原先函数的内部属性，对调试器和对象序列化等需要使用内省机制的工具来说，会严重干扰，于是，python内置的`functools`模块提供了`wraps`函数(也是一个装饰器，装饰在内置的wrapper函数上)
+
+	```python
+	from functools import wraps
+	
+	def trace(func):
+		@wraps(func)
+		def wrapper(*args, **kwargs):
+			# ...
+	return wrapper
+	
+	@trace
+	def true_func(param):
+		# ...
+	```
+	
+* python中的with语句非常好用，多用于`threading.Lock`和`文件open`中，python内置的`contextlib`模块提供了一个装饰器叫做`contextmanager`，可以让很多自定义操作使用with语句
+
+	```python
+	import logging
+	from contextlib import contextmanager
+	
+	def my_function():
+		logger.debug('Some debug data')
+		logger.error('Error log here')
+		logger.debug('More debug data')
+	
+	@contextmanager
+	def debug_logging(level):
+		logger = logging.getLogger()
+		old_level = logger.getEffectiveLevel()
+		logger.setLevel(level)
+		try:
+			yield
+		finally:
+			logger.setLevel(old_level)
+	
+	with debug_logging(logging.DEBUG):
+		print('inside')
+		my_function
+	print('after')
+	my_function()
+	
+	>>>
+	inside:
+	some debug data
+	error log here
+	more debug data
+	after:
+	error log here
+	```
+	
+	yield表达式所在的地方，就是with块中的语句所要展开执行的地方，另外，我们知道`with open(...) as hander`可以通过with语句获得文件的操作符，`contextmanager`同样也可以，只要在`yield`表达式那里抛出一个对象，就能通过`as`关键字得到
+	
+	```python
+	import logging
+	from contextlib import contextmanager
+	
+	@contextmanager
+	def debug_logging(level, logger_name):
+		logger = logging.getLogger(logger_name)
+		old_level = logger.getEffectiveLevel()
+		logger.setLevel(level)
+		try:
+			yield logger
+		finally:
+			logger.setLevel(old_level)
+	
+	with debug_logging(logging.DEBUG, 'my-log') as logger:
+		logger.debug('debug info')
+		logging.debug('no print')
+	```
+	
+* python中存在两个处理时间的内置模块，time和datetime，python建议尽量使用datetime，因为time模块需要依赖操作系统而运作，该模块的实际行为，取决于底层的c函数如何与宿主操作系统相交互。这种工作方式，使得time模块的功能不够稳定，另外，有关python时间模块，可以参考之前整理的一篇博客[python之time基础](https://mickey0524.github.io/2017/11/17/python-time/)，里面涵盖了大部分业务上的常用操作，包括时区之间相应的转换操作
+
+* 在重视精确度的场合，应该使用decimal
+
+	```python
+	rate = 1.45
+	seconds = 3 * 60 + 42
+	cost = rate * seconds / 60
+	print round(cost, 2) # 5.36
+	
+	rate = Decimal('1.45')
+	seconds = Decimal('222')
+	cost = rate * seconds / Decimal('60')
+	rounded = cost.quantize(Decimal('0.01'), rounding=ROUND_UP)
+	print rounded # 5.37
+	```
 	
 	
