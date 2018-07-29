@@ -521,5 +521,99 @@ tags:
 	rounded = cost.quantize(Decimal('0.01'), rounding=ROUND_UP)
 	print rounded # 5.37
 	```
+
+* python系统执行import语句的详细机制
+
+	引入模块的时候，python会按照**深度优先**的顺序执行下列操作
 	
+	* 在由`sys.path`所指定的路径中，搜寻待引入的模块
+	* 从模块中加载代码，并保证这段代码能够正确编译
+	* 创建与该模块相对应的空对象
+	* 把这个空的模块对象，添加到`sys.modules`里面
+	* 运行模块对象中的代码，以定义其内容
+
+* python中的循环引用
+
+	由上一条tip易得，python引入模块先是一个空对象，最后才会去执行模块中的代码，这有可能会造成循环引用
 	
+	```python
+	# dialog.py
+	import app
+	
+	class Dialog(object):
+		def __init__(self, save_dir):
+			self.save_dir = save_dir
+		# ...
+	
+	save_dialog = Dialog(app.prefs.get('save_dis'))
+	
+	def show():
+		# ...
+	```
+	
+	```python
+	# app.py
+	
+	class Prefs(object):
+		# ...
+		def get(self, name):
+			# ...
+	
+	prefs = Prefs()
+	dialog.show()
+	```
+	
+	像上面这两段代码，就会造成循环引用，解决循环引用的方法
+	
+	* 把导致两个模块互相依赖的那部分代码，重构为单独的模块，并把它放在依赖树的底层(最佳)
+	* 动态引用(最简单，不符合PEP8风格)
+	* 先引入、再配置、最后运行(创建，初始化分离，语义不好)
+
+		```python
+		# dialog.py
+		import app
+		
+		class Dialog(object):
+			# ...
+		
+		save_dialog = Dialog()
+		
+		def show():
+			# ...
+		
+		def configure():
+			save_dialog.save_dir = app.prefs.get('save_dir')
+		```
+		
+		```python
+		# app.py
+	
+		class Prefs(object):
+			# ...
+		
+		prefs = Prefs()
+		def configure():
+			# ...
+		```
+		
+		```python
+		# main.py
+		
+		import app
+		import dialog
+		
+		app.configure()
+		dialog.configure()
+		
+		dialog.show()
+		```
+		
+* 在python中打印调试的时候，`print`打印出来的是一个字符串，不能很清晰的显示类型，可以打印`repr(var)`，在类中，同样可以定义`__repr__`方法
+
+	```python
+	a, b = 4, '4'
+	print a, b # 4, 4
+	print repr(a), repr(b) # 4, '4'
+	```
+	
+	其实`repr`和`%r`是一样的
