@@ -16,7 +16,7 @@ tags:
 
 	* a = array([1, 2, 3]) 创建一个np对象
 	* a.dtype 查看数据类型
-    * np.astype() 改变numpy数组的类型
+    * a.astype('float64') 改变numpy数组的类型
 	* a.shape 一个元组，描述np对象每个维度的长度
 	* a.size np对象元素个数
 	* a.nbytes np对象消耗的字节数
