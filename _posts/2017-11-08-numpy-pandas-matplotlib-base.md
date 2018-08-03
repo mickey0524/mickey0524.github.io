@@ -185,7 +185,10 @@ tags:
         red         0      1      0
         blue        0      0      1
         ```
-    
+
+    * DateFrame中修改一列的属性`df['A'] = df['A'].astype('int64')`  
+    * df.append([])会报`list indx out of range`的异常
+  
 * matplotlib(import matplotlib.pyplot as plt)
 
 	* fig, axes = plt.subplots(nrows=2, ncols=3, sharex(所有subplot应该使用相同的X轴刻度), sharey(所有subplot应该使用相同的Y轴刻度)) 创建一个figure，同时返回一个2\*3的axes数组的引用
