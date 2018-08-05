@@ -20,14 +20,14 @@ tags:
 
 <br>2. python变量键入的写法和c有些相似
 
-```js
+```python
 print "my name is %s" % baihao
 print "my name is %s, my age is %d" % (baihao, age)
 ```
 %r代表不管什么都打印出来
 如果你使用了非ASCII字符而且碰到了编码错误，记得在最顶端加一行
 
-```js
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ```
@@ -43,11 +43,13 @@ a = (1)  这样a会被定义为1，一个元素的tuple写法为(1,)
 ，两个都遍历的话 for k, v in iteritems()
 
 <br>7. 列表的迭代方法为for in，这样没法知道元素的索引，如果想要获取index的话，可以像下面这样
-```js
+
+```python
 a = [1, 2, 3];
 for k, v in enumerate(a):
   print k, v
 ```
+
 <br>8. python 中strip()等于js中trim()
 
 <br>9. map，reduce，filter，sorted都是高阶函数，区别是前三个的函数参数是第一个，sorted的函数参数是第二个
@@ -59,7 +61,7 @@ for k, v in enumerate(a):
 
 装饰器的数学定义其实就是 (g · f)(x) = g(f(x))
 
-```
+```python
 @deco2
 @deco1
 def func(arg1, arg2, ...): pass
@@ -76,7 +78,7 @@ Class.way = MethodType(way,None, Student) 类
 
 instance.way = MethodType(way, instance, Student) 实例
 
-```
+```python
 from types import MethodType
 
 class Stu(object):
@@ -97,7 +99,7 @@ bob.set_age = MethodType(set_age, bob, Stu) # 为实例动态添加方法
 
 <br>15. python类可以通过设置__slots__来限制类能被设置的属性，需要注意的是子类继承父类如果不定义__slots__属性的话，是没有限制的，子类如果定义了的话，它的可编辑属性为自己和父亲的slots中的值之和
 
-```
+```python
 class Stu(object):
 	__slots__ = ('name', 'age')
 	
@@ -114,7 +116,7 @@ AttributeError: 'Student' object has no attribute 'score'
 
 众所周知，python中，可以通过instance.property的方式直接访问属性，但是这样没法对新的数据做数值的判断，于是有了如下的装饰器(默认不能直接访问实例._property的内部属性，不然property毫无意义)
 
-```js
+```python
   class Student(object):
     @property
     def birth(self):
@@ -131,14 +133,13 @@ AttributeError: 'Student' object has no attribute 'score'
 <br>17. python里面\_\_XXX\_\_这样命名的属性都是有hin大作用的，前面我们已经知道了\_\_slots\_\_
 
 在python里面print 实例或者直接输出实例是
-<\_\_main\_\_.Student object at 0x109afb310>，不好看，可以在class 里面定义\_\_str\_\_和\_\_repr\_\_，\_\_str\_\_定义print 返回的语句，\_\_repr\_\_定义在命令行直接输入显示的语句，偷懒的写法是\_\_repr\_\_ = \_
-\_str\_\_，这样只定义\_\_str\_\_就行了
+<\_\_main\_\_.Student object at 0x109afb310>，不好看，可以在class 里面定义\_\_str\_\_和\_\_repr\_\_，\_\_str\_\_定义print 返回的语句，\_\_repr\_\_定义在命令行直接输入显示的语句，偷懒的写法是\_\_repr\_\_ = \_\_str\_\_，这样只定义\_\_str\_\_就行了
 
 \_\_getattr\_\_：当python在类属性中寻找不到的话，python解释器会自动调用\_\_getattr\_\_方法，我们可以在\_\_getattr\_\_中做一些限制
 
 \_\_call\_\_: 实例初始化后，如果调用自身则访问该函数
 
-```js
+```python
 class Student(object):
   pass
 s = Student()
@@ -146,9 +147,50 @@ s() => 调用__call__方法
 ```
 可以通过callable()方法来判断一个类是否包含\_\_call\_\_方法
 
+可以通过\_\_enter\_\_和\_\_close\_\_来用with语句引用类的实例，\_\_enter\_\_在使用with语句时调用，会话管理器在代码块开始前调用，返回值与as后的参数绑定，\_\_close\_\_会话管理器在代码块执行完成好后调用，在with语句完成时，对象销毁之前调用
+
+```python
+class Test(object):
+    def __init__(self,name,flag):
+        self.filename = name
+        self.flag = flag
+    
+    def __enter__(self):
+        '''
+        @summary: 使用with语句是调用，会话管理器在代码块开始前调用，返回值与as后的参数绑定
+        '''
+        print "__enter__:Open %s"%self.filename
+        self.f = open(self.filename,self.flag)
+        return self.f
+        
+    def __exit__(self,Type, value, traceback):
+        '''
+        @summary: 会话管理器在代码块执行完成好后调用（不同于__del__）(必须是4个参数)
+        '''
+        print "__exit__:Close %s"%self.filename
+        self.f.close()
+        
+    def __del__(self):
+        print "__del__"
+        
+if __name__ == "__main__":
+    with Test('test.txt','r+') as f:
+        content = f.read()
+        print content
+
+    print "end"
+
+
+>>> __enter__:Open test.txt
+>>> Hello world!
+>>> __exit__:Close test.txt
+>>> del
+>>>  end
+```
+
 <br>18. 大多数编程语言都有用于捕获代码中发生的错误的方法，JavaScript中的try catch之类的，python也不例外，python中对应的代码为try except finally
 
-```js
+```python
 try:
 	res = 10 / 0;
 	print res;
@@ -161,7 +203,7 @@ BaseException是所有异常的父类，python的错误捕获有类似冒泡的�
 
 <br>19. 在python中I/O可以这样写
 
-```
+```python
 try:
 	f = open('path/to/file', 'r');
 	print f.read();
@@ -172,7 +214,7 @@ finally:
 ```
 感觉十分的麻烦，于是python提供了with语句来简化IO的写法，比如上述代码可以简化为
 
-```
+```python
 with open('path/to/file', 'r') as f:
 	print f.read();
 ```
@@ -188,7 +230,7 @@ json.loads()将JSON对象转为python对象
 
 当然，更多的时候，我们更愿意用class来表示一个对象，可以理解为MVC中的model层吧，这个时候，你要是直接用上面讲的方法，妥妥的给你报错，这时候，需要对dumps方法和loads方法配制一下
 
-```js
+```python
   def student2dict(std):
   	return {
      'name': std.name,
@@ -208,7 +250,7 @@ json.loads()将JSON对象转为python对象
 
 <br>22. python由于GIL锁的原因，多线程不能使用多核，十分鸡肋，因而python多用多进程模型进行并发操作，一般来说使用的都是multiprocessing 包中的Pool来创建一个python进程池
 
-```
+```python
 from multiprocess import Pool
 
 p = Pool()
@@ -225,7 +267,7 @@ result = task.get()
 
 <br>23. python List 向list末尾插入元素的方法是append方法，有一个简便的写法
 
-```
+```python
 a = [1, 2, 3]
 a += 4,
 a // [1, 2, 3, 4]
@@ -238,7 +280,7 @@ a // [1, 2, 3, 4]
 <br>26. python内置函数zip的用法，zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
 如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用 * 号操作符，可以将元组解压为列表
 
-```js
+```python
 a, b = [1, 2, 3], [4, 5, 6]
 c = zip(a, b) # [(1, 4), (2, 5), (3, 6)]
 d = zip(*c) [(1, 2, 3), (4, 5, 6)]
@@ -251,7 +293,7 @@ min_interval = min([abs(a - b) for a, b in zip(l, l[1:])])
 
 <br>27. python中sorted函数配合lambda的用法:
 
-```
+```python
 a = [[1, 2], [3, 4], [5, 6]]
 sorted(a, key = lambda x: x[1]) # 按照数组的第二个元素的大小排序
 sorted(a, key = lambda x: x[1], reverse = True) # 按照数组的第二个元素的大小的反序大小排序
@@ -259,7 +301,7 @@ sorted(a, key = lambda x: x[1], reverse = True) # 按照数组的第二个元素
 
 <br>28. python set 的操作
 
-```
+```python
 x, y = set(['a', 'p', 's', 'm']), set(['a', 'h', 'm'])
 
 x & y = set('a', 'm') # 集合的交操作
@@ -273,7 +315,7 @@ x - y = set('p', 's') # 集合的差操作
 
 <br>31. python对象的深浅拷贝
 
-```js
+```python
 import copy
 
 a = [1, 2, [3, 4]]
@@ -283,7 +325,7 @@ c = copy.deepcopy(a) # 深拷贝
 
 <br>32. python中一行写不下的东西可以用反斜杠\分成多行来表示
 
-```
+```python
  # check conditions
     if (weather_is_hot == 1) and \
     (shark_warnings == 0):
@@ -292,7 +334,7 @@ c = copy.deepcopy(a) # 深拷贝
 
 <br>33. python合理的模块布局
 
-```
+```python
 #!/usr/bin/env python      起始行
 "this is a test module"   模块文档
 import sys, os            模块引入
@@ -318,7 +360,7 @@ if __name__ == '__main__': main方法
 
 <br>36. 在python中检测变量类型有两种方法 type() 和 isinstance()，在python2.2之后对类型和类的统一导致 isinstance()使用的越来越多，由于int既是类型也是类，使用isinstance(variable, [type1, type2])显得更为方便，如果要使用type()方法的话，可以按照如下进行一些优化
 
-```
+```python
 import types
 type(a) == types.IntType # 这是最容易想到的
 
@@ -328,7 +370,7 @@ from types import IntType # 这样写可以避免每次使用IntType的时候都
 ```
 <br>37. python中字符串和二进制串相互转换的方法
 
-```
+```python
 bin(int('256', 10)) # 0b100000000
 
 str(int('0b100000000', 2)) # 256
@@ -338,14 +380,14 @@ str(int('0b100000000', 2)) # 256
 
 <br>38. python中ASCII和字符串的转换
 
-```
+```python
 ord('a') # 97
 chr(97) # 'a'
 ```
 
 <br>39. python的随机数模块
 
-```
+```python
 from random import *
 randrange(1, 5) # 返回1-5之内的随机一个整数，包括5
 randint(1, 5) # 返回1-5之内的随机一个整数，不包括5
@@ -356,7 +398,7 @@ choice() # 返回序列中的随机一个数值
 
 <br>40. python中遍历字符串，依次减少最后一个字符的输出，简便写法
 
-```
+```python
 s = 'abcde'
 s[:None] = 'abcde' # 厉害了
 for i in [None] + range(-1, -len(s), -1):
@@ -367,7 +409,7 @@ for i in [None] + range(-1, -len(s), -1):
 
 <br>41. python中的string模块
 
-```
+```python
 import string
 string.ascii_uppercase   # ABCDEDF...XYZ
 string.ascii_lowercase   # abcdefg...xyz 
@@ -379,7 +421,7 @@ string.lower()           # 转为小写
 
 <br>42. python字符串中一些内建函数
 
-```
+```python
 string.count(substr, begin, end) # 计算字符串中下表为begin到end的范围内，substr出现的次数，如果没有指定的话，即为0 - len(string)
 string.startswith() # 检查字符串是否以XXX开始
 string.endswith() # 检查字符串是否以XXX结束
@@ -390,7 +432,7 @@ string.lower() # 将字符串替换为小写形式
 
 <br>43. python不允许修改字符串中间的一个字符，如果需要修改的话，需要用切片创建一个新字符串
 
-```
+```python
 s = 'asd'
 s[2] = 'S'
 Trackback(innermost last):
@@ -401,7 +443,7 @@ s = s[:2] + 'S' # asS
 
 <br>44. python可以用一个很方便的内建方法fromkeys()来创建一个“默认”字典，字典中的元素具有相同的值（如果没有给出，默认为None）
 
-```
+```python
 dict = {}.fromkeys(('x', 'y'), -1)
 dict # {'x': -1, 'y': -1}
 ```
@@ -412,7 +454,7 @@ python字典比较首先进行字典长度的比较，然后是key值的比较�
 
 <br>46. python字典的内建函数
 
-```
+```python
 a = {'a': 1, 'b': 2}
 a.get(key, default=None) # 获取字典中key的value，如果key不存在，则返回default值，如果没有给出default，则返回None
 a.setdefault(key, default) # 获取字典中key的value，如果key不存在，则设置key的value为default并且放回该值，如果key存在的话，返回value值
@@ -420,7 +462,7 @@ a.setdefault(key, default) # 获取字典中key的value，如果key不存在，�
 
 <br>47. python的不可变集合frosenset(存在hash，可以作为字典的key值)和可变集合set，set中的add类似list的append，set中的update类似list的extend
 
-```
+```python
 a = [1, 2]
 a.extend('asd') # [1, 2, 'a', 's', 'd']
 a.append('asd') # [1, 2, 'a', 's', 'd', 'asd']
@@ -438,7 +480,7 @@ a.update('asd') # set([1, 2, 'asd', 'a', 's', 'd'])
 
 <br>50. python使用生成器的一个例子
 
-```
+```python
 rows = [1, 2, 3, 17]
 
 def cols():
@@ -456,7 +498,7 @@ for pair in x_product_pairs:
 
 <br>51. python除了可以进行显示的参数调用，还可以传入列表和字典进行传参，传入字典的时候，可以不按照顺序，举个栗子:
 
-```
+```python
 def print_stu(name, age):
 	print name, age
 
@@ -466,7 +508,7 @@ print_stu(**{'name': 'bob', 'age': 21}) # bob, 21
 
 <br>52. python也可以在函数声明中定义接受可变数量的参数（我觉得js es6的三点运算符...就是和python学的2333）
 
-```
+```python
 def print_stu(name, *tuple, **obj):
 	pass
 
@@ -478,7 +520,7 @@ obj = { 'arg1': 'a', 'arg2': 'b' }
 
 <br>53. python中局部作用域如果想影响全局作用域的变量，可以使用global关键字
 
-```
+```python
 is_this_global = 'xyz'
 def foo():
 	global is_this_global
@@ -499,7 +541,7 @@ def
 
 <br>55. python中，class中的`__init__()`方法和`__del__()`方法类似于构造函数和解构函数（可能有同学会说，`__new__()`才是构造函数，`__new__()`函数返回一个self实例，提供给`__init__()`初始化），需要注意的是，如果类存在一个继承的非object的基类，在`__del__()`中需要首先调用`Parent.__del__()`，下面给出一个最简单的`__init__()`和`__del__()`的用法，记录该class实例化了多少个实例
 
-```js
+```python
 class InstCc(object):
 	count = 0
 	def __init__(self):
@@ -523,7 +565,7 @@ InstCc.count 0
 
 <br>57. python中class存在静态方法（staticmethod）和类方法（classmethod)，类方法定义的时候需要传入一个参数，一般是cls，可以理解为创建实例中的self，这个cls就代指类对象，可以通过cls获得类的属性，比如cls.__name__，下面给出一个栗子
 
-```
+```python
   1 #!/usr/bin/env python
   2
   3 class Stu:
@@ -545,7 +587,7 @@ InstCc.count 0
 
 <br>58. python类的继承，子类可以调用父亲类中的所有方法，但是如果在子类中需要覆盖掉父亲类的方法，例如__init__方法，可以在子类中显示的调用父亲类的方法
 
-```
+```python
 class P(object):
 	def __init__(self):
 		print "calling P's constructor"
@@ -580,7 +622,7 @@ vars(obj = None) 返回obj的属性及其的一个字典；如果没有给出obj
 
 <br>60. python except 捕获异常既可以分开操作，也可以作为一个元组合在一起捕获
 
-```
+```python
 try:
 	A
 except MyException: B
@@ -604,7 +646,7 @@ except (TypeError, ValueError), e:
 
 python提供with语句进一步的透明程序中发生的细节，让程序员更加注重于代码的实现，用打开文件作为例子介绍一下with
 
-```
+```python
 with open('path', 'r') as f:
 	for eachlines in f:
 		# ...do stuff with eachLine or f...
@@ -622,7 +664,7 @@ with open('path', 'r') as f:
 
 <br>63. python中，通过open或者file操作文件，当使用输入方法如read()或者readlines()从文件中读取行的时候，python并不会删除行结束符，同理，输出方法，write()或者writelines()也不会自动加入行结束符，这都是留给程序员自己解决的	
 
-```js
+```python
 f = open('myFile', 'r')
 data = [line.strip() for line in f.readlines()]
 f.close()
@@ -632,7 +674,7 @@ f.close()
 
 <br>65. python中关于正则表达式的操作
 
-```
+```python
 import re
 
 pattern = re.compile(r'[abc]', re.S(让.可以匹配\n)) 预编译，增加速度
@@ -662,7 +704,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 
 1. namedtuple: namedtuple是一个函数，它用来创建一个自定义的tuple对象，并且规定了tuple元素的个数，并可以用属性而不是索引来引用tuple的某个元素
 
-	```
+	```python
 	from collections import namedtuple
 	
 	Point = namedtuple('Point', ['x', 'y'])
@@ -678,7 +720,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 	
 2. deque: 使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈
 
-	```
+	```python
 	>>> from collections import deque
 	>>> q = deque(['a', 'b', 'c'])
 	>>> q.append('x')
@@ -689,7 +731,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 
 3. OrderedDict: 字典的key值排序是按照hash来的，如果想按照插入的顺序来排序，可以采用OrderedDict
 
-	```
+	```python
 	>>> from collections import OrderedDict
 	>>> d = dict([('a', 1), ('b', 2), ('c', 3)])
 	>>> d # dict的Key是无序的
@@ -700,7 +742,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 	```
 4. Counter: Counter是一个简单的计数器，例如，统计字符出现的个数
 
-	```
+	```python
 	>>> from collections import Counter
 	>>> a = Counter('programmer')
 	Counter({'r': 3, 'm': 2, 'a': 1, 'e': 1, 'g': 1, 'o': 1, 'p': 1})
@@ -710,7 +752,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 
 5. defaultdict(function, init\_dict): 允许使用者提供一个函数，以后在查询本字典的时候，如果里面没有待查的key，那就用这个函数为该键创建新值 
 
-	```
+	```python
 	>>> from collections import defaultdict
 	>>> a = defaultdict(int)
 	>>> a['a'] += 1
@@ -734,7 +776,7 @@ re.spilt(pattern, string) 分割字符串，返回list，速度比string的split
 
 其实就是 MD5, SHA1 之类的加密算法
 
-```
+```python
 import hashlib
 
 md5 = hashlib.md5()
@@ -772,7 +814,7 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 	
 * 实现堆排序
 
-	```
+	```python
 	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
 	
@@ -808,7 +850,7 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 
 	arr必须是list，此函数将list变成堆，实时操作。从而能在任何情况下使用堆的函数。
 	
-	```
+	```python
 	>>> a = [1, 5, 3]
 	>>> heapify(a)
 	>>> heappop(a)
@@ -820,7 +862,7 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 
 * merge(\*iterables)
 
-	```
+	```python
 	>>> a = [1, 3, 5]
 	>>> b = [2, 4, 6]
 	>>> c = merge(a, b) # 生成一个generator
@@ -830,7 +872,7 @@ heapq模块实现了python中的堆排序，并提供了有关方法。让用Pyt
 
 * nlargest(n, iterable[, key])，nsmallest(n, iterable[, key])，获取列表中最大、最小的几个值。与sorted(iterable, key=key, reverse=True)[:n]等价
 
-	```
+	```python
 	>>> a
 	[2, 4, 6]
 	>>> nlargest(2, a)
@@ -851,7 +893,7 @@ randint(start, stop)：从start到stop（包括stop）中随机获取一个数�
 
 * 实现二分查找
 
-    ```
+    ```python
     from bisect import *
 
     def binary_search(iter, target):
@@ -864,7 +906,7 @@ randint(start, stop)：从start到stop（包括stop）中随机获取一个数�
 
 * insort(arr, target)，将target插入arr数组
 
-    ```
+    ```python
     arr = [1, 2, 4]
     insort(arr, 3)
     print arr # [1, 2, 3, 4]
@@ -874,7 +916,7 @@ randint(start, stop)：从start到stop（包括stop）中随机获取一个数�
 
 * bisect(arr, target)，返回target应该插入arr的位置，但是不插入
 
-    ```
+    ```python
     arr = [1, 2, 4]
     print bisect(arr, 3) # 2
     ```
@@ -883,7 +925,7 @@ randint(start, stop)：从start到stop（包括stop）中随机获取一个数�
 
 <br>74. python中[[False] * 3] * 3创建的2维数组，其实每一行指向的内存地址是一样，可以通过id()查看内存, 通过索引修改一个位置的元素，会将一列全部修改，可以通过[[False] * 3 for i in xrange(3)]来创建不同的
 
-```
+```python
 arr = [[False] * 3] * 3
 arr1 = [[False] * 3 for i in xrange(3)]
 arr[0] is arr[1] # True
@@ -892,7 +934,7 @@ arr1[0] is arr1[1] # False
 
 <br>75. python2.6新增了一种格式化字符串函数format()
 
-```
+```python
 "{0} {1}".format("hello", "world") # hello world
 "{str1} {str2}".format(str1 = 'hello', str2 = 'world') # hello world
 obj = {'str1': 'hello', 'str2': 'world'}

@@ -65,6 +65,10 @@ tags:
 * [为什么用 Numpy 还是慢, 你用对了吗?](https://zhuanlan.zhihu.com/p/28626431)
 * [python中classmethod和staticmethod的区别](https://www.pythoncentral.io/difference-between-staticmethod-and-classmethod-in-python/)
 
+## 大数据
+
+* [Google MapReduce](http://blog.bizcloudsoft.com/wp-content/uploads/Google-MapReduce%E4%B8%AD%E6%96%87%E7%89%88_1.0.pdf)
+
 ## 其他
 
 * [重写、覆盖、重载、多态几个概念的区别分析](https://blog.csdn.net/ericbaner/article/details/3857268)

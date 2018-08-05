@@ -112,3 +112,4 @@ Tmux是一个终端复用软件，BSD协议发布。一般用于在一个命令�
 
 * [优雅地使用命令行：Tmux 终端复用](http://harttle.com/2015/11/06/tmux-startup.html)
 * [Tmux 快捷键 & 速查表](https://gist.github.com/ryerh/14b7c24dfd623ef8edc7)
+* [Tmux使用手册](http://louiszhai.github.io/2017/09/30/tmux/)
