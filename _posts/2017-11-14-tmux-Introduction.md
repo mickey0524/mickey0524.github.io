@@ -36,6 +36,7 @@ Tmux是一个终端复用软件，BSD协议发布。一般用于在一个命令�
 
 	* tmux 创建一个默认名字的session，并且进入该session
 	* tmux ls 查看当前tmux-server中有多少session
+    * tmux kill-session -t session-name 清空tmux-server中名字为session-name的session
 	* tmux kill-server 清空tmux-server中的所有session
 	* tmux new -s name 创建一个以name为名字的session，并且进入该session
 	* tmux a -t name 进入名字为name的session
