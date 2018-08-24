@@ -22,7 +22,7 @@ tags:
     * golang中当数组作为函数的参数时，传递的是数组的副本，在函数中修改不会影响到原数组，如果需要修改数组，可以传递指针
     * golang的`if`有一个强大的地方就是条件判断语句里面允许声明一个变量，这个变量的作用域只能在该条件逻辑块内，在其他地方就不起作用了，如下所示
 
-        ```golang
+        ```
         // 计算获取值x,然后根据x返回的大小，判断是否大于10。
         if x := computedValue(); x > 10 {
             fmt.Println("x is greater than 10")
@@ -36,20 +36,20 @@ tags:
 
     * golang的函数也支持变参，即接受变参的函数是有着不定数量的参数的
 
-        ```golang
+        ```
         func myfunc(arg ...int) {}
         ```
 
         `arg ...int`告诉Go这个函数接受不定数量的参数。注意，这些参数的类型全部是`int`。在函数体中，变量`arg`是一个`int`的`slice`：
 
-        ```golang
+        ```
         for _, n := range arg {
             fmt.Printf("And the number is: %d\n", n)
         }
         ```
     * golang有一个非常不错的设计 `defer`，你可以在函数中添加多个`defer`语句。当函数执行到最后时，这些`defer`语句会按照`逆序执行(先进后出模式)`，最后该函数返回。特别是当你在进行一些打开资源的操作或异步完成标示时，非常有用
 
-        ```golang
+        ```
         func ReadWrite() bool {
             file.Open("file")
             defer file.Close()
@@ -75,7 +75,7 @@ tags:
 
         下面这个函数演示了如何在过程中使用`panic`
 
-        ```golang
+        ```
         var user = os.Getenv("USER")
 
         func init() {
@@ -87,7 +87,7 @@ tags:
 
         下面这个函数检查作为其参数的函数在执行时是否会产生`panic`:
 
-        ```golang
+        ```
         func throwsPanic(f func()) (b bool) {
             defer func() {
                 if x := recover(); x != nil {
@@ -101,7 +101,7 @@ tags:
 
     * struct的method将指针作为receiver
 
-        ```golang
+        ```
         func (b *Box) SetColor(c Color) {
             b.color = c
         }
