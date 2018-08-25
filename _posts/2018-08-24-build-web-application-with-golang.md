@@ -108,3 +108,104 @@ tags:
         ```
 
         我们经常会看到上面类似的`method`，为啥使用`*Box`作为接收器而不使用`Box`呢，使用数值作为receiver的时候，其实`func`中的b是一个copy，如果需要修改的话，需要传递指针，和数值和数组相似
+
+    * golang的空interface(interface {})不含任何的method，因此任何类型都实现了空interface，空的interface对描述起不到任何作用，但是空interface在我们需要存储任意类型的数值的时候相当有用，因为它可以存储任意类型的数值
+
+        ```
+        // 定义a为空接口
+        var a interface{}
+        var i int = 5
+        s := "Hello world"
+        // a可以存储任意类型的数值
+        a = i
+        a = s
+        ```
+
+    * 我们知道golang的interface可以接收实现方法的任何类型，那么是否有python中的type，js中的typeof类似的方法来让我们知道实现接口的是哪种具体类型呢，Go语言里面有一个语法，可以直接判断是否是该类型的变量： value, ok = element.(T)，这里value就是变量的值，ok是一个bool类型，element是interface变量，T是断言的类型
+
+        ```
+        package main
+
+        import (
+            "fmt"
+            "strconv"
+        )
+
+        type Element interface{}
+        type List [] Element
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        //定义了String方法，实现了fmt.Stringer
+        func (p Person) String() string {
+            return "(name: " + p.name + " - age: "+strconv.Itoa(p.age)+ " years)"
+        }
+
+        func main() {
+            list := make(List, 3)
+            list[0] = 1 // an int
+            list[1] = "Hello" // a string
+            list[2] = Person{"Dennis", 70}
+
+            for index, element := range list {
+                if value, ok := element.(int); ok {
+                    fmt.Printf("list[%d] is an int and its value is %d\n", index, value)
+                } else if value, ok := element.(string); ok {
+                    fmt.Printf("list[%d] is a string and its value is %s\n", index, value)
+                } else if value, ok := element.(Person); ok {
+                    fmt.Printf("list[%d] is a Person and its value is %s\n", index, value)
+                } else {
+                    fmt.Printf("list[%d] is of a different type\n", index)
+                }
+            }
+        }
+        ```
+
+        此外，在switch中还有更简单的做法
+
+        ```
+        package main
+
+        import (
+            "fmt"
+            "strconv"
+        )
+
+        type Element interface{}
+        type List [] Element
+
+        type Person struct {
+            name string
+            age int
+        }
+
+        //打印
+        func (p Person) String() string {
+            return "(name: " + p.name + " - age: "+strconv.Itoa(p.age)+ " years)"
+        }
+
+        func main() {
+            list := make(List, 3)
+            list[0] = 1 //an int
+            list[1] = "Hello" //a string
+            list[2] = Person{"Dennis", 70}
+
+            for index, element := range list{
+                switch value := element.(type) {
+                    case int:
+                        fmt.Printf("list[%d] is an int and its value is %d\n", index, value)
+                    case string:
+                        fmt.Printf("list[%d] is a string and its value is %s\n", index, value)
+                    case Person:
+                        fmt.Printf("list[%d] is a Person and its value is %s\n", index, value)
+                    default:
+                        fmt.Println("list[%d] is of a different type", index)
+                }
+            }
+        }
+        ```
+
+        需要注意的是，`element.(type)`语法不能在switch外的任何逻辑里面使用，如果你要在switch外面判断一个类型就使用`value, ok := element.(type)`方法
