@@ -209,3 +209,126 @@ tags:
         ```
 
         需要注意的是，`element.(type)`语法不能在switch外的任何逻辑里面使用，如果你要在switch外面判断一个类型就使用`value, ok := element.(type)`方法
+    
+    * golang中的channel一定要用make初始化，channel分为有缓冲的channel和无缓冲的channel
+
+        * 无缓冲的channel
+
+            ```
+            package main
+
+            import "fmt"
+            
+            func sum(a []int, c chan int) {
+            	total := 0
+            	for _, v := range a {
+            		total += v
+            	}
+            	c <- total  // send total to c
+            }
+            
+            func main() {
+            	a := []int{7, 2, 8, -9, 4, 0}
+            
+            	c := make(chan int)
+            	go sum(a[:len(a)/2], c)
+            	go sum(a[len(a)/2:], c)
+            	x, y := <-c, <-c  // receive from c
+            
+            	fmt.Println(x, y, x + y)
+            }
+            ```
+        
+        * 带缓冲的channel
+
+            上面我们介绍了默认的非缓存类型的channel，不过Go也允许指定channel的缓冲大小，很简单，就是channel可以存储多少元素。ch:= make(chan bool, 4)，创建了可以存储4个元素的bool 型channel。在这个channel 中，前4个元素可以无阻塞的写入。当写入第5个元素时，代码将会阻塞，直到其他goroutine从channel 中读取一些元素，腾出空间，下面我们来看看这个例子
+
+            ```
+            package main
+            
+            import "fmt"
+            
+            func main() {
+            	c := make(chan int, 2)//修改2为1就报错，修改2为3可以正常运行
+            	c <- 1
+            	c <- 2
+            	fmt.Println(<-c)
+            	fmt.Println(<-c)
+            }
+            //修改为1报如下的错误:
+            //fatal error: all goroutines are asleep - deadlock!
+            关于这个错误的解释(https://www.cnblogs.com/ghj1976/p/4295013.html)
+            ```
+    
+        * select 处理多个 channel 的操作
+
+            我们上面介绍的都是只有一个channel的情况，那么如果存在多个channel的时候，我们该如何操作呢，Go里面提供了一个关键字select，通过select可以监听channel上的数据流动。
+
+            select默认是阻塞的，只有当监听的channel中有发送或接收可以进行时才会运行，当多个channel都准备好的时候，select是随机的选择一个执行的
+            
+            ```
+            package main
+            
+            import "fmt"
+            
+            func fibonacci(c, quit chan int) {
+            	x, y := 1, 1
+            	for {
+            		select {
+            		case c <- x:
+            			x, y = y, x + y
+            		case <-quit:
+            			fmt.Println("quit")
+            			return
+            		}
+            	}
+            }
+            
+            func main() {
+            	c := make(chan int)
+            	quit := make(chan int)
+            	go func() {
+            		for i := 0; i < 10; i++ {
+            			fmt.Println(<-c)
+            		}
+            		quit <- 0
+            	}()
+            	fibonacci(c, quit)
+            }
+            ```
+            
+            在select里面还有default语法，select其实就是类似switch的功能，default就是当监听的channel都没有准备好的时候，默认执行的（select不再阻塞等待channel）。
+
+            ```
+            select {
+            case i := <-c:
+            	// use i
+            default:
+            	// 当c阻塞的时候执行这里
+            }
+            ``` 
+
+        * 利用select设置超时
+
+            有时候会出现goroutine阻塞的情况，那么我们如何避免整个程序进入阻塞的情况呢？我们可以利用select来设置超时，通过如下的方式实现： 
+
+            ```
+            func main() {
+            	c := make(chan int)
+            	o := make(chan bool)
+            	go func() {
+            		for {
+            			select {
+            				case v := <- c:
+            					println(v)
+            				case <- time.After(5 * time.Second):
+            					println("timeout")
+            					o <- true
+            					break
+            			}
+            		}
+            	}()
+            	<- o
+            }
+            ```
+
