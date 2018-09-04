@@ -142,4 +142,6 @@ function patchVnode (oldVnode, vnode, insertedVnodeQueue, removeOnly) {
 }
 ```
 
+由于换了新的方向，没有精力更新vue源码分析系列，暂停更新，请见谅
+
 🚧under construction🚧
