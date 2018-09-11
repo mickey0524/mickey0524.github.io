@@ -70,6 +70,7 @@ tags:
 ## 大数据
 
 * [Google MapReduce](http://blog.bizcloudsoft.com/wp-content/uploads/Google-MapReduce%E4%B8%AD%E6%96%87%E7%89%88_1.0.pdf)
+* [ZooKeeper概念](https://juejin.im/post/5b970f1c5188255c865e00e7?utm_source=gold_browser_extension)
 
 ## 数据库
 
