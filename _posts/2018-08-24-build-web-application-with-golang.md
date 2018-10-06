@@ -338,4 +338,41 @@ tags:
 
         * 创建Listen Socket, 监听指定的端口, 等待客户端请求到来
         * Listen Socket接受客户端的请求, 得到Client Socket, 接下来通过Client Socket与客户端通信
-        * 处理客户端的请求, 首先从Client Socket读取HTTP请求的协议头, 如果是POST方法, 还可能要读取客户端提交的数据, 然后交给相应的handler处理请求, handler处理完毕准备好客户端需要的数据, 通过Client Socket写给客户端
+        * 处理客户端的请求, 首先从Client Socket读取HTTP请求的协议头, 如果是POST方法, 还可能要读取客户端提交的数据, 然后交给相应的handler处理请求, handler处理完毕准备好客户端需要的数据, 通过Client Socket写给客户端 
+
+* golang中只有interface变量具有反射特性，在interface变量的内部存储着一个pair对--(value, type)，value指向interface实际类型的value，type指向实际类型，这个pair对是实现reflect的基础
+
+    [golang反射简介](https://juejin.im/post/5a75a4fb5188257a82110544)
+
+* golang中另外一个序列化反序列化的包`encoding/gob`，当只在golang代码间序列化的时候，用gob会比json快，而且，用gob能够接受的类型会比json多，当需要和其他端或者语言通信的时候，就只能用json了
+
+    ```
+    import (
+        "encoding/gob"
+        "bytes"
+        "fmt"
+    )
+
+    type dict map[string]interface{}
+
+    func main() {
+        var buf bytes.Buffer   
+        enc := gob.NewEncoder(&buf)
+        dec := gob.NewDecoder(&buf)
+
+        err := enc.Encode(dict)
+        if err != nil {
+            fmt.Println("encode error")
+        } 
+        
+        var d1 dict
+        err = dec.Decode(&d1)
+    }
+    ```
+    
+    当在gob中使用interface{}类型的时候，需要调用register方法去告诉gob interface{}类型可能代表的类型
+    
+    ```
+    gob.register(map[string]interface{})
+    gob.register([]interface{})
+    ```

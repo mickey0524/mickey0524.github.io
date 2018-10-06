@@ -67,6 +67,10 @@ tags:
 * [为什么用 Numpy 还是慢, 你用对了吗?](https://zhuanlan.zhihu.com/p/28626431)
 * [python中classmethod和staticmethod的区别](https://www.pythoncentral.io/difference-between-staticmethod-and-classmethod-in-python/)
 
+## golang
+
+* [理解 Go interface 的 5 个关键点](https://sanyuesha.com/2017/07/22/how-to-understand-go-interface/)
+
 ## 大数据
 
 * [Google MapReduce](http://blog.bizcloudsoft.com/wp-content/uploads/Google-MapReduce%E4%B8%AD%E6%96%87%E7%89%88_1.0.pdf)
