@@ -70,6 +70,7 @@ tags:
 ## golang
 
 * [理解 Go interface 的 5 个关键点](https://sanyuesha.com/2017/07/22/how-to-understand-go-interface/)
+* [golang的文件锁操作](https://lihaoquan.me/2016/11/4/about-filelock.html)
 
 ## 大数据
 
