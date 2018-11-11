@@ -17,7 +17,7 @@ Flock是对于整个文件的建议性锁（不强求 goroutine 遵守），如�
 
 ## 函数
 
-```go
+```
 import "syscall"
 
 func Flock(fd int, how int) (err error)
@@ -36,7 +36,7 @@ how 主要的参数类型：
 
 下面的例子来自于 NSQ，位于 `nsq/internal/dirlock`，用于实现对目录的加锁
 
-```go
+```
 // +build !windows
 
 package dirlock
