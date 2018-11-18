@@ -71,6 +71,7 @@ tags:
 
 * [理解 Go interface 的 5 个关键点](https://sanyuesha.com/2017/07/22/how-to-understand-go-interface/)
 * [golang的文件锁操作](https://lihaoquan.me/2016/11/4/about-filelock.html)
+* [一些golang面试题](https://github.com/xmge/gonote/blob/master/golang%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%8D%B71.md)
 
 ## 大数据
 
