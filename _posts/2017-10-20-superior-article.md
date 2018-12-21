@@ -85,6 +85,7 @@ tags:
 * [BST 二叉搜索树](https://songlee24.github.io/2015/01/13/binary-search-tree/)
 * [Mysql索引简明教程](https://zhuanlan.zhihu.com/p/40820574)
 * [三种并发控制方法（乐观锁、悲观锁、MVCC）](https://draveness.me/database-concurrency-control)
+* [MySQL浅谈](https://juejin.im/post/5c1a042e51882545e24f0e46?utm_source=gold_browser_extension)
 
 ## 其他
 
