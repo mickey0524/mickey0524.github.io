@@ -91,4 +91,5 @@ tags:
 
 * [重写、覆盖、重载、多态几个概念的区别分析](https://blog.csdn.net/ericbaner/article/details/3857268)
 * [既然有HTTP请求，为什么还要用RPC调用](https://www.zhihu.com/question/41609070)
+* [一致性哈希算法的理解与实践（github里有实现的代码）](https://yikun.github.io/2016/06/09/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E8%B7%B5/)
 
