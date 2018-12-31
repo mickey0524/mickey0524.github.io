@@ -79,6 +79,7 @@ tags:
 * [ZooKeeper概念](https://juejin.im/post/5b970f1c5188255c865e00e7?utm_source=gold_browser_extension)
 * [什么是 Spark？](write_to_user_profil://juejin.im/post/5ba065046fb9a05cf7158995?utm_source=gold_browser_extension)
 * [Spark实现行列转换pivot和unpivot](https://juejin.im/post/5b1e343f518825137c1c6a27)
+* [Kafka设计解析](http://www.jasongj.com/2015/03/10/KafkaColumn1/#Kafka%E7%B3%BB%E5%88%97%E6%96%87%E7%AB%A0)
 
 ## 数据库
 
