@@ -59,6 +59,7 @@ tags:
 * [不务正业的前端之SSO（单点登录）实践](https://juejin.im/post/5b51f39b5188251a9f24a264?utm_source=gold_browser_extension)
 * [ES9 新特点](https://juejin.im/post/5b685ed1e51d4533f52859e8?utm_source=gold_browser_extension)
 * [css animation steps](http://ghmagical.com/article/page/id/0gU2Wefas7hn)
+* [2018年的炫酷特性 demo](https://tympanus.net/codrops2018/)
 
 ## python
 
