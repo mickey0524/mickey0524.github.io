@@ -88,6 +88,7 @@ tags:
 * [Mysql索引简明教程](https://zhuanlan.zhihu.com/p/40820574)
 * [三种并发控制方法（乐观锁、悲观锁、MVCC）](https://draveness.me/database-concurrency-control)
 * [MySQL浅谈](https://juejin.im/post/5c1a042e51882545e24f0e46?utm_source=gold_browser_extension)
+* [Redis](https://juejin.im/post/5c3c1df2e51d45207f54b189?utm_source=gold_browser_extension)
 
 ## 其他
 
