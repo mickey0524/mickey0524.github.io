@@ -34,6 +34,17 @@ tags:
 		
 		![sort](/img/in-post/interview/sort.jpg)
 		
+		| 排序 | 是原地排序 | 是否稳定 | 最好 | 最坏 | 平均 |
+		| ---- | -------- | ------ | --- | ---- | --- |
+		| 冒泡 | 是 | 是 | O(n) | O(n^2) | O(n^2) |
+		| 插入 | 是 | 是 | O(n) 从尾巴开始比较 | O(n^2) | O(n^2) |
+		| 选择 | 是 | 否 | O(n^2) | O(n^2) | O(n^2) |
+		| 归并 | 不是| 是 | O(nlogn) | O(nlogn) | O(nlogn)|
+		| 快速 | 不是| 不是 | O(nlogn) | O(n^2) | O(nlogn) |
+		| 堆 | 是 | 不是 | O(nlogn) | O(nlogn) | O(nlogn) |
+		| 计数| 不是 | 是 | O(n + k) | O(n + k) | O(n + k) | 
+		| 基数| 不是 | 是 | O(m * n) | O(m * n) | O(m * n) |
+ 		
 	4. 写一个快排给我看
 
 		```python
