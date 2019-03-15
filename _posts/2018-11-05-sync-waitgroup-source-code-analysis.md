@@ -14,6 +14,7 @@ tags:
 针对Golang 1.9的sync.WaitGroup进行分析，与Golang 1.10基本一样除了将`panic`改为了`throw`之外其他的都一样。
 源代码位置：`sync\waitgroup.go`。  
 ## 结构体
+
 ```
 type WaitGroup struct {
 	noCopy noCopy  // noCopy可以嵌入到结构中，在第一次使用后不可复制,使用go vet作为检测使用
@@ -23,11 +24,14 @@ type WaitGroup struct {
 	sema   uint32   // 信号量，用于唤醒goroutine
 }
 ```
+
 不知道大家是否和我一样，不论是使用Java的CountDownLatch还是Golang的WaitGroup，都会疑问，可以装下多个线程|协程等待呢？看了源码后可以回答了，可以装下
+
 ```
 1111 1111 1111 ... 1111
 \________32___________/
 ```
+
 2^32个辣么多！所以不需要担心单机情况下会被撑爆了。
 ## 函数
 以下代码已经去掉了与核心代码无关的race代码。
@@ -91,8 +95,10 @@ func (wg *WaitGroup) state() *uint64 {
 	}
 }
 ```
+
 ### Done
-相当于Add(-1)。  
+相当于Add(-1)。
+
 ```
 func (wg *WaitGroup) Done() {
     // 计数器减一
@@ -102,7 +108,8 @@ func (wg *WaitGroup) Done() {
 
 
 ### Wait
-执行阻塞，直到所有的WaitGroup数量变成0。  
+执行阻塞，直到所有的WaitGroup数量变成0。 
+ 
 ```
 func (wg *WaitGroup) Wait() {
 	// 获取到wg.state1数组中元素组成的二进制对应的十进制的值

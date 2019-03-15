@@ -25,7 +25,7 @@ RWMutex 是抢占式的读写锁，写锁之后来的读锁是加不上的
 
 ## 结构体
 
-```go
+```
 type RWMutex struct {
     w           Mutex  // 互斥锁
     writerSem   uint32 // 写锁信号量
@@ -37,7 +37,7 @@ type RWMutex struct {
 
 常量
 
-```go  
+```  
 const rwmutexMaxReaders = 1 << 30   // 支持最多2^30个读锁
 ```
 
@@ -49,7 +49,7 @@ const rwmutexMaxReaders = 1 << 30   // 支持最多2^30个读锁
 
 提供写锁加锁操作
 
-```go  
+```  
 func (rw *RWMutex) Lock() {
 	// 使用 Mutex 锁
 	rw.w.Lock()
@@ -66,7 +66,7 @@ func (rw *RWMutex) Lock() {
 
 提供写锁释放操作
 
-```go
+```
 func (rw *RWMutex) Unlock() {
 	// 加上 Lock 的时候减去的 rwmutexMaxReaders
 	r := atomic.AddInt32(&rw.readerCount, rwmutexMaxReaders)
@@ -88,7 +88,7 @@ func (rw *RWMutex) Unlock() {
 
 提供读锁操作
 
-```go 
+``` 
 func (rw *RWMutex) RLock() {
 	// 每次 goroutine 获取读锁时，readerCount+1
     // 如果写锁已经被获取，那么 readerCount 在 -rwmutexMaxReaders 与 0 之间，这时挂起获取读锁的 goroutine
@@ -105,7 +105,7 @@ func (rw *RWMutex) RLock() {
 
 RUnLock 方法对读锁进行解锁
 
-```go
+```
 func (rw *RWMutex) RUnlock() {
 	// 写锁等待状态，检查当前是否可以进行获取
 	if r := atomic.AddInt32(&rw.readerCount, -1); r < 0 {
@@ -129,7 +129,7 @@ func (rw *RWMutex) RUnlock() {
 
 可以看到 `RWMutex` 实现接口 `Locker`
 
-```go  
+```  
 type Locker interface {
 	Lock()
 	Unlock()
@@ -138,7 +138,7 @@ type Locker interface {
 
 而方法 `RLocker` 就是将 `RWMutex` 转换为 `Locker`
 
-```go
+```
 func (rw *RWMutex) RLocker() Locker {
 	return (*rlocker)(rw)
 }

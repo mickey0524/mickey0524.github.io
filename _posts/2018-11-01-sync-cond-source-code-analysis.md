@@ -16,9 +16,10 @@ Cond的主要作用就是获取锁之后，wait()方法会等待一个通知，�
 针对Golang 1.9的sync.Cond，与Golang 1.10一样。 源代码位置：sync\cond.go。
 
 ## 结构体
-```go
+
+```
 type Cond struct {
-	noCopy noCopy  // noCopy可以嵌入到结构中，在第一次使用后不可复制,使用go vet作为检测使用
+	noCopy noCopy  // noCopy可以嵌入到结构中，在第一次使用后不可复制,使 go vet 作为检测使用
 
 	// 根据需求初始化不同的锁，如*Mutex 和 *RWMutex
 	L Locker
@@ -27,8 +28,10 @@ type Cond struct {
 	checker copyChecker // 复制检查,检查cond实例是否被复制
 }
 ```
+
 再来看看等待队列`notifyList`结构体： 
-```go  
+
+``` 
 type notifyList struct {
 	wait   uint32
 	notify uint32
@@ -47,7 +50,7 @@ type notifyList struct {
 
 大家可以想想为什么一定要是指针呢？ 因为如果传入 Locker 实例，在调用 `c.L.Lock()` 和 `c.L.Unlock()` 的时候，会频繁发生锁的复制，会导致锁的失效，甚至导致死锁。
 
-```go  
+``` 
 func NewCond(l Locker) *Cond {
 	return &Cond{L: l}
 }
@@ -59,7 +62,7 @@ func NewCond(l Locker) *Cond {
 
 因为c。当等待第一次恢复时，L并没有被锁定，调用者通常不能假定等待返回时的条件是正确的。相反，调用者应该在循环中等待:
 
-```go  
+```
 func (c *Cond) Wait() {
     // 检查c是否是被复制的，如果是就panic
 	c.checker.check()
@@ -72,8 +75,10 @@ func (c *Cond) Wait() {
 	c.L.Lock()
 }
 ```
+
 判断cond是否被复制。
-```go  
+
+```  
 type copyChecker uintptr
 
 func (c *copyChecker) check() {
@@ -88,7 +93,8 @@ func (c *copyChecker) check() {
 
 ### Signal
 唤醒等待队列中的一个goroutine，一般都是任意唤醒队列中的一个goroutine，为什么没有选择FIFO的模式呢？这是因为FiFO模式效率不高，虽然支持，但是很少使用到。
-```go  
+
+```
 func (c *Cond) Signal() {
     // 检查c是否是被复制的，如果是就panic
 	c.checker.check()
@@ -99,7 +105,8 @@ func (c *Cond) Signal() {
 
 ### Broadcast
 唤醒等待队列中的所有goroutine。
-```go  
+
+```
 func (c *Cond) Broadcast() {
     // 检查c是否是被复制的，如果是就panic
 	c.checker.check()
@@ -109,7 +116,8 @@ func (c *Cond) Broadcast() {
 ```
 
 ### 实例
-```go  
+
+```  
 package main
 
 import (

@@ -17,7 +17,8 @@ sync.Once可以实现单例模式，确保sync.Once.Do(f func())只会被执行�
 
 ## 结构体
 Once结构体定义如下：
-```go  
+
+```  
 type Once struct {
 	m    Mutex
 	done uint32   // 初始值为0表示还未执行过，1表示已经执行过
@@ -25,7 +26,8 @@ type Once struct {
 ```
 
 ## Do
-```go  
+
+```  
 func (o *Once) Do(f func()) {
     // done==1表示已经执行过了，直接结束返回
 	if atomic.LoadUint32(&o.done) == 1 {
