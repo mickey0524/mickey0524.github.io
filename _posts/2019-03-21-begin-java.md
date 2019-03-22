@@ -107,3 +107,69 @@ tags:
 * 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
 
 * synchronized 作用域普通函数和静态函数的时候，其实是有两个锁，对象锁和类锁，两个线程不能同时访问一个对象的两个 synchronized 普通方法，但是两个线程可以一个访问 synchronized 普通方法，一个访问 synchronized 类方法，因为是两个锁的缘故
+	
+* Java 反射与注解
+
+	[Java 反射与注解](https://www.cnblogs.com/xiashengwang/p/8942252.html)
+	
+* Java 线程操作中的 wait 方法和 notity 方法
+
+	这两个方法多与 synchronized(obj) 一同使用，wait 方法是释放当前获取的锁，同时线程休眠，等待其他线程调用 obj.notity() 或 obj.notityAll() 唤醒继续执行，notity 方法是唤醒其他执行 wait 方法的线程，但是并不马上释放锁，而是等 synchronized 块自己执行完毕
+	
+	```java
+	// 三线程打印问题
+	public class MyThreadPrinter2 implements Runnable {   
+		  
+	    private String name;   
+	    private Object prev;   
+	    private Object self;   
+	  
+	    private MyThreadPrinter2(String name, Object prev, Object self) {   
+	        this.name = name;   
+	        this.prev = prev;   
+	        this.self = self;   
+	    }   
+	  
+	    @Override  
+	    public void run() {   
+	        int count = 10;   
+	        while (count > 0) {   
+	            synchronized (prev) {   
+	                synchronized (self) {   
+	                    System.out.print(name);   
+	                    count--;  
+	                    
+	                    self.notify();   
+	                }   
+	                try {   
+	                    prev.wait();   
+	                } catch (InterruptedException e) {   
+	                    e.printStackTrace();   
+	                }   
+	            }   
+	  
+	        }   
+	    }   
+	  
+	    public static void main(String[] args) throws Exception {   
+	        Object a = new Object();   
+	        Object b = new Object();   
+	        Object c = new Object();   
+	        MyThreadPrinter2 pa = new MyThreadPrinter2("A", c, a);   
+	        MyThreadPrinter2 pb = new MyThreadPrinter2("B", a, b);   
+	        MyThreadPrinter2 pc = new MyThreadPrinter2("C", b, c);   
+	           
+	           
+	        new Thread(pa).start();
+	        Thread.sleep(100);  //确保按顺序A、B、C执行
+	        new Thread(pb).start();
+	        Thread.sleep(100);  
+	        new Thread(pc).start();   
+	        Thread.sleep(100);  
+	        }   
+	}
+	```
+	
+* Java 多线程
+
+	[Java 多线程](https://blog.csdn.net/evankaka/article/details/44153709)
