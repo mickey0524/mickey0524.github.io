@@ -98,6 +98,12 @@ tags:
 	bitSet.set(i);  // 将第 i 位置为“ 开” 状态
 	bitSet.clear(i);  // 将第 i 位置为“ 关” 状态
 	```
-	
 
-	
+* Java ReentrantLock 锁的用处
+
+	* synchronized 调度的时候优先考虑优先级高的线程，ReentrantLock 可以设置锁为公平的
+	* 可以设置 Condition 一个或者多个条件锁，每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程
+
+* 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
+
+* synchronized 作用域普通函数和静态函数的时候，其实是有两个锁，对象锁和类锁，两个线程不能同时访问一个对象的两个 synchronized 普通方法，但是两个线程可以一个访问 synchronized 普通方法，一个访问 synchronized 类方法，因为是两个锁的缘故
