@@ -103,6 +103,15 @@ tags:
 
 	* synchronized 调度的时候优先考虑优先级高的线程，ReentrantLock 可以设置锁为公平的
 	* 可以设置 Condition 一个或者多个条件锁，每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程
+	* 在申请锁的时候，为了避免无休止等待，可以使用 tryLock 方法，在一段时候后，未获得锁，立即返回
+
+		```java
+		if (myLock.tryLock(100, TimeUnit.MILLISECONDS)) {
+			...
+		} else {
+			...
+		}
+		```
 
 * 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
 
@@ -173,3 +182,30 @@ tags:
 * Java 多线程
 
 	[Java 多线程](https://blog.csdn.net/evankaka/article/details/44153709)
+	
+* Java volatile 关键字
+
+	当一个变量只有赋值操作的时候，用 volatile 很好，但是 volatile 并不能保证原子性
+
+	* 立即刷新可见性
+	* 禁止指令重排序
+
+	[Java volatile](https://www.cnblogs.com/dolphin0520/p/3920373.html)
+
+* Java 阻塞队列
+
+	线程安全的队列，可以用于生产者消费者模型
+	
+	* LinkedBlockingQueue
+	* ArrayBlockingQueue
+	* DelayQueue 阻塞时间有限的阻塞队列，只有那些延迟已经超过时间的元素可以从队列中移出
+	* PriorityBlockingQueue 优先级阻塞队列
+	* void put(E element) 添加元素，在必要时阻塞
+	* E take() 移除并放回头元素，必要时阻塞
+	* boolean offer(E element, long time, TimeUnit unit) 添加给定的元素
+	* E poll(long time, TimeUnit unit) 移除并返回头元素
+
+* Java ConcurrentHashMap 用法
+
+	[ConcurrentHashMap 用法](https://blog.csdn.net/zero__007/article/details/49833819)
+	
