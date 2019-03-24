@@ -9,7 +9,7 @@ tags:
     - java
 ---
 
-最近在面试的时候，发现很多公司的技术栈都是 Java，虽然语言不是壁垒，但还是会有很多不变，另外，我想看看 Flink 的源码，于是开始学习 Java
+最近在面试的时候，发现很多公司的技术栈都是 Java，虽然语言不是壁垒，但还是会有很多不便，另外，我想看看 Flink 的源码，于是开始学习 Java
 
 * Java 泛型的介绍
 
@@ -208,4 +208,32 @@ tags:
 * Java ConcurrentHashMap 用法
 
 	[ConcurrentHashMap 用法](https://blog.csdn.net/zero__007/article/details/49833819)
+	
+* Java 多线程使用方法
+
+	* 继承 Thread 类，实现 run 方法，无返回值
+	* 实现 Runnable 接口，实现 run 方法，无返回值，需要使用 Thread 或 Executor 调用
+
+		```
+		public class Thread1 implements Runnable {}
+		
+		...
+		
+		new Thread(new Thread1()).start()
+		
+		...
+		
+		ExecutorService pool = Executors.newCachedThreadPool();
+		pool.submit(new Thread1());
+		``` 
+	
+	* 实现 Callable 接口，实现 call 方法，有返回值
+
+		```
+		public class Thread2 implements Callable {}
+		
+		ExecutorService pool = Executors.newCachedThreadPool();
+		Future<T> f = pool.submit(new Thread2());
+		System.out.Println(f.get());
+		```
 	
