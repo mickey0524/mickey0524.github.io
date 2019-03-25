@@ -168,7 +168,7 @@ tags:
 		
 		磁盘状态 top/free
 		
-		进程端口号占用 lsof -i:进程号/ps aux | grep 进程号
+		进程端口号占用 `lsof -i:进程号` / `ps aux | grep` 进程号
 	
 	21. 写一下判断数学表达式是否正确的程序
 		
@@ -253,7 +253,6 @@ tags:
 		1. 允许的实体大小不同
 		2. 安全性不同
 		3. Restful 中承担的责任不同
-		
  	4. HTTPS如何保证加密传输
 	
 		非对称加密 + 对称加密
@@ -288,3 +287,130 @@ tags:
 		这道题应该有内存限制，没有的话，直接 2g 内存快排即可
 		
 		有内存限制的话，桶排序
+
+* 腾讯（后台开发一面）
+
+	* 实现一个函数，接受数组作为参数，数组元素为整数或者数组（数组里面还可能有数组），函数返回扁平化后的数组。要求给出不使用递归、不使用字符串处理的解法
+		
+		```
+		[1, [2, [ [3, 4], 5, []], 6]]，输出 [1, 2, 3, 4, 5, 6]
+		
+		from collections import deque
+
+		def solution(arr):
+		    res = []
+		    stack = deque([(arr, 0)])
+		    
+		    while len(stack) > 0:
+		        cur_arr, idx = stack.popleft()
+		        for i in xrange(idx, len(cur_arr)):
+		            if type(cur_arr[i]) is not list:
+		                res.append(cur_arr[i])
+		            else:
+		                stack.appendleft((cur_arr, i + 1))
+		                stack.appendleft((cur_arr[i], 0))
+		                break
+		    
+		    return res
+		    
+		if __name__ == '__main__':
+		    arr = [1, [2, [ [3, 4], 5, []], 6]]
+		    print solution(arr)
+		```
+
+	* 假设有一个升序数组，经过不确定长度的偏移，得到一个新的数组，我们称为循环升序数组,（例：[0,3,4,6,7] 可能变成 [6,7,0,3,4]）
+
+		```
+		def binary_sort(arr, target):
+		    length = len(arr)
+		    l, r, m = 0, length - 1, -1
+		    
+		    while l <= r:
+		        m = l + (r - l) / 2
+		        if nums[m] == target:
+		            return True
+		        while l < m and nums[l] == nums[m]:
+		            l += 1
+		        if nums[l] <= nums[m]:
+		            if target < nums[m] and target >= nums[l]:
+		                r = m - 1
+		            else:
+		                l = m + 1
+		        else:
+		            if target > nums[m] and target <= nums[r]:
+		                l = m + 1
+		            else:
+		                r = m - 1
+		     
+		     return False
+		     
+		if __name__ == '__main__':
+		    arr = [6,7,0,3,4]
+		    target = 2
+		    print binary_sort(arr, target)
+		```
+	
+	* 设计一个函数，用于测试请求一个 URL 的平均耗时。要求可以设置总的请求次数以及允许同时发出的请求个数。假设环境是小程序，使用的接口是 wx.request ，不考虑请求失败的情况
+
+		```
+		// wx.request 调用示例：
+		// wx.request({
+		//   url: 'https://qq.com',
+		//   success() {
+		//     // 请求完成
+		//   }
+		// })
+		
+		/**
+		 * @synopsis  测试网络请求平均耗时
+		 *
+		 * @param URL 请求的地址
+		 * @param count 请求的总次数，取值范围 >= 1
+		 * @param concurrentCount 允许最多同时发出的请求个数。取值范围 >=1
+		 *
+		 * @returns 一个 Promise 对象，resolve 平均耗时
+		 */
+		 
+		let curCount = 0;
+		let sumTs = 0;
+		
+		const getPromise = (URL) => {
+			return new Promise((resolve, reject) => {
+				const beginTs = Date.now();
+	        	wx.request({
+	            url: URL,
+	            success() {
+	                resolve(Date.now() - beginTs);
+	            }
+	        	});		
+			});
+		};
+		
+		const fun = (URL, resolve) => {
+	  		getPromise(URL).then(ts => {
+	  			sumTs += ts;
+	  			curCount += 1;
+	  			if (curCount < count) {
+	  				fun(URL);
+	  			} else {
+	  				resolve(sumTs / count);
+	  			}
+	  		});
+		}
+		
+		const solution = (URL, count, concurrentCount) => {
+		    return new Promise((resolve, reject) => {
+		    	  if (count <= concurrentCount) {
+			    	  for (let i = 0; i < count; i++) {
+			    	  		getPromise(URL).then(ts => {
+			    	  			sumTs += ts;
+			    	  		});
+			    	  }
+		    	  } else {
+		    	  		for (let i = 0; i < concurrentCount; i++) {
+							fun(URL, resolve);
+			    	  	}
+		    	  }
+		    });    
+		};
+		```
