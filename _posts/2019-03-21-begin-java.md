@@ -236,4 +236,30 @@ tags:
 		Future<T> f = pool.submit(new Thread2());
 		System.out.Println(f.get());
 		```
+
+* Java 类如果继承了两个接口有相同的默认方法，那么需要在类中显式的定义，如果是继承的类和接口之间有方法冲突，那么遵从类优先的规则
+
+	```
+	interface Named {
+		default String getName() { return "Named"; }
+	}
+	
+	interface Person {
+		default String getName() { return "Person"; }
+	}
+	
+	class Student implements Person, Named {
+		public String getName() {
+			return Person.super.getName();
+		}
+	}
+	```
+	
+* 所有数组类型都有一个 public 的 clone 方法，而不是 protected。可以用这个方法建立一个新数组，包含原数组所有元素的副本。例如：
+	
+	```
+	int[] luckyNumbers = { 2, 3, 5, 7, 11, 13 };
+	int[] cloned = luckyNumbers.clone();
+	cloned[5] = 12; // doesn't change luckyNumbers[5]
+	```
 	
