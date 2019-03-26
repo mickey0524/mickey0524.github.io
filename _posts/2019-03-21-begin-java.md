@@ -263,3 +263,32 @@ tags:
 	cloned[5] = 12; // doesn't change luckyNumbers[5]
 	```
 	
+* Java String hashCode 实现
+
+	这个 31 是经验之谈，开发人员发现使用 31 的时候 hash 能分布较为均匀
+
+	```
+	public int hashCode() {
+		int var1 = this.hash;
+		if (var1 == 0 && this.value.length > 0) {
+			char[] var2 = this.value;
+			for (int var3 = 0; var3 < this.value.length; var3++) {
+				var1 = 31 * var1 + var2[var3];
+			}
+			this.hash = var1;
+		}
+		
+		return var1;
+	}
+	```
+	
+	哈希表里计算 hash 的方法
+	
+	```
+	int hash(Object key) {
+		int h = key.hashCode();
+		return (h ^ (h >>> 16)) & (cap - 1)
+	}
+	```
+	
+	高 16 位与低 16 位做异或操作，让 hash 值具有高低位的特性，& (cap - 1) 其实使用了除留余数法，& (cap - 1) == % cap
