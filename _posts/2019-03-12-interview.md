@@ -414,3 +414,52 @@ tags:
 		    });    
 		};
 		```
+
+* 飞猪二面（Java）
+
+	* [linux中shell变量$#,$@,$0,$1,$2的含义解释](https://www.cnblogs.com/fhefh/archive/2011/04/15/2017613.html)
+	
+	* shell 如何跳出循环
+
+		break 和 continue
+		
+	* shell 单双引号的区别
+
+		单引号是强引用，双引号是弱引用，单引号会转义，输入什么就输出什么，双引号内可以用 `${}` 执行一些语句
+		
+	* exit(0) 和 exit(1) 的区别
+
+		exit(0) 代表正常运行程序并退出程序，exit(1) 代表非正常运行导致退出程序，exit（0）与exit（1）对你的程序来说，没有区别，对使用你的程序的人或者程序来说，区别可就大了。一般来说，exit 0 可以告知你的程序的使用者：你的程序是正常结束的。如果 exit 非 0 值，那么你的程序的使用者通常会认为你的程序产生了一个错误。以 shell 为例，在 shell 中调用完你的程序之后，用 `echo $?` 命令就可以看到你的程序的 exit 值。在 shell 脚本中，通常会根据上一个命令的 `$?` 值来进行一些流程控制
+		
+	* 数据库索引是怎么实现的？为啥不用B树和二叉树？
+
+		MySQL 的索引是 B+ 树实现的，不用二叉树的原因是数据量大的时候，二叉树层次太高，查询起来效率太低，不用 B树 的原因是，B树叶子节点没有相互指向的指针，范围查询效率不高，B树的非叶子节点同样存储数据，导致相比于B+树来说需要更高的层级来存储索引
+	
+	* [B树，B+树插入删除](https://www.cnblogs.com/nullzx/p/8729425.html)
+
+	* [乐观锁例子](https://blog.csdn.net/cws1214/article/details/52457228)
+
+	* Java CountDownLatch 类似于 Go 的 WaitGroup，用于主线程等待多个线程执行完毕的场景
+
+		```
+		CountDownLatch cdl = new CountDownLatch(2);
+		Thread1 t1 = new Thread1(cdl);
+		Thread1 t2 = new Thread1(cdl);
+		t1.start();
+		t2.start();
+		cdl.await();
+		
+		...
+		
+		public Thread1 extends Thread {
+			private CountDownLatch cdl;
+			Thread1(CountDownLatch cdl) {
+				this.cdl = cdl;
+			}
+			
+			public void run() {
+				...
+				this.cdl.countDown();
+			}
+		}
+		```
