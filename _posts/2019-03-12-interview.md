@@ -288,7 +288,7 @@ tags:
 		
 		有内存限制的话，桶排序
 
-* 腾讯（后台开发一面）
+* 微信（后台开发一面）
 
 	* 实现一个函数，接受数组作为参数，数组元素为整数或者数组（数组里面还可能有数组），函数返回扁平化后的数组。要求给出不使用递归、不使用字符串处理的解法
 		
@@ -462,4 +462,127 @@ tags:
 				this.cdl.countDown();
 			}
 		}
+		```
+
+* 微信三面（后台开发）
+
+	* 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个整数，并返回他们的数组下标。
+
+		```
+		def two_sum(nums, target):
+			hash_map = {}
+	    
+	    	for idx, n in enumerate(nums):
+	        	if (target - n) in hash_map:
+	            return [hash_map[target - n], idx]
+	        else:
+	            hash_map[n] = idx
+	    
+	    	return [-1, -1]
+	    
+		if __name__ == '__main__':
+	    	arr = [2, 7, 11, 15]
+	    	target = 9
+	    	print two_sum(arr, target) 
+		```
+
+	* 将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的
+
+		```
+		class ListNode(object):
+    
+		    def __init__(self, v):
+		        self.v = v
+		        self.next = None
+		
+		def merge_list(l1, l2):
+		    if not l1:
+		        return l2
+		    
+		    if not l2:
+		        return l1
+		    
+		    res = ListNode(-1)
+		    tmp = res
+		    
+		    while l1 and l2:
+		        if l1.val <= l2.val:
+		            tmp.next = l1
+		            l1 = l1.next
+		            tmp.next.next = None
+		        else:
+		            tmp.next = l2
+		            l2 = l2.next
+		            tmp.next.next = None
+		        
+		        tmp = tmp.next
+		    
+		    if l1:
+		        tmp.next = l1
+		    if l2:
+		        tmp.next = l2
+		    
+		    return res.next
+		```
+
+	* 给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位，数组中每个元素只存储一个数字
+
+		```
+		def num_arr_add_one(nums):
+		    length = len(nums)
+		    if length == 0:
+		        return nums
+		    
+		    if nums[0] == 0:
+		        return [1]
+		    
+		    idx = length - 1
+		    while idx >= 0:
+		        nums[idx] += 1
+		        if nums[idx] < 10:
+		            return nums
+		        nums[idx] -= 10
+		        idx -= 1
+		    
+		    nums.insert(0, 1)
+		    
+		    return nums
+		        
+		if __name__ == '__main__':
+		    nums = [1, 2, 3]
+		    print num_arr_add_one(nums)
+		```
+	
+	* 给定一个二叉搜索树，编写一个函数 kthSmallest 来查找其中第 k 个最小的元素
+
+		```
+		class TreeNode(object):
+		    def __init__(self, v):
+		        self.v = v
+		        self.left = None
+		        self.right = None
+		
+		def kth_smallest_in_bst(root, k):
+		    if not root:
+		        return -1
+		    
+		    res = [None, 1]
+		    
+		    def recursive(node):
+		        if not node or res[0] is not None:
+		            return
+		         
+		        recursive(node.left)
+		        
+		        if res[1] == k:
+		            res[0] = node.v
+		            return
+		        else:
+		            res[1] += 1
+		            
+		        recursive(node.right)
+		    
+		    recursive(root)
+		    
+		    return res[0]
 		```
