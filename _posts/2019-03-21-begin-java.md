@@ -130,40 +130,39 @@ tags:
 	public class MyThreadPrinter2 implements Runnable {   
 		  
 	    private String name;   
-	    private Object prev;   
-	    private Object self;   
+	    private Byte[] prev;   
+	    private Byte[] self;   
 	  
-	    private MyThreadPrinter2(String name, Object prev, Object self) {   
+	    private MyThreadPrinter2(String name, Byte[] prev, Byte[] self) {   
 	        this.name = name;   
 	        this.prev = prev;   
 	        this.self = self;   
 	    }   
 	  
 	    @Override  
-	    public void run() {   
-	        int count = 10;   
-	        while (count > 0) {   
-	            synchronized (prev) {   
-	                synchronized (self) {   
+	    public void run() {
+	        int count = 10;
+	        while (count > 0) {  
+	            synchronized (prev) {
+	                synchronized (self) {  
 	                    System.out.print(name);   
 	                    count--;  
 	                    
 	                    self.notify();   
 	                }   
-	                try {   
-	                    prev.wait();   
-	                } catch (InterruptedException e) {   
+	                try {
+	                    prev.wait();
+	                } catch (InterruptedException e) {
 	                    e.printStackTrace();   
 	                }   
-	            }   
-	  
+	            }
 	        }   
 	    }   
 	  
 	    public static void main(String[] args) throws Exception {   
-	        Object a = new Object();   
-	        Object b = new Object();   
-	        Object c = new Object();   
+	        Byte[] a = new Byte[0];   
+	        Byte[] b = new Byte[0];   
+	        Byte[] c = new Byte[0]; 
 	        MyThreadPrinter2 pa = new MyThreadPrinter2("A", c, a);   
 	        MyThreadPrinter2 pb = new MyThreadPrinter2("B", a, b);   
 	        MyThreadPrinter2 pc = new MyThreadPrinter2("C", b, c);   
@@ -175,7 +174,7 @@ tags:
 	        Thread.sleep(100);  
 	        new Thread(pc).start();   
 	        Thread.sleep(100);  
-	        }   
+	    }   
 	}
 	```
 	
@@ -230,11 +229,15 @@ tags:
 	* 实现 Callable 接口，实现 call 方法，有返回值
 
 		```
-		public class Thread2 implements Callable {}
+		public class Thread2 implements Callable<T> {}
 		
 		ExecutorService pool = Executors.newCachedThreadPool();
 		Future<T> f = pool.submit(new Thread2());
 		System.out.Println(f.get());
+		
+		Thread2 task = new Thread2();
+		FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
+		pool.submit(futureTask);
 		```
 
 * Java 类如果继承了两个接口有相同的默认方法，那么需要在类中显式的定义，如果是继承的类和接口之间有方法冲突，那么遵从类优先的规则
