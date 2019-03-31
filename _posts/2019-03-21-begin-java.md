@@ -102,7 +102,45 @@ tags:
 * Java ReentrantLock 锁的用处
 
 	* synchronized 调度的时候优先考虑优先级高的线程，ReentrantLock 可以设置锁为公平的
-	* 可以设置 Condition 一个或者多个条件锁，每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程
+		```
+		ReentrantLock lock = new ReentrantLock(true); // 设置为公平锁
+		```
+	
+	* synchornized 默认是类方法和实例方法走相同的锁，用 ReentrantLock 可以设置实例锁和类锁，这样就能分开
+	
+	* 可以设置 Condition 一个或者多个条件锁，每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程，当一个线程调用 await 方法之后，它放弃了锁，被阻塞了，进入了条件的等待集合，等待 signal/signalAll 方法将其唤醒，下面举一个银行转钱的例子
+
+		```java
+		public class Bank {
+			private final double[] accounts;
+			private Lock bankLock;
+			private Condition sufficientFunds;
+			
+			public Bank(int n, double initialBalance) {
+				accounts = new double[n];
+				Arrays.fill(accounts, initialBalance);
+				banklock = new ReentrantLock();
+				sufficientFunds = bankLock.newCondition();
+			}
+			
+			public void transfer(int from, int to, double amount) throws InterruptedException {
+				bankLock.lock();
+				try {
+					while (accounts[from] < amount) {
+						sufficientFunds.await();
+					}
+					accounts[from] -= amount;
+					accounts[to] += amount;
+					sufficientFunds.signalAll();
+				}
+				finally {
+					bankLock.unlock();
+				}
+			}
+		}
+		```
+
+		
 	* 在申请锁的时候，为了避免无休止等待，可以使用 tryLock 方法，在一段时候后，未获得锁，立即返回
 
 		```java
@@ -115,7 +153,7 @@ tags:
 
 * 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
 
-* synchronized 作用域普通函数和静态函数的时候，其实是有两个锁，对象锁和类锁，两个线程不能同时访问一个对象的两个 synchronized 普通方法，但是两个线程可以一个访问 synchronized 普通方法，一个访问 synchronized 类方法，因为是两个锁的缘故
+* synchronized 作用于普通函数和静态函数的时候，两个线程不能同时访问一个对象的两个 synchronized 方法，无论是类方法还是对象方法
 	
 * Java 反射与注解
 
@@ -211,6 +249,17 @@ tags:
 * Java 多线程使用方法
 
 	* 继承 Thread 类，实现 run 方法，无返回值
+		
+		```
+		public class Thread1 extends Thread {
+			void run() {}
+		}
+		
+		...
+		
+		new Thread1().start();
+		```
+		
 	* 实现 Runnable 接口，实现 run 方法，无返回值，需要使用 Thread 或 Executor 调用
 
 		```
@@ -218,7 +267,7 @@ tags:
 		
 		...
 		
-		new Thread(new Thread1()).start()
+		new Thread(new Thread1()).start();
 		
 		...
 		
@@ -229,7 +278,11 @@ tags:
 	* 实现 Callable 接口，实现 call 方法，有返回值
 
 		```
-		public class Thread2 implements Callable<T> {}
+		public class Thread2 implements Callable<T> {
+			T call() {
+				return T;
+			}
+		}
 		
 		ExecutorService pool = Executors.newCachedThreadPool();
 		Future<T> f = pool.submit(new Thread2());
@@ -238,6 +291,7 @@ tags:
 		Thread2 task = new Thread2();
 		FutureTask<Integer> futureTask = new FutureTask<Integer>(task);
 		pool.submit(futureTask);
+		System.out.Println(futureTask.get());
 		```
 
 * Java 类如果继承了两个接口有相同的默认方法，那么需要在类中显式的定义，如果是继承的类和接口之间有方法冲突，那么遵从类优先的规则
@@ -295,3 +349,5 @@ tags:
 	```
 	
 	高 16 位与低 16 位做异或操作，让 hash 值具有高低位的特性，& (cap - 1) 其实使用了除留余数法，& (cap - 1) == % cap
+	
+* [Java 设计模式](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.md#8-%E7%8A%B6%E6%80%81state)
