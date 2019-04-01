@@ -586,3 +586,33 @@ tags:
 		    
 		    return res[0]
 		```
+
+* 阿里一面（大数据）
+
+	* MySQL 主键索引与唯一索引的区别
+
+		* 主键是一种约束，唯一索引是一种索引，两者在本质上是不同的
+		* 唯一性索引允许空值，而主键列不允许
+		* 主键可以被其他表引用为外键，而唯一索引不能
+		* 一个表最多只能创建一个主键，但可以有多个唯一索引
+	
+	* MySQL Blob Text
+
+		* [Blob 和 Text 区别](https://www.cnblogs.com/printN/p/7463737.html)
+		* blob和text类型是无法设置默认值的
+		* MySQL TEXT数据类型的最大长度
+
+			* TINYTEXT/TINYBLOB 256 bytes 2**8
+			* TEXT/BLOB 65,535 bytes 2**16
+			* MEDIUMTEXT/MEDIUMBLOB 16,777,215 bytes 2**24
+			* LONGTEXT/LONGBLOB 4,294,967,295 bytes 2**64
+	
+	* 无尽数据流 topk
+
+		小根堆，复杂度 nlogk
+	
+	* 10亿个数字去重
+
+		* hash 成小文件
+		* bitset
+		* 布隆过滤器
