@@ -49,6 +49,36 @@ tags:
 
 		天然的 LRU 缓存 - 链接散列映射将用访问顺序， 而不是插入顺序， 对映射条目进行迭代。 每次调用 get 或 put, 受到影响的条目将从当前的位置删除，并放到条目链表的尾部(只有条目在链表中的位 置会受影响， 而散列表中的桶不会受影响。一个条目总位于与键散列码对应的桶中)
 		
+		```java
+		class LRUCache<K, V> extends LinkedHashMap<K, V> {
+		    private static final int MAX_ENTRIES = 3;
+		
+		    protected boolean removeEldestEntry(Map.Entry eldest) {
+		        return size() > MAX_ENTRIES;
+		    }
+		
+		    LRUCache() {
+		        super(MAX_ENTRIES, 0.75f, true);
+		    }
+		}
+		
+		...
+		
+		public static void main(String[] args) {
+		    LRUCache<Integer, String> cache = new LRUCache<>();
+		    cache.put(1, "a");
+		    cache.put(2, "b");
+		    cache.put(3, "c");
+		    cache.get(1);
+		    cache.put(4, "d");
+		    System.out.println(cache.keySet());
+		}
+		
+		...
+		
+		[3, 1, 4]
+		```
+		
 * Arrays.asList() 方法将返回一个视图对象，带有访问底层数据的 get 和 set 方法，改变数组的所有方法均会抛出异常
 
 * List 子范围
