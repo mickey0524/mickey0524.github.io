@@ -616,3 +616,24 @@ tags:
 		* hash 成小文件
 		* bitset
 		* 布隆过滤器
+	
+	* Kafka 脑裂
+
+		脑裂在分布式系统中是很常见的一种现象，指的是当联系着的两个节点断开联系的时候，本来作为一个整体的系统，分裂为两个独立的节点，这时两个节点开始争抢公共资源，结果会导致系统混乱，数据损坏
+		
+		* 可以通过第三方仲裁来从两个节点中选出一个可用的
+		* 采用 fencing 机制，最后采用活下来的那个
+		
+		Kafka利用Zookeeper所做的第一件也是至关重要的一件事情是选举Controller，那么自然就有疑问，有没有可能产生两个Controller呢？
+
+		首先，Zookeeper也是有leader的，它有没有可能产生两个leader呢？答案是不会。quorum机制可以保证，不可能同时存在两个leader获得大多数支持。假设某个leader假死，其余的followers选举出了一个新的leader。这时，旧的leader复活并且仍然认为自己是leader，这个时候它向其他followers发出写请求也是会被拒绝的。因为每当新leader产生时，会生成一个epoch，这个epoch是递增的，followers如果确认了新的leader存在，知道其epoch，就会拒绝epoch小于现任leader epoch的所有请求。那有没有follower不知道新的leader存在呢，有可能，但肯定不是大多数，否则新leader无法产生。Zookeeper的写也遵循quorum机制，因此，得不到大多数支持的写是无效的，旧leader即使各种认为自己是leader，依然没有什么作用。
+
+		Kafka的Controller也采用了epoch，具体机制如下:
+
+		* 所有Broker监控"/controller"，节点被删除则开启新一轮选举，节点变化则获取新的epoch
+		* Controller会注册SessionExpiredListener，一旦因为网络问题导致Session失效，则自动丧失Controller身份，重新参与选举
+		* 收到Controller的请求，如果其epoch小于现在已知的controller_epoch，则直接拒绝
+
+		理论上来说，如果Controller的SessionExpired处理成功，则可以避免双leader，但假设SessionExpire处理意外失效的情况：旧Controller假死，新的Controller创建。旧Controller复活，SessionExpired处理意外失效，仍然认为自己是leader。
+		这时虽然有两个leader，但没有关系，leader只会发信息给存活的broker（仍然与Zookeeper在Session内的），而这些存活的broker则肯定能感知到新leader的存在，旧leader的请求会被拒绝
+
