@@ -637,3 +637,22 @@ tags:
 		理论上来说，如果Controller的SessionExpired处理成功，则可以避免双leader，但假设SessionExpire处理意外失效的情况：旧Controller假死，新的Controller创建。旧Controller复活，SessionExpired处理意外失效，仍然认为自己是leader。
 		这时虽然有两个leader，但没有关系，leader只会发信息给存活的broker（仍然与Zookeeper在Session内的），而这些存活的broker则肯定能感知到新leader的存在，旧leader的请求会被拒绝
 
+* 阿里二、三面（大数据）
+
+	* 进程和线程的关系
+
+		[进程和线程](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/os.md)
+		
+	* mr 的过程
+
+		[mr 过程](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+	
+	* hive join 数据倾斜
+
+		[hive 数据倾斜](https://blog.csdn.net/s646575997/article/details/51510661)
+		
+	* Spark 宽窄依赖
+
+		[Spark](https://github.com/mickey0524/big-data-knowledge#spark)
+		
+	* [大数据面试题](https://github.com/mickey0524/big-data-knowledge#interview)
