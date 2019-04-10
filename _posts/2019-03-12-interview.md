@@ -656,3 +656,59 @@ tags:
 		[Spark](https://github.com/mickey0524/big-data-knowledge#spark)
 		
 	* [大数据面试题](https://github.com/mickey0524/big-data-knowledge#interview)
+
+	* 算法题，aaabbcc -> a3b2c2，比较简单，不写了
+
+	* 算法题，求集合的全部子集
+
+		```
+		def solution(arr):
+			res = [[]]
+			length = len(arr)
+			
+			def recursive(idx, path):
+				res[0].append(path)
+				if idx == length:
+					return
+					
+				for i in xrange(idx, length):
+					recursive(i + 1, path + [arr[i]])
+		
+			recursive(0, [])
+			
+			return res[0]
+		```
+
+* 网易游戏一面（大数据）
+
+	* 栈和队列的区别
+
+		先进后出和先进先出
+	
+	* LRU 如何实现
+
+		hash 表 + 链表
+		
+	* MySQL MVCC
+
+		[MVCC](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/db.md)
+		
+	* MySQL 二次写
+
+		[二次写](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/db.md)
+		
+	* 算法题，求陆地的范围
+
+		```
+		0 1 0 0
+		1 0 1 1
+		0 1 0 0
+		```
+		
+		求联系1的块数
+		
+		dfs 很简单，不写了
+		
+	* 归并排序
+
+	
