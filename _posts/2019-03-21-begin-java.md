@@ -387,3 +387,5 @@ tags:
 * [JVM 组成](https://juejin.im/post/5cad272a5188254eb942fabe?utm_source=gold_browser_extension)
 
 * [BIO 和 NIO 数量问题](https://juejin.im/post/5c8aea1df265da2de33f6a09)
+
+* [Java ThreadLocal](https://www.cnblogs.com/dolphin0520/p/3920407.html)
