@@ -705,10 +705,41 @@ tags:
 		0 1 0 0
 		```
 		
-		求联系1的块数
+		求连续1的块数
 		
 		dfs 很简单，不写了
 		
 	* 归并排序
+
+    * 压缩一个树，树的数据结构如下所示，如果树节点的 value 为0且树没有孩子节点，则删除，需要从叶子节点递归上去
+
+        ```
+        class TreeNode(object):
+            def __init__(self, v):
+                self.v = v
+                self.children = []
+
+        def solution(root):
+            if not root:
+                return
+        
+            def recursive(node):
+                length = len(node.children)
+                if length == 0:
+                    if node.v == 0:
+                        return False
+                    return True
+        
+                tmp = []
+                for i in xrange(length):
+                    if recursive(node.children[i]):
+                        tmp += node.children[i],
+        
+                node.children = tmp
+        
+                return True if tmp or node.v != 0 else False
+        
+            recursive(root)
+        ```
 
 	
