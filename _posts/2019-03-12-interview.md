@@ -742,4 +742,79 @@ tags:
             recursive(root)
         ```
 
+* 快手一、二面（大数据）
+
+	* hadoop 的推测执行
+
+		推测执行(Speculative Execution)是指在集群环境下运行 MapReduce，可能是程序 Bug，负载不均或者其他的一些问题，导致在一个 JOB 下的多个 TASK 速度不一致，比如有的任务已经完成，但是有些任务可能只跑了10%，根据木桶原理，这些任务将成为整个 JOB的短板，如果集群启动了推测执行，这时为了最大限度的提高短板，Hadoop 会为该 task 启动备份任务，让 speculative task 与原始 task 同时处理一份数据，哪个先运行完，则将谁的结果作为最终结果，并且在运行完成后 Kill 掉另外一个任务。
+		
+		推测执行(Speculative Execution)是通过利用更多的资源来换取时间的一种优化策略，但是在资源很紧张的情况下，推测执行也不一定能带来时间上的优化，假设在测试环境中，DataNode 总的内存空间是40G，每个 Task 可申请的内存设置为1G，现在有一个任务的输入数据为5G，HDFS 分片为128M，这样 Map Task 的个数就40个，基本占满了所有的DataNode节点，如果还因为每些 Map Task 运行过慢，启动了 Speculative Task，这样就可能会影响到 Reduce Task 的执行了，影响了 Reduce 的执行，自然而然就使整个 JOB的执行时间延长。所以是否启用推测执行，如果能根据资源情况来决定，如果在资源本身就不够的情况下，还要跑推测执行的任务，这样会导致后续启动的任务无法获取到资源，以导致无法执行。
+	
+	* HDFS 的高可用性保证
+
+		* NameNode
+			
+			NameNode 的话，会有一个 secondNameNode 的存在，secondNameNode 中有一个 fsimage 存放元信息，有一个 editlogs 存放对元信息的操作，secondNameNode 会定期去 NameNode 上同步 editlogs，并更新 fsimage，一旦有了新的 fsimage 文件，将其写回 NameNode，NameNode 挂了之后重新启动可以根据 fsimage 快速恢复现场
+			
+		* DataNode
+			
+			DataNode 默认会对每个 block 存储备份 3 块，leader 挂掉之后， DataNode 和 NameNode 的心跳连接能够知道，能够将元信息中对应的 leader 路径进行更改
+			
+	* HDFS 的联盟模式
+
+		文件的元数据是放在namenode上的，只有一个Namespace（命名空间）。随着HDFS的数据越来越多，单个namenode的资源使用必然会达到上限，而且namenode的负载能力也会越来越高，限制HDFS的性能。
+
+		Federation即为“联邦”，该特性允许一个HDFS集群中存在多个NameNode同时对外提供服务，这些NameNode分管一部分目录（水平切分），彼此之间相互隔离，但共享底层的DataNode存储资源
+		
+	* 进程、线程以及协程之间的关系
+
+		[操作系统](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/os.md)
+	
+	* tcp 的11种状态
+
+		[tcp 11种状态](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/network.md)
+		
+	* tcp 出现大量 TimeWait 状态是为什么，如何解决
+
+		有可能网络出现问题，有可能 Server 端代码有问题，没有释放，有可能被 ddos 攻击了，可以将等待的时间调低，也可以设置 tcp 的 reuse
+	
+	* HDFS 的写入
+
+		先去 NameNode 中查询，再去 DataNode 中写入，我遗漏了两点，一是 block 大小默认是 128M，需要分片上传，二是 DataNode 默认会有副本，需要讲出来这个过程
+		
+	* 写 sql
+	
+		有一个表，字段是 uid，p_date，kpi，kpi 是百分制的，60分合格，一周有4天合格算达标，一年只要有一周达标就达标，求出达标的人群
+		
+		```
+		select
+			distinct uid
+		from
+			t
+		group by
+			uid,
+			week(p_date)
+		having
+			sum(if (kpi >= 60, 1, 0)) >= 4;
+		```
+	
+	* 写 sql，如果需要连续4天才算合格，求出达标的人群，写窗口函数
+
+		```
+		select
+			distinct c.uid as uid
+		from
+		(
+			select
+				uid,
+				sum(if (kpi >= 60, 1, 0)) over(partition by uid, weekofyear(from_unixtime(p_date)) order by p_date rows between 3 preceding and current row) as s
+			from
+				t
+		) c
+		where
+			c.s >= 4;
+		```
+	
+	* 算法题，判断回文数，比较简单，不写了
+
 	
