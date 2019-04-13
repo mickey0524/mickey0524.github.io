@@ -389,3 +389,10 @@ tags:
 * [BIO 和 NIO 数量问题](https://juejin.im/post/5c8aea1df265da2de33f6a09)
 
 * [Java ThreadLocal](https://www.cnblogs.com/dolphin0520/p/3920407.html)
+
+* Java 接口和抽象类的区别
+
+    * 接口中的方法都是 public 的，抽象类没有这个限制
+    * 接口中的变量都是 final 的，需要初始化定义，抽象类没有这个限制
+    * 一个类可以实现多个接口，但只能继承一个抽象类
+    * 接口更多专注于实现方法，抽象类更多专注于类结构
