@@ -457,3 +457,35 @@ tags:
 	* 如果 try 中有 return 语句，将其保存在局部变量中
 	* 执行完 finally 中的语句，将局部变量返回
 	* 如果 finally 中也有 return 语句，则忽略 try 中的，return finally 中的语句
+
+* Java HashMap 和 HashTable 的区别
+
+	* HashMap 是线程不安全的，HashTable 是线程安全的
+	* HashMap 中，null 可以作为键，HashTable 不行
+	* HashMap 当链表长度大于8的时候，会转为红黑树，HashTable 不会
+	* HashMap 的默认大小为 16，扩容的时候变为原来的两倍，HashTable 的默认大小为 11，扩容的时候变为原来的 2n + 1
+	* 当给定初始大小的时候，HashTable 会使用你给定的数值，HashMap 会将其扩充为2的幂次
+
+* HashMap 的大小为啥要为2的幂次
+
+	HashMap 内部计算哈希槽的时候使用了除留余数法，取余 (%) 操作中如果除数是2的幂次则等价于与其除数减一的与 (&) 操作（也就是说 hash % length == hash & (length - 1) 的前提是 length 是2的 n 次方）并且采用二进制位操作 &，相对于 % 能够提高运算效率，这就解释了 HashMap 的长度为什么是2的幂次方
+
+* ConcurrentHashMap 和 Hashtable 的区别
+
+	ConcurrentHashMap 和 Hashtable 的区别主要体现在实现线程安全的方式上不同
+	
+	* 底层数据结构
+
+		JDK1.7 的 ConcurrentHashMap 底层采用分段的数组 + 链表实现，JDK1.8 采用的数据结构跟 HashMap1.8 的结构一样，数组 + 链表/红黑二叉树。Hashtable 和 JDK1.8 之前的 HashMap 的底层数据结构类似都是采用数组 + 链表的形式，数组是 HashMap 的主体，链表则是主要为了解决哈希冲突而存在的
+	
+	* 实现线程安全的方式
+
+		* 在 JDK1.7 的时候，ConcurrentHashMap（分段锁）对整个桶数组进行了分割分段(Segment)，每一把锁只锁容器其中一部分数据，多线程访问容器里不同数据段的数据，就不会存在锁竞争，提高并发访问率。 到了 JDK1.8 的时候已经摒弃了 Segment 的概念，而是直接用 Node 数组 + 链表 + 红黑树的数据结构来实现，并发控制使用 synchronized 和 CAS 来操作。（JDK1.6以后 对 synchronized锁做了很多优化）整个看起来就像是优化过且线程安全的 HashMap，虽然在JDK1.8中还能看到 Segment 的数据结构，但是已经简化了属性，只是为了兼容旧版本
+		* HashTable 使用 synchronized 来保证线程安全，效率非常低下。当一个线程访问同步方法时，其他线程也访问同步方法，可能会进入阻塞或轮询状态，如使用 put 添加元素，另一个线程不能使用 put 添加元素，也不能使用 get，竞争会越来越激烈效率越低
+	
+	[hashTable](/img/in-post/begin-java/hashTable.jpeg)
+	
+	[conCurrentHashMap1.7](/img/in-post/begin-java/conCurrentHashMap1.7.jpeg)
+	
+	[conCurrentHashMap1.8](/img/in-post/begin-java/conCurrentHashMap1.8.jpeg)
+	
