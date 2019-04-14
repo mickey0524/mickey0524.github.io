@@ -489,3 +489,36 @@ tags:
 	
 	![conCurrentHashMap1.8](/img/in-post/begin-java/conCurrentHashMap1.8.jpeg)
 	
+* comparable 和 comparator 的区别
+
+	这两个都是接口，comparable 出自 java.lang 包，有一个 compareTo(Object object) 用来排序，comparator 出自 java.util 包，有一个 compara(Object obj1, Object obj2) 方法用于排序，我们想实现自定义排序，就需要使用这两个
+	
+* 如何求ArrayList集合的交集 并集 差集 去重复并集
+
+	```
+	import java.util.ArrayList;
+	import java.util.Arrays;
+	
+	public class Main {
+	    public static void main(String[] args) throws Exception {
+	        Integer[] arr1 = new Integer[]{1, 2, 3, 4};
+	        Integer[] arr2 = new Integer[]{2, 3, 4, 5};
+	
+	        ArrayList<Integer> l1 = new ArrayList<>(Arrays.asList(arr1));
+	        ArrayList<Integer> l2 = new ArrayList<>(Arrays.asList(arr2));
+	
+	        // 交集
+	        // l1.retainAll(l2);
+	
+	        // 并集
+	        // l1.addAll(l2);
+	
+	        // 差集
+	        // l1.removeAll(l2);
+	
+	        // 无重复并集
+	        l2.removeAll(l1);
+	        l1.addAll(l2);
+	    }
+	}
+	```
