@@ -396,3 +396,64 @@ tags:
     * 接口中的变量都是 final 的，需要初始化定义，抽象类没有这个限制
     * 一个类可以实现多个接口，但只能继承一个抽象类
     * 接口更多专注于实现方法，抽象类更多专注于类结构
+
+* Java 中 == 和 equals
+
+	==：它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)
+	
+	equals()：它的作用也是判断两个对象是否相等。但它一般有两种使用情况
+	
+	* 情况1：类没有覆盖 equals() 方法。则通过 equals() 比较该类的两个对象时，等价于通过“==”比较这两个对象
+	* 情况2：类覆盖了 equals() 方法。一般，我们都覆盖 equals() 方法来两个对象的内容相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)
+
+	```java
+	public class test1 {
+		public static void main(String[] args) {
+		    String a = new String("ab"); // a 为一个引用
+		    String b = new String("ab"); // b为另一个引用,对象的内容一样
+		    String aa = "ab"; // 放在常量池中
+		    String bb = "ab"; // 从常量池中查找
+		    if (aa == bb) // true
+		        System.out.println("aa==bb");
+		    if (a == b) // false，非同一对象
+		        System.out.println("a==b");
+		    if (a.equals(b)) // true
+		        System.out.println("aEQb");
+		    if (42 == 42.0) { // true
+		        System.out.println("true");
+		    }
+		}
+	}
+	```
+	
+	String 中的 equals 方法是被重写过的，因为 object 的 equals 方法是比较的对象的内存地址，而 String 的 equals 方法比较的是对象的值。
+	
+	当创建 String 类型的对象时，虚拟机会在常量池中查找有没有已经存在的值和要创建的值相同的对象，如果有就把它赋给当前引用。如果没有就在常量池中重新创建一个 String 对象。
+	
+* hashCode 与 equals 
+
+	* 如果两个对象相等，则 hashcode 也是一定相等的
+	* 两个对象相等，两个对象分别调用 equals 方法都返回 true
+	* 两个对象 hashcode 相等，它们也不一定是相等的，有 hash 碰撞的情况存在
+	* equals 方法被覆盖，hashcode 方法也要同时被覆盖
+	* hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）
+
+* Java 的 String 类型是不可改变的，因为成员变量 value 是 final 类型的，但是可以用反射的黑魔法去修改，不过一般不这样做
+
+	```java
+	String s = "asd";
+	    
+	Field f = s.getClass().getDeclaredField("value");
+	f.setAccessible(true);
+	
+	char[] v = (char []) f.get(s);
+	v[0] = 'b';
+	
+	System.out.println(s); // "bsd"
+	```
+
+* Java try finally 中的 return 语句
+
+	* 如果 try 中有 return 语句，将其保存在局部变量中
+	* 执行完 finally 中的语句，将局部变量返回
+	* 如果 finally 中也有 return 语句，则忽略 try 中的，return finally 中的语句
