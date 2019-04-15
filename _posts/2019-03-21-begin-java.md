@@ -136,8 +136,6 @@ tags:
 		ReentrantLock lock = new ReentrantLock(true); // 设置为公平锁
 		```
 	
-	* synchornized 默认是类方法和实例方法走相同的锁，用 ReentrantLock 可以设置实例锁和类锁，这样就能分开
-	
 	* 可以设置 Condition 一个或者多个条件锁，每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程，当一个线程调用 await 方法之后，它放弃了锁，被阻塞了，进入了条件的等待集合，等待 signal/signalAll 方法将其唤醒，下面举一个银行转钱的例子
 
 		```java
@@ -183,7 +181,7 @@ tags:
 
 * 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
 
-* synchronized 作用于普通函数和静态函数的时候，两个线程不能同时访问一个对象的两个 synchronized 方法，无论是类方法还是对象方法
+* synchronized 作用于普通函数和静态函数的时候，两个线程能同时访问普通函数和静态函数，因为一个锁作用的是实例对象，一个锁作用的是类对象
 	
 * Java 反射与注解
 
@@ -470,6 +468,22 @@ tags:
 
 	HashMap 内部计算哈希槽的时候使用了除留余数法，取余 (%) 操作中如果除数是2的幂次则等价于与其除数减一的与 (&) 操作（也就是说 hash % length == hash & (length - 1) 的前提是 length 是2的 n 次方）并且采用二进制位操作 &，相对于 % 能够提高运算效率，这就解释了 HashMap 的长度为什么是2的幂次方
 
+* HashMap 如何保证数组长度为 2 的幂次方
+
+	```java
+	static final int tableSizeFor(int cap) {
+	    int n = cap - 1;
+	    n |= n >>> 1;
+	    n |= n >>> 2;
+	    n |= n >>> 4;
+	    n |= n >>> 8;
+	    n |= n >>> 16;
+	    return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+	}
+	```
+	
+	这里解释一下，最开始 n 的二进制高位肯定有一个是 1，n |= n >>> 1 取保了前两位都是 1，n |= n >>> 2 确保了前四位都是 1，依次类推，n |= n >>> 16 确保了高位都是 1，然后 n + 1 完事
+
 * ConcurrentHashMap 和 Hashtable 的区别
 
 	ConcurrentHashMap 和 Hashtable 的区别主要体现在实现线程安全的方式上不同
@@ -524,3 +538,89 @@ tags:
 	```
 
 * [ArrayList源码分析](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/ArrayList.md)
+
+* ArrayList 源码内有一个 ensureCapacity 方法，在 ArrayList 内部是没有调用的，ArrayList 调用的是 ensureCapacityInternal 方法，这个方法是留给用户使用的，当要 add 大数据量的时候，可以显示调用 ensureCapacity 方法，避免多次扩容
+
+    ```java
+    public class EnsureCapacityTest {
+        public static void main(String[] args) {
+            ArrayList<Object> list = new ArrayList<Object>();
+            final int N = 10000000;
+            long startTime = System.currentTimeMillis();
+            for (int i = 0; i < N; i++) {
+                list.add(i);
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println("使用ensureCapacity方法前："+(endTime - startTime));
+
+            list = new ArrayList<Object>();
+            long startTime1 = System.currentTimeMillis();
+            list.ensureCapacity(N);
+            for (int i = 0; i < N; i++) {
+                list.add(i);
+            }
+            long endTime1 = System.currentTimeMillis();
+            System.out.println("使用ensureCapacity方法后："+(endTime1 - startTime1));
+        }
+    }
+
+    运行结果
+
+    使用ensureCapacity方法前：4637
+    使用ensureCapacity方法后：241
+    ```
+
+* Java LinkedList API 备忘
+
+	* peek，取链表 first（不删除），如果 first 为 null，返回 null
+
+		```java
+		public E peek() {
+			final Node<E> f = first;
+			return (f == null) ? null : f.item;
+		}
+		```
+		
+	* element，取链表 first（不删除），如果 first 为 null，抛出异常
+
+		```java
+		public E element() {
+      		return getFirst();
+    	}
+    	
+		public E getFirst() {
+	   		final Node<E> f = first;
+	   			if (f == null)
+	          	throw new NoSuchElementException();
+	   		return f.item;
+	   }
+		```
+	
+	* poll，取链表 first 同时删除，如果 first 为 null，返回 null
+
+		```java
+		public E poll() {
+			final Node<E> f = first;
+			return (f == null) ? null : unlinkFirst(f);
+		}
+		```
+		
+	* remove，取链表 first 同时删除，如果 first 为 null，抛出异常
+
+		```java
+	    public E removeFirst() {
+	        final Node<E> f = first;
+	        if (f == null)
+	            throw new NoSuchElementException();
+	        return unlinkFirst(f);
+	    }
+	    public E remove() {
+	        return removeFirst();
+	    }
+		```
+	
+	* offer，add，这两个 API 都是向链表尾部添加一个元素
+
+* [Java synchronized 关键字](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/synchronized.md)
+
+* 
