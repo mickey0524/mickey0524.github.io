@@ -15,6 +15,67 @@ tags:
 
     [Java 泛型](http://www.importnew.com/24029.html)
     
+    * 泛型类
+
+    	```java
+    	public class Box<T> {
+    		private T t;
+    		
+    		public T getT() {
+    			return t;	
+    		}
+    		
+    		public void setT(T t) {
+    			this.t = t;
+    		}
+    	}
+    	```
+    
+    * 泛型方法
+
+    	```java
+    	public class Util {
+		    public static <K, V> boolean compare(Pair<K, V> p1, Pair<K, V> p2) {
+		        return p1.getKey().equals(p2.getKey()) &&
+		               p1.getValue().equals(p2.getValue());
+		    }
+		}
+		
+		public class Pair<K, V> {
+		    private K key;
+		    private V value;
+		    public Pair(K key, V value) {
+		        this.key = key;
+		        this.value = value;
+		    }
+		    public void setKey(K key) { this.key = key; }
+		    public void setValue(V value) { this.value = value; }
+		    public K getKey()   { return key; }
+		    public V getValue() { return value; }
+		}
+    	```
+    
+    * 边界符
+
+    	```java
+    	public interface Comparable<T> {
+    		public int compareTo(T o);
+    	}
+    	
+    	public static <T extends Comparable<T>> int countGreaterThan(T[] anArray, T elem) {
+		    int count = 0;
+		    for (T e : anArray)
+		        if (e.compareTo(elem) > 0)
+		            ++count;
+		    return count;
+		}
+    	```
+    
+    * 泛型通配符
+
+    	* <? extends T>，向外取数
+    	* <? super T>，向内写数
+    
 * Java 集合
 
 	* LinkedList
@@ -39,7 +100,7 @@ tags:
 
 		使用堆实现的优先级队列
 		
-		[PriorityQueue 用法](https://blog.csdn.net/fansunion/article/details/79623809)
+		[PriorityQueue 用法](http://www.importnew.com/6932.html)
 		
 	* WeakHashMap
 
@@ -47,7 +108,7 @@ tags:
 		
 	* LinkedHashMap
 
-		天然的 LRU 缓存 - 链接散列映射将用访问顺序， 而不是插入顺序， 对映射条目进行迭代。 每次调用 get 或 put, 受到影响的条目将从当前的位置删除，并放到条目链表的尾部(只有条目在链表中的位 置会受影响， 而散列表中的桶不会受影响。一个条目总位于与键散列码对应的桶中)
+		天然的 LRU 缓存 - 链接散列映射将用访问顺序，而不是插入顺序，对映射条目进行迭代。每次调用 get 或 put, 受到影响的条目将从当前的位置删除，并放到条目链表的尾部(只有条目在链表中的位置会受影响，而散列表中的桶不会受影响。一个条目总位于与键散列码对应的桶中)
 		
 		```java
 		class LRUCache<K, V> extends LinkedHashMap<K, V> {
@@ -78,6 +139,8 @@ tags:
 		
 		[3, 1, 4]
 		```
+		
+		[LinkedHashMap](http://www.importnew.com/18726.html)
 		
 * Arrays.asList() 方法将返回一个视图对象，带有访问底层数据的 get 和 set 方法，改变数组的所有方法均会抛出异常
 
@@ -187,6 +250,100 @@ tags:
 
 	[Java 反射与注解](https://www.cnblogs.com/xiashengwang/p/8942252.html)
 	
+	* 利用反射获取成员变量 Field
+
+		当获取 private 类型的变量时，需要设置 `field.setAccessible(true);`
+
+		```java
+		public Field getDeclaredField(String name) // 获得该类自身声明的所有变量，不包括其父类的变量
+		public Field getField(String name) // 获得该类自所有的public成员变量，包括其父类变量
+		
+		//具体实现
+		Field[] allFields = class1.getDeclaredFields();//获取class对象的所有属性 
+		Field[] publicFields = class1.getFields();//获取class对象的public属性 
+		Field ageField = class1.getDeclaredField("age");//获取class指定属性 
+		Field desField = class1.getField("des");//获取class指定的public属性
+		```
+		
+		```java
+		public class ReflectDemo {
+		    public static void main(String[] args){
+		        try {
+		            Class c = Class.forName("com.tengj.reflect.Person");
+		            //获取成员变量
+		            Field field = c.getDeclaredField("msg"); //因为msg变量是private的，所以不能用getField方法
+		            Object o = c.newInstance();
+		            field.setAccessible(true);//设置是否允许访问，因为该变量是private的，所以要手动设置允许访问，如果msg是public的就不需要这行了。
+		            Object msg = field.get(o);
+		            System.out.println(msg);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+		```
+		
+	* 利用反射获取成员方法 Method
+
+		```java
+		public Method getDeclaredMethod(String name, Class<?>... parameterTypes) // 得到该类所有的方法，不包括父类的 
+		public Method getMethod(String name, Class<?>... parameterTypes) // 得到该类所有的public方法，包括父类的
+		
+		//具体使用
+		Method[] methods = class1.getDeclaredMethods();//获取class对象的所有声明方法 
+		Method[] allMethods = class1.getMethods();//获取class对象的所有public方法 包括父类的方法 
+		Method method = class1.getMethod("info", String.class);//返回次Class对象对应类的、带指定形参列表的public方法 
+		Method declaredMethod = class1.getDeclaredMethod("info", String.class);//返回次Class对象对应类的、带指定形参列表的方法
+		```
+		
+		```java
+		public void fun(String name,int age) {
+	        System.out.println("我叫"+name+",今年"+age+"岁");
+	   }
+		
+		Class c = Class.forName("com.tengj.reflect.Person");  //先生成class
+		Object o = c.newInstance();                           //newInstance可以初始化一个实例
+		Method method = c.getMethod("fun", String.class, int.class);//获取方法
+		method.invoke(o, "tengj", 10);                         //通过invoke调用该方法，参数第一个为实例对象，后面为具体参数值
+		```
+		
+  	* 利用反射获取构造函数 Constructor
+
+  		```java
+  		public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes) //  获得该类所有的构造器，不包括其父类的构造器
+		public Constructor<T> getConstructor(Class<?>... parameterTypes) // 获得该类所以public构造器，包括父类
+
+		//具体
+		Constructor<?>[] allConstructors = class1.getDeclaredConstructors();//获取class对象的所有声明构造函数 
+		Constructor<?>[] publicConstructors = class1.getConstructors();//获取class对象public构造函数 
+		Constructor<?> constructor = class1.getDeclaredConstructor(String.class);//获取指定声明构造函数 
+		Constructor publicConstructor = class1.getConstructor(String.class);//获取指定声明的public构造函数
+  		```
+  		
+  		```java
+  		public A(String a, int b) {
+		    // code body
+		}
+		
+		Constructor constructor = a.getDeclaredConstructor(String.class, int.class);
+  		```
+  		
+  		```java
+  		public class ReflectDemo {
+		    public static void main(String[] args){
+		        try {
+		            Class c = Class.forName("com.tengj.reflect.Person");
+		            //获取构造函数
+		            Constructor constructor = c.getDeclaredConstructor(String.class);
+		            constructor.setAccessible(true);//设置是否允许访问，因为该构造器是private的，所以要手动设置允许访问，如果构造器是public的就不需要这行了。
+		            constructor.newInstance("tengj");
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+  		```
+	
 * Java 线程操作中的 wait 方法和 notity 方法
 
 	这两个方法多与 synchronized(obj) 一同使用，wait 方法是释放当前获取的锁，同时线程休眠，等待其他线程调用 obj.notity() 或 obj.notityAll() 唤醒继续执行，notity 方法是唤醒其他执行 wait 方法的线程，但是并不马上释放锁，而是等 synchronized 块自己执行完毕
@@ -235,7 +392,7 @@ tags:
 	           
 	           
 	        new Thread(pa).start();
-	        Thread.sleep(100);  //确保按顺序A、B、C执行
+	        Thread.sleep(100);  // 确保按顺序A、B、C执行
 	        new Thread(pb).start();
 	        Thread.sleep(100);  
 	        new Thread(pc).start();   
@@ -256,6 +413,39 @@ tags:
 	* 禁止指令重排序
 
 	[Java volatile](https://www.cnblogs.com/dolphin0520/p/3920373.html)
+	
+	```java
+	public class Singleton {
+
+	    private volatile static Singleton uniqueInstance;
+	
+	    private Singleton() {
+	    }
+	
+	    public static Singleton getUniqueInstance() {
+	       //先判断对象是否已经实例过，没有实例化过才进入加锁代码
+	        if (uniqueInstance == null) {
+	            //类对象加锁
+	            synchronized (Singleton.class) {
+	                if (uniqueInstance == null) {
+	                    uniqueInstance = new Singleton();
+	                }
+	            }
+	        }
+	        return uniqueInstance;
+	    }
+	}
+	```
+	
+	👆的代码展示了如何实现一个单例，这里将 uniqueInstance 变量设为 volatile，禁止了指令重排
+	
+	uniqueInstance = new Singleton(); 这段代码其实是分为三步执行
+	
+	1. 为 uniqueInstance 分配内存空间
+	2. 初始化 uniqueInstance
+	3. 将 uniqueInstance 指向分配的内存地址
+
+	但是由于 JVM 具有指令重排的特性，执行顺序有可能变成 1->3->2。指令重排在单线程环境下不会出现问题，但是在多线程环境下会导致一个线程获得还没有初始化的实例。例如，线程 T1 执行了 1 和 3，此时 T2 调用 getUniqueInstance() 后发现 uniqueInstance 不为空，因此返回 uniqueInstance，但此时 uniqueInstance 还未被初始化
 
 * Java 阻塞队列
 
@@ -321,6 +511,11 @@ tags:
 		pool.submit(futureTask);
 		System.out.Println(futureTask.get());
 		```
+	
+	* 上述几种方式，实现接口好一点
+
+		* Java 不支持多重继承，但是可以实现多个接口
+		* 类可能只要求可执行就行，继承整个 Thread 类开销过大
 
 * Java 类如果继承了两个接口有相同的默认方法，那么需要在类中显式的定义，如果是继承的类和接口之间有方法冲突，那么遵从类优先的规则
 
@@ -382,6 +577,51 @@ tags:
 
 * [Java 虚拟机](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA.md#%E4%B8%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5)
 
+	* 运行时数据区域
+
+		* 线程独有
+
+			* 程序计数器，存储虚拟机字节码指令
+			* Java 虚拟机栈，存储栈帧，Java 方法执行的时候，会创建一个栈帧用于存储局部变量表、操作数栈、常量池引用等信息，从方法调用直至执行完成的过程，就对应着一个栈帧在 Java 虚拟机栈中入栈和出栈的过程
+			* 本地方法栈，本地方法栈与 Java 虚拟机栈类似，它们之间的区别只不过是本地方法栈为本地方法服务（C，C++编写的）
+		* 堆，对象分配内存的地方，GC 的主要区域，分为新生代和老年代
+		* 方法区，存放被加载的类信息，常量，静态变量等，Java1.7 之前存放于永久代中，由于 full gc 永久代的大小都要改变，经常抛出 OOM 异常，Java1.8 之后存放于本地内存中
+		* 运行时常量池，方法区的一部分，Class 文件中的常量池（编译器生成的字面量和符号引用）会在类加载后被放入这个区域
+	
+	* 如何判断一个对象是否能被回收
+
+		* 引用计数法，循环引用无法回收
+		* 可达性分析
+
+			以 GC Roots 为起始点进行搜索，可达的对象都是存活的，不可达的对象可被回收
+			
+			Java 虚拟机使用该算法来判断对象是否可被回收，GC Roots 一般包含以下内容：
+			
+			* 虚拟机栈中局部变量表中引用的对象
+			* 本地方法栈中 JNI 中引用的对象
+			* 方法区中类静态属性引用的对象
+			* 方法区中的常量引用的对象
+	
+	* 引用类型
+	
+		* 强引用，被强引用关联的对象不会被回收
+		* 软引用，软引用关联的对象只有在内存不够的情况下才会被回收
+		* 弱引用，下一次 GC 的时候被回收
+		* 虚灵引用，为一个对象设置虚引用的唯一目的是能在这个对象被回收时收到一个系统通知
+	
+	* 垃圾收集算法
+
+		* 标记 - 清除
+		* 标记 - 整理
+		* 复制
+	
+	* 7种垃圾收集器
+	
+		[垃圾收集器](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA.md#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8)
+	
+	* 类加载的七个过程：加载，验证，准备，解析，初始化，使用，卸载
+	* 类加载器类型：启动类加载器，扩展类加载器，应用程序类加载器
+
 * [JVM 组成](https://juejin.im/post/5cad272a5188254eb942fabe?utm_source=gold_browser_extension)
 
 * [BIO 和 NIO 数量问题](https://juejin.im/post/5c8aea1df265da2de33f6a09)
@@ -397,7 +637,7 @@ tags:
 
 * Java 中 == 和 equals
 
-	==：它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)
+	==：它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型 ==   比较的是值，引用数据类型 == 比较的是内存地址)
 	
 	equals()：它的作用也是判断两个对象是否相等。但它一般有两种使用情况
 	
@@ -623,4 +863,12 @@ tags:
 
 * [Java synchronized 关键字](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/synchronized.md)
 
-* 
+* [Java 并发编程](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/Java%20%E5%B9%B6%E5%8F%91.md)
+
+* Java 锁优化
+
+	* 自旋锁，自旋锁的思想是让一个线程在请求一个共享数据的锁时执行忙循环（自旋）一段时间，如果在这段时间内能获得锁，就可以避免进入阻塞状态
+	* 锁消除，锁消除是指对于被检测出不可能存在竞争的共享数据的锁进行消除
+	* 锁粗化，如果一个方法内连续加锁，释放锁，Java 会将加锁范围扩展到方法
+	* 轻量级锁，优先 CAS 操作申请锁，如果两个线程同时等待锁，轻量级锁膨胀为重量级锁
+	* 偏向锁，锁偏向于第一个来的线程，这个线程获取锁后，剩下的所有操作都不用同步，CAS 都不用，等到其他线程来请求锁，从当前状态退化
