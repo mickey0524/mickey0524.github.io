@@ -9,7 +9,7 @@ tags:
     - 面试
 ---
 
-最近各家公司都开始暑期实习的招聘了，在这里总结一下，题目来自本人或同学的面试
+最近各家公司都开始暑期实习的招聘了，在这里总结一下，题目来自本人或同学的面试，本人是大数据 + 后台方向
 
 * 腾讯（后台开发一面）
 
@@ -679,6 +679,32 @@ tags:
 			return res[0]
 		```
 
+* 阿里四，五面（大数据）
+
+	* 如何设计一个 Web 后端 Server
+
+		MVC 框架 + MySQL + Redis + Metrics
+	
+	* MySQL 二次写
+
+		[二次写](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/db.md)
+		
+	* Spark Shuffle 过程
+
+		[Spark Shuffle](http://sharkdtu.com/posts/spark-shuffle.html)
+		
+	* Spark 宽窄依赖有什么好处啊
+
+		并行计算 + 快速容灾
+		
+	* 如何设计阿里妈妈的标签系统
+
+		可视化界面勾选维度，天级别定时跑任务
+		
+	* 依旧是上面这个问题，那么有几万个定时任务，如何优化
+
+		可以从不同的 sql 中选出公共的 sql，跑出中间表，避免重复作业
+
 * 网易游戏一面（大数据）
 
 	* 栈和队列的区别
@@ -741,6 +767,144 @@ tags:
         
             recursive(root)
         ```
+       
+* 网易游戏二面（大数据）
+
+	* 实现一个生产者消费者，可以使用 BlockingQueue
+
+		```java
+		public class ProducerConsumer {
+
+		    private static BlockingQueue<String> queue = new ArrayBlockingQueue<>(5);
+		
+		    private static class Producer extends Thread {
+		        @Override
+		        public void run() {
+		            try {
+		                queue.put("product");
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		            System.out.print("produce..");
+		        }
+		    }
+		
+		    private static class Consumer extends Thread {
+		
+		        @Override
+		        public void run() {
+		            try {
+		                String product = queue.take();
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		            System.out.print("consume..");
+		        }
+		    }
+		}
+		```
+	
+	* 手动实现一个生产者消费者，不能用 BlockingQueue
+
+		```java
+		import java.util.concurrent.ReentrantLock;
+		import java.util.concurrent.Condition;
+		
+		class MQ {
+		    private ArrayList<Object> list;
+		    private ReentranLock lock;
+		    private Condition condition;
+		    private int cap;
+		    
+		    public MQ(int cap) {
+		        this.list = new ArrayList<Object>(cap);
+		        this.lock = new ReentrantLock();
+		        this.condition = this.lock.newCondition();
+		        this.cap = cap;
+		    }
+		    
+		    public void consumer() {
+		        this.lock.lock();
+		        try {
+		            while (this.list.size() == 0) {
+		                this.condition.await();
+		            }
+		            Object o = this.list.remove(0);
+		            
+		            
+		            this.lock.signalAll();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        finally {
+		            this.lock.unlock();
+		        }
+		    }
+		    
+		    public void producer(Object o) {
+		        this.lock.lock();
+		        try {
+		            while (this.list.size() == this.cap) {
+		                this.condition.await();
+		            }
+		            this.list.add(o);
+		            this.lock.signalAll();
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        finally {
+		            this.lock.unlock();
+		        }
+		    }
+		}
+		
+		public class Main {
+		    public static void main(String[] args) {
+		
+		    }
+		} 
+		```
+		
+	* Java 基础
+
+		```java
+		String a = "a";
+		String b = "a";
+		
+		System.out.println(a == b); // true，a 和 b 引用都是指向 String pool
+		
+		Integer a = 1;
+		Integer b = 1;
+		
+		System.out.Println(a == b); // true，a 和 b 自动装箱的时候会执行 Ineger.valueOf，这个会去 Integer 缓存池中取数，new Integer() 是创建新的
+		```
+	
+	* MySQL char 和 varchar 的区别，varchar 是变长的，char 是定长的
+	
+	* MySQL 非空CHAR的最大总长度是255字节，非空VARCHAR的最大总长度是65533字节
+可空CHAR的最大总长度是254字节，可空VARCHAR的最大总长度是65532字节，原因：非空标记需要占据一个字节，VARCHAR超过255需要用2个字节标记字段长度，不超过255用1个字节标记字段长度，varchar(128) 表示能存 128 个 字符
+
+	* Redis zset 数据结构
+
+		跳表
+		
+	* Redis 分布式锁如何实现
+
+		[redis 分布式锁](https://www.cnblogs.com/linjiqin/p/8003838.html)
+		
+		主要需要 setnx 和 expire time 的思想，需要将这两个操作放在一个 set 指令中执行，保证原子性
+	
+	* 算法题
+
+		有 m 个字符，没有重复，求有多少种做法组成一个长度为 n 的字符串，要求用上全部 m 个字符，n >= m
+		
+		这道题用暴力 DFS + 去重 可以做，但是复杂度太高了
+		
+		其实这是一道数学题，我们可以考虑逆向思维，用全集减去仅仅使用 m - 1 个字符 + 使用 m - 2 个字符 - 使用 m - 3 字符
+		
+		```
+		ans = m**n - C(m, 1) * (m - 1) ** n + C(m, 2) * (m - 2) ** n ...
+		```
 
 * 快手一、二面（大数据）
 
