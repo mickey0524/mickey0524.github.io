@@ -685,6 +685,10 @@ tags:
 
 		MVC 框架 + MySQL + Redis + Metrics
 	
+	* MySQL 索引块为啥默认是 16k
+
+		是内存页大小的整数倍
+	
 	* MySQL 二次写
 
 		[二次写](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/db.md)
@@ -878,6 +882,12 @@ tags:
 		
 		System.out.Println(a == b); // true，a 和 b 自动装箱的时候会执行 Ineger.valueOf，这个会去 Integer 缓存池中取数，new Integer() 是创建新的
 		```
+	
+	* Java finally 和 finalize 有什么区别
+
+		finally 是配合 try catch 使用的，无论是否捕获异常，Java 都会执行 finally 块中的代码，经常将锁的释放，连接池的释放放在 finally 中执行
+		
+		finalize()是Object的protected方法，子类可以覆盖该方法以实现资源清理工作，GC在回收对象之前调用该方法，当对象变成(GC Roots)不可达时，GC会判断该对象是否覆盖了finalize方法，若未覆盖，则直接将其回收。否则，若对象未执行过finalize方法，将其放入F-Queue队列，由一低优先级线程执行该队列中对象的finalize方法。执行finalize方法完毕后，GC会再次判断该对象是否可达，若不可达，则进行回收，否则，对象“复活”
 	
 	* MySQL char 和 varchar 的区别，varchar 是变长的，char 是定长的
 	
