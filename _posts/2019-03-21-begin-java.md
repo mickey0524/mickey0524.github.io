@@ -20,23 +20,23 @@ tags:
 
     [Java 泛型](http://www.importnew.com/24029.html)
     
-    * 泛型类
-
-    	```java
-    	public class Box<T> {
-    		private T t;
-    		
-    		public T getT() {
-    			return t;	
-    		}
-    		
-    		public void setT(T t) {
-    			this.t = t;
-    		}
-    	}
-    	```
+	* 泛型类
+		
+		```java
+		public class Box<T> {
+			private T t;
+			
+			public T getT() {
+				return t;	
+			}
+			
+			public void setT(T t) {
+				this.t = t;
+			}
+		}
+		```
     
-    * 泛型方法
+	* 泛型方法
 
     	```java
     	public class Util {
@@ -59,8 +59,8 @@ tags:
 		    public V getValue() { return value; }
 		}
     	```
-    
-    * 边界符
+ 
+	* 边界符
 
     	```java
     	public interface Comparable<T> {
