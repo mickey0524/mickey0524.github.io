@@ -1068,3 +1068,50 @@ tags:
         }
     }
     ```
+* Java CAS 用版本号解决 ABA 问题
+
+	[JAVA CAS 解决 ABA 问题](https://www.cnblogs.com/java20130722/p/3206742.html)
+	
+* Java CopyOnWriteArrayList 读不加锁，写的话拷贝出一个新数组，然后修改这个新数组，最后将原来的内存指针指向新的数组
+
+	* 读操作
+
+		```java
+		/** The array, accessed only via getArray/setArray. */
+		private transient volatile Object[] array;
+		public E get(int index) {
+		    return get(getArray(), index);
+		}
+		@SuppressWarnings("unchecked")
+		private E get(Object[] a, int index) {
+		    return (E) a[index];
+		}
+		final Object[] getArray() {
+		    return array;
+		}		
+		```
+	
+	* 写操作
+
+		```java
+		/**
+		 * Appends the specified element to the end of this list.
+		 *
+		 * @param e element to be appended to this list
+		 * @return {@code true} (as specified by {@link Collection#add})
+		 */
+		public boolean add(E e) {
+		    final ReentrantLock lock = this.lock;
+		    lock.lock();//加锁
+		    try {
+		        Object[] elements = getArray();
+		        int len = elements.length;
+		        Object[] newElements = Arrays.copyOf(elements, len + 1);//拷贝新数组
+		        newElements[len] = e;
+		        setArray(newElements);
+		        return true;
+		    } finally {
+		        lock.unlock();//释放锁
+		    }
+		}		
+		```
