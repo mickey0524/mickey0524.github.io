@@ -11,6 +11,11 @@ tags:
 
 最近在面试的时候，发现很多公司的技术栈都是 Java，虽然语言不是壁垒，但还是会有很多不便，另外，我想看看 Flink 的源码，于是开始学习 Java
 
+* github 上优秀的 Java 知识集合
+
+	* [CS-Notes](https://github.com/CyC2018/CS-Notes)
+	* [Java Guide](https://github.com/Snailclimb/JavaGuide)　
+
 * Java 泛型的介绍
 
     [Java 泛型](http://www.importnew.com/24029.html)
@@ -872,3 +877,119 @@ tags:
 	* 锁粗化，如果一个方法内连续加锁，释放锁，Java 会将加锁范围扩展到方法
 	* 轻量级锁，优先 CAS 操作申请锁，如果两个线程同时等待锁，轻量级锁膨胀为重量级锁
 	* 偏向锁，锁偏向于第一个来的线程，这个线程获取锁后，剩下的所有操作都不用同步，CAS 都不用，等到其他线程来请求锁，从当前状态退化
+
+* Java 内存模型三大特性
+
+	![Java 内存模型](/img/in-post/begin-java/java-memory-model.png)
+
+	* 原子性
+
+		Java 内存模型保证了 read、load、use、assign、store、write、lock 和 unlock 操作具有原子性，例如对一个 int 类型的变量执行 assign 赋值操作，这个操作就是原子性的。但是 Java 内存模型允许虚拟机将没有被 volatile 修饰的 64 位数据（long，double）的读写操作划分为两次 32 位的操作来进行，即 load、store、read 和 write 操作可以不具备原子性。
+		
+	* 可见性
+
+		可见性指当一个线程修改了共享变量的值，其它线程能够立即得知这个修改。Java 内存模型是通过在变量修改后将新值同步回主内存，在变量读取前从主内存刷新变量值来实现可见性的
+		
+		* volatile
+		* synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存
+		* final，被 final 关键字修饰的字段在构造器中一旦初始化完成，并且没有发生 this 逃逸（其它线程通过 this 引用访问到初始化了一半的对象），那么其它线程就能看见 final 字段的值
+		
+	* 有序性
+
+		在本线程内观察，所有操作都是有序的。在一个线程观察另一个线程，所有操作都是无序的，无序是因为发生了指令重排序。在 Java 内存模型中，允许编译器和处理器对指令进行重排序，重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性
+		
+		volatile 关键字通过添加内存屏障的方式来禁止指令重排，即重排序时不能把后面的指令放到内存屏障之前
+		
+* Java ConcurrentSkipListMap 采用跳表实现
+
+* 当使用 synchronized 的时候，不要使用 synchronized(String a)，因为 JVM 中，字符串常量池具有缓冲功能
+
+* synchronized 关键字的底层原理
+
+	* synchronized 同步语句块的情况
+
+		synchronized 同步语句块的实现使用的是 monitorenter 和 monitorexit 指令，其中 monitorenter 指令指向同步代码块的开始位置，monitorexit 指令则指明同步代码块的结束位置。 当执行 monitorenter 指令时，线程试图获取锁也就是获取 monitor (monitor 对象存在于每个Java对象的对象头中，synchronized 锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因) 的持有权.当计数器为0则可以成功获取，获取后将锁计数器设为1也就是加1。相应的在执行 monitorexit 指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止
+		
+	* synchronized 同步方法的情况
+
+		synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用
+		
+* 为什么要使用线程池
+
+	* 降低资源消耗：通过重复利用已创建的线程降低线程创建和销毁造成的消耗
+	* 提高响应速度：当任务到达时，任务可以不需要的等到线程创建就能立即执行
+	* 提高线程的可管理性：线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控
+
+* String 字符串拼接
+
+	```java
+	String str1 = "str";
+	String str2 = "ing";
+	  
+	String str3 = "str" + "ing"; // 常量池中的对象
+	String str4 = str1 + str2; // 在堆上创建的新的对象	  
+	String str5 = "string"; // 常量池中的对象
+	System.out.println(str3 == str4); // false
+	System.out.println(str3 == str5); // true
+	System.out.println(str4 == str5); // false
+	```
+	
+	尽量避免多个字符串拼接，因为这样会重新创建对象。如果需要改变字符串的话，可以使用 StringBuilder 或者 StringBuffer
+	
+* Integer 问题
+
+	```java
+	Integer i1 = 40;
+	Integer i2 = 40;
+	Integer i3 = 0;
+	Integer i4 = new Integer(40);
+	Integer i5 = new Integer(40);
+	Integer i6 = new Integer(0);
+	  
+	System.out.println("i1=i2   " + (i1 == i2));
+	System.out.println("i1=i2+i3   " + (i1 == i2 + i3));
+	System.out.println("i1=i4   " + (i1 == i4));
+	System.out.println("i4=i5   " + (i4 == i5));
+	System.out.println("i4=i5+i6   " + (i4 == i5 + i6));   
+	System.out.println("40=i5+i6   " + (40 == i5 + i6));
+	
+	i1=i2   true
+	i1=i2+i3   true
+	i1=i4   false
+	i4=i5   false
+	i4=i5+i6   true
+	40=i5+i6   true 
+	```
+	
+	* `Integer i1 = 40;` Java 在编译的时候会直接将代码封装成Integer i1=Integer.valueOf(40);，从而使用常量池中的对象。
+	* `Integer i1 = new Integer(40);` 这种情况下会创建新的对象。
+	* 语句i4 == i5 + i6，因为+这个操作符不适用于Integer对象，首先i5和i6进行自动拆箱操作，进行数值相加，即i4 == 40。然后Integer对象无法与数值进行直接比较，所以i4自动拆箱转为int值40，最终这条语句转为40 == 40进行数值比较
+
+* [Java 虚拟机如何创建一个对象](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/%E5%8F%AF%E8%83%BD%E6%98%AF%E6%8A%8AJava%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%AE%B2%E7%9A%84%E6%9C%80%E6%B8%85%E6%A5%9A%E7%9A%84%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0.md#%E4%B8%89-hotspot-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1%E6%8E%A2%E7%A7%98)
+
+* GC 中不可达的对象并非 "非死不可"
+
+	即使在可达性分析法中不可达的对象，也并非是“非死不可”的，这时候它们暂时处于“缓刑阶段”，要真正宣告一个对象死亡，至少要经历两次标记过程；可达性分析法中不可达的对象被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行 finalize 方法。当对象没有覆盖 finalize 方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行。
+
+	被判定为需要执行的对象将会被放在一个队列中进行第二次标记，除非这个对象与引用链上的任何一个对象建立关联，否则就会被真的回收。
+
+* 如何判断一个常量是废弃常量
+
+	运行时常量池主要回收的是废弃的常量。那么，我们如何判断一个常量是废弃常量呢？
+
+	假如在常量池中存在字符串 "abc"，如果当前没有任何String对象引用该字符串常量的话，就说明常量 "abc" 就是废弃常量，如果这时发生内存回收的话而且有必要的话，"abc" 就会被系统清理出常量池。
+
+* 如何判断一个类是无用的类
+
+	方法区主要回收的是无用的类，那么如何判断一个类是无用的类的呢？
+
+	判定一个常量是否是“废弃常量”比较简单，而要判定一个类是否是“无用的类”的条件则相对苛刻许多。类需要同时满足下面3个条件才能算是 “无用的类” ：
+
+	* 该类所有的实例都已经被回收，也就是 Java 堆中不存在该类的任何实例。
+	* 加载该类的 ClassLoader 已经被回收。
+	* 该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。
+	
+	虚拟机可以对满足上述3个条件的无用类进行回收，这里说的仅仅是“可以”，而并不是和对象一样不使用了就会必然被回收。
+
+	
+	
