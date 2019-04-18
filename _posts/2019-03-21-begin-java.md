@@ -35,10 +35,10 @@ tags:
 			}
 		}
 		```
-    
-	* 泛型方法
 
-    	```java
+	* 泛型方法
+	
+		```java
     	public class Util {
 		    public static <K, V> boolean compare(Pair<K, V> p1, Pair<K, V> p2) {
 		        return p1.getKey().equals(p2.getKey()) &&
@@ -62,7 +62,7 @@ tags:
  
 	* 边界符
 
-    	```java
+		```java
     	public interface Comparable<T> {
     		public int compareTo(T o);
     	}
