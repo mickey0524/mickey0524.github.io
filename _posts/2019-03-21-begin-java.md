@@ -1121,3 +1121,132 @@ tags:
 	finally 是配合 try catch 使用的，无论是否捕获异常，Java 都会执行 finally 块中的代码，经常将锁的释放，连接池的释放放在 finally 中执行
 	
 	finalize()是Object的protected方法，子类可以覆盖该方法以实现资源清理工作，GC在回收对象之前调用该方法，当对象变成(GC Roots)不可达时，GC会判断该对象是否覆盖了finalize方法，若未覆盖，则直接将其回收。否则，若对象未执行过finalize方法，将其放入F-Queue队列，由一低优先级线程执行该队列中对象的finalize方法。执行finalize方法完毕后，GC会再次判断该对象是否可达，若不可达，则进行回收，否则，对象“复活”
+
+* Java 克隆
+
+	```java
+	public class Stu implements Cloneable {
+		private String name;
+		
+		public Stu(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public object clone() {
+			Stu s = null;
+			try {
+				s = (Stu) super.clone();
+			} catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        	}
+        	return s;
+		}
+	}
+	```
+
+	* 直接相等
+
+		```java
+		Stu a = new Stu("a");
+		Stu b = a;
+		```
+		
+		这样 b 和 a 指向的是相同的引用
+		
+	* 浅拷贝
+
+		```java
+		Stu a = new Stu("a");
+		Stu b = (Stu) a.clone();
+		```
+		
+	* 深拷贝
+
+		Stu 类中有成员变量是其他类
+		
+		```java
+		class Address implements Cloneable {
+			private String addr;
+			
+			Address(String addr) {
+				this.addr = addr;
+			}
+			
+			@Override
+			public Object clone() {
+				Address a = null;
+				try {
+					a = (Address) super.clone();
+				} catch(CloneNotSupportedException e) {
+	            e.printStackTrace();
+	        	}
+	        	return a;
+			}
+		}
+		
+		class Stu implements Cloneable {
+			private String name;
+			
+			private Address addr;
+			
+			Stu(String name, Address addr) {
+				this.name = name;
+				this.addr = addr;
+			}
+			
+			@Override
+			public Object clone() {
+				Stu s = null;
+				try {
+					s = (Stu) super.clone();
+					s.addr = (Address) this.addr.clone();
+				} catch(CloneNotSupportedException e) {
+	          	e.printStackTrace();
+	        	}
+	        	return s;
+			}
+		}
+		```
+		
+		如果类中有很多成员变量是其他类，这样写就会很繁琐，可以实现 Serializable 接口来实现深拷贝
+		
+		```java
+		public class Inner implements Serializable{
+			private static final long serialVersionUID = 872390113109L; //最好是显式声明ID
+			public String name = "";
+				
+			public Inner(String name) {
+				this.name = name;
+			}
+				
+			@Override
+			public String toString() {
+				return "Inner的name值为：" + name;
+			}
+		}
+		
+		public class Outer implements Serializable{
+			private static final long serialVersionUID = 369285298572941L;  //最好是显式声明ID
+			public Inner inner;
+			　//Discription:[深度复制方法,需要对象及对象所有的对象属性都实现序列化]　
+			public Outer myclone() {
+				Outer outer = null;
+				try { // 将该对象序列化成流,因为写在流里的是对象的一个拷贝，而原对象仍然存在于JVM里面。所以利用这个特性可以实现对象的深拷贝
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					ObjectOutputStream oos = new ObjectOutputStream(baos);
+					oos.writeObject(this); // 将流序列化成对象
+					ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+					ObjectInputStream ois = new ObjectInputStream(bais);
+					outer = (Outer) ois.readObject();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				return outer;
+			}
+		}
+		```
+
+		
