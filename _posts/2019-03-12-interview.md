@@ -869,6 +869,104 @@ tags:
 		} 
 		```
 		
+	* 两个线程分别打印26个英文字母的元音（a, e, i, o, u）和辅音（其他），按字母序输出
+	
+		```java
+		package main.multithread;
+
+		import java.util.LinkedHashSet;
+		import java.util.concurrent.locks.Condition;
+		import java.util.concurrent.locks.ReentrantLock;
+		
+		public class AlphabetPrint {
+		
+		    private final ReentrantLock lock = new ReentrantLock();
+		    private final Condition printVowel = lock.newCondition();
+		    private final Condition meetVowel = lock.newCondition();
+		
+		    public void execute() throws InterruptedException {
+		        final LinkedHashSet<Character> vowels = new LinkedHashSet<>();
+		        for (char ch : new char[]{'a', 'e', 'i', 'o', 'u'}) {
+		            vowels.add(ch);
+		        }
+		
+		        Thread vp = new Thread(new VowelPrint(vowels));
+		        Thread cp = new Thread(new ConsonantPrint(vowels));
+		
+		        vp.start();
+		        cp.start();
+		
+		        vp.join();
+		        cp.join();
+		
+		    }
+		
+		    class VowelPrint implements Runnable {
+		
+		        private final LinkedHashSet<Character> vowels;
+		
+		        VowelPrint(LinkedHashSet<Character> vowels) {
+		            this.vowels = vowels;
+		        }
+		
+		        @Override
+		        public void run() {
+		            lock.lock();
+		
+		            try {
+		                for (char ch : vowels) {
+		                    try {
+		                        meetVowel.await();
+		                    } catch (InterruptedException e) {
+		                        e.printStackTrace();
+		                    }
+		                    System.out.print(ch);
+		                    printVowel.signal();
+		                }
+		            } finally {
+		                lock.unlock();
+		            }
+		        }
+		    }
+		
+		    class ConsonantPrint implements Runnable {
+		
+		        private final LinkedHashSet<Character> vowels;
+		
+		        ConsonantPrint(LinkedHashSet<Character> vowels) {
+		            this.vowels = vowels;
+		        }
+		
+		        @Override
+		        public void run() {
+		            lock.lock();
+		            Boolean visitVowel = false;
+		            try {
+		                for (int i = 0; i < 26; i++) {
+		                    char ch = (char)(i + 'a');
+		                    if (vowels.contains(ch)) {
+		                        meetVowel.signal();
+		                        visitVowel = true;
+		                    } else {
+		                        if (visitVowel) {
+		                            try {
+		                                printVowel.await();
+		                            } catch (InterruptedException e) {
+		                                e.printStackTrace();
+		                            }
+		                        }
+		                        visitVowel = false;
+		                        System.out.print(ch);
+		                    }
+		                }
+		            } finally {
+		                lock.unlock();
+		            }
+		        }
+		    }
+		}
+		```
+		
 	* Java 基础
 
 		```java
