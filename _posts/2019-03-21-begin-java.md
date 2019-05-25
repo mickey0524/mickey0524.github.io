@@ -1251,3 +1251,44 @@ tags:
 
 * Java 类的静态方法不能调用类的非静态方法，但是可以调用构造方法
 
+* Java 中的 Arrays.copeOf 和 System.arraycopy 的区别
+
+	* Arrays.copeOf
+
+		```java
+		int[] copied = Arrays.copyOf(arr, 10); //10 the the length of the new array
+		System.out.println(Arrays.toString(copied));
+		 
+		copied = Arrays.copyOf(arr, 3);
+System.out.println(Arrays.toString(copied));
+
+		[1, 2, 3, 4, 5, 0, 0, 0, 0, 0]
+		[1, 2, 3]
+		```
+	
+	* System.arraycopy
+
+		```java
+		int[] arr = {1,2,3,4,5};
+ 
+		int[] copied = new int[10];
+		System.arraycopy(arr, 0, copied, 1, 5);//5 is the length to copy
+		 
+		System.out.println(Arrays.toString(copied));
+		
+		[0, 1, 2, 3, 4, 5, 0, 0, 0, 0]
+		```
+		
+	* 两者的区别
+
+		两者的区别在于，Arrays.copyOf 不仅仅只是拷贝数组中的元素，在拷贝元素时，会创建一个新的数组对象。而 System.arrayCopy 只拷贝已经存在数组元素
+		
+		如果我们看过 Arrays.copyOf 的源码就会知道，该方法的底层还是调用了 System.arrayCopy 方法
+		
+		```java
+		public static int[] copyOf(int[] original, int newLength) 			{ 
+   			int[] copy = new int[newLength]; 
+   			System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength)); 
+   			return copy; 
+		}
+		```
