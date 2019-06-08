@@ -304,14 +304,14 @@ tags:
 		```java
 		public void fun(String name,int age) {
 	        System.out.println("我叫"+name+",今年"+age+"岁");
-	   }
+		}
 		
 		Class c = Class.forName("com.tengj.reflect.Person");  //先生成class
 		Object o = c.newInstance();                           //newInstance可以初始化一个实例
 		Method method = c.getMethod("fun", String.class, int.class);//获取方法
 		method.invoke(o, "tengj", 10);                         //通过invoke调用该方法，参数第一个为实例对象，后面为具体参数值
 		```
-	
+		
 	* 利用反射获取构造函数 Constructor
 
   		```java
@@ -349,7 +349,7 @@ tags:
 		}
   		```
   
-  * 注解例子
+  	* 注解例子
 
   		统计方法的调用次数，只有被注解的方法才会参与统计
 
@@ -410,19 +410,18 @@ tags:
 		    }
 		}
 		
-		
 		public class Main {
-		    public static void main(String[] args) {
-		        Test t = new Test();
-		
-		        t.print("printA");
-		        t.print("printB");
-		        t.print("printC");
-		
-		        for (Map.Entry<String, Integer> entry : t.getHashMap().entrySet()) {
-		            System.out.println(entry.getKey() + ": " + entry.getValue());
-		        }
-	    	}
+			public static void main(String[] args) {
+				Test t = new Test();
+
+				t.print("printA");
+				t.print("printB");
+				t.print("printC");
+
+				for (Map.Entry<String, Integer> entry : t.getHashMap().entrySet()) {
+					System.out.println(entry.getKey() + ": " + entry.getValue());
+				}
+			}
 		}
 		```
 	
