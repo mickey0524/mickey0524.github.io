@@ -311,8 +311,8 @@ tags:
 		Method method = c.getMethod("fun", String.class, int.class);//获取方法
 		method.invoke(o, "tengj", 10);                         //通过invoke调用该方法，参数第一个为实例对象，后面为具体参数值
 		```
-		
-  	* 利用反射获取构造函数 Constructor
+	
+	* 利用反射获取构造函数 Constructor
 
   		```java
   		public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes) //  获得该类所有的构造器，不包括其父类的构造器
@@ -348,6 +348,83 @@ tags:
 		    }
 		}
   		```
+  
+  * 注解例子
+
+  		统计方法的调用次数，只有被注解的方法才会参与统计
+
+		```java
+		package main;
+		
+		import java.lang.annotation.ElementType;
+		import java.lang.annotation.Retention;
+		import java.lang.annotation.RetentionPolicy;
+		import java.lang.annotation.Target;
+		import java.lang.reflect.InvocationTargetException;
+		import java.lang.reflect.Method;
+		import java.util.HashMap;
+		import java.util.Map;
+		
+		
+		@Retention(RetentionPolicy.RUNTIME)
+		@Target(ElementType.METHOD)
+		@interface TestAnnotation {
+		}
+		
+		class Test {
+		    private HashMap<String, Integer> hashMap;
+		
+		    public Test() {
+		        this.hashMap = new HashMap<>();
+		    }
+		
+		    private void printA() {
+		        System.out.println("A");
+		    }
+		
+		    private void printB() {
+		        System.out.println("B");
+		    }
+		
+		    @TestAnnotation
+		    private void printC() {
+		        System.out.println("C");
+		    }
+		
+		    public void print(String name) {
+		        try {
+		            Method method = this.getClass().getDeclaredMethod(name);
+		            method.setAccessible(true);
+		
+		            if (method.isAnnotationPresent(TestAnnotation.class)) {
+		                hashMap.put(name, hashMap.getOrDefault(name, 0) + 1);
+		                method.invoke(this);
+		            }
+		        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		
+		    public HashMap<String, Integer> getHashMap() {
+		        return this.hashMap;
+		    }
+		}
+		
+		
+		public class Main {
+		    public static void main(String[] args) {
+		        Test t = new Test();
+		
+		        t.print("printA");
+		        t.print("printB");
+		        t.print("printC");
+		
+		        for (Map.Entry<String, Integer> entry : t.getHashMap().entrySet()) {
+		            System.out.println(entry.getKey() + ": " + entry.getValue());
+		        }
+	    	}
+		}
+		```
 	
 * Java 线程操作中的 wait 方法和 notity 方法
 
