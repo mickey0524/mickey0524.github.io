@@ -149,6 +149,15 @@ tags:
 		
 * Arrays.asList() 方法将返回一个视图对象，带有访问底层数据的 get 和 set 方法，改变数组的所有方法均会抛出异常
 
+* float 和 double
+
+    1.1 这种字面量是 double 类型的，java 不能将精度高的赋予精度低的
+
+    ```java
+    float a = 1.1; // 报错
+    float a = 1.1f; // 正确
+    ```
+
 * List 子范围
 
 	List childList = parentList.subList(10, 20);
