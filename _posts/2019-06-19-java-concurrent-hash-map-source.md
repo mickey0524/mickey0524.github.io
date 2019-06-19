@@ -58,7 +58,7 @@ final Segment<K,V>[] segments;
 static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 ```
 
-![Segment](/img/in-post/concurrent-hash-map-source.png)
+![Segment](/img/in-post/concurrent-hash-map-source/1.png)
 
 ## JDK 1.8
 
@@ -221,4 +221,4 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 JDK 1.8 中，采用多线程扩容。整个扩容过程，通过 CAS 设置 sizeCtl，transferIndex 等变量协调多个线程进行并发扩容
 
-![ConcurrentHashMap源码分析（JDK8） 扩容实现机制](https://www.jianshu.com/p/487d00afe6ca)
+[ConcurrentHashMap源码分析（JDK8） 扩容实现机制](https://www.jianshu.com/p/487d00afe6ca)
