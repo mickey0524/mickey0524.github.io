@@ -1368,3 +1368,65 @@ System.out.println(Arrays.toString(copied));
    			return copy; 
 		}
 		```
+
+* Java 的 ThreadLocal
+
+	ThreadLocal 用来做线程本地缓存
+	
+	```java
+	public class ThreadLocalExample1 {
+	    public static void main(String[] args) {
+	        ThreadLocal threadLocal1 = new ThreadLocal();
+	        ThreadLocal threadLocal2 = new ThreadLocal();
+	        Thread thread1 = new Thread(() -> {
+	            threadLocal1.set(1);
+	            threadLocal2.set(1);
+	        });
+	        Thread thread2 = new Thread(() -> {
+	            threadLocal1.set(2);
+	            threadLocal2.set(2);
+	        });
+	        thread1.start();
+	        thread2.start();
+	    }
+	}
+	```
+	
+	每个 Thread 都有一个 ThreadLocal.ThreadLocalMap 对象
+	
+	```java
+	ThreadLocal.ThreadLocalMap threadLocals = null;
+	```
+	
+	当调用一个 ThreadLocal 的 set(T value) 方法时，先得到当前线程的 ThreadLocalMap 对象，然后将 ThreadLocal->value 键值对插入到该 Map 中
+	
+	```java
+	public void set(T value) {
+	    Thread t = Thread.currentThread();
+	    ThreadLocalMap map = getMap(t);
+	    if (map != null)
+	        map.set(this, value);
+	    else
+	        createMap(t, value);
+	}
+	```
+	
+	get() 方法类似
+	
+	```java
+	public T get() {
+	    Thread t = Thread.currentThread();
+	    ThreadLocalMap map = getMap(t);
+	    if (map != null) {
+	        ThreadLocalMap.Entry e = map.getEntry(this);
+	        if (e != null) {
+	            @SuppressWarnings("unchecked")
+	            T result = (T)e.value;
+	            return result;
+	        }
+	    }
+	    return setInitialValue();
+	}
+	```
+	
+	ThreadLocal 从理论上讲并不是用来解决多线程并发问题的，因为根本不存在多线程竞争，在一些场景 (尤其是使用线程池) 下，由于 ThreadLocal.ThreadLocalMap 的底层数据结构导致 ThreadLocal 有内存泄漏的情况，应该尽可能在每次使用 ThreadLocal 后手动调用 remove()，以避免出现 ThreadLocal 经典的内存泄漏甚至是造成自身业务混乱的风险
