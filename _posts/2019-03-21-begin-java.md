@@ -1444,3 +1444,5 @@ System.out.println(Arrays.toString(copied));
 	```
 	
 	ThreadLocal 从理论上讲并不是用来解决多线程并发问题的，因为根本不存在多线程竞争，在一些场景 (尤其是使用线程池) 下，由于 ThreadLocal.ThreadLocalMap 的底层数据结构导致 ThreadLocal 有内存泄漏的情况，应该尽可能在每次使用 ThreadLocal 后手动调用 remove()，以避免出现 ThreadLocal 经典的内存泄漏甚至是造成自身业务混乱的风险
+
+* [Java并发之AQS源码分析（一）](http://objcoding.com/2019/05/05/aqs-exclusive-lock/)
