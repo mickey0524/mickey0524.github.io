@@ -1012,6 +1012,20 @@ tags:
 	
 	尽量避免多个字符串拼接，因为这样会重新创建对象。如果需要改变字符串的话，可以使用 StringBuilder 或者 StringBuffer
 	
+* Java 中两种浮点数类型的包装类 Float,Double 并没有实现常量池技术
+
+	```java
+	Integer i1 = 33;
+	Integer i2 = 33;
+	System.out.println(i1 == i2); // 输出 true
+	Integer i11 = 333;
+	Integer i22 = 333;
+	System.out.println(i11 == i22); // 输出 false
+	Double i3 = 1.2;
+	Double i4 = 1.2;
+	System.out.println(i3 == i4); // 输出 false
+	```
+	
 * Integer 问题
 
 	```java
@@ -1041,7 +1055,7 @@ tags:
 	* `Integer i1 = new Integer(40);` 这种情况下会创建新的对象。
 	* 语句i4 == i5 + i6，因为+这个操作符不适用于Integer对象，首先i5和i6进行自动拆箱操作，进行数值相加，即i4 == 40。然后Integer对象无法与数值进行直接比较，所以i4自动拆箱转为int值40，最终这条语句转为40 == 40进行数值比较
 
-* [Java 虚拟机如何创建一个对象](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/%E5%8F%AF%E8%83%BD%E6%98%AF%E6%8A%8AJava%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%AE%B2%E7%9A%84%E6%9C%80%E6%B8%85%E6%A5%9A%E7%9A%84%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0.md#%E4%B8%89-hotspot-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1%E6%8E%A2%E7%A7%98)
+* [Java 虚拟机如何创建一个对象](https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/jvm/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F.md)
 
 * GC 中不可达的对象并非 "非死不可"
 
