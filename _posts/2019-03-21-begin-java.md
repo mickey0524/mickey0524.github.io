@@ -1446,3 +1446,44 @@ System.out.println(Arrays.toString(copied));
 	ThreadLocal 从理论上讲并不是用来解决多线程并发问题的，因为根本不存在多线程竞争，在一些场景 (尤其是使用线程池) 下，由于 ThreadLocal.ThreadLocalMap 的底层数据结构导致 ThreadLocal 有内存泄漏的情况，应该尽可能在每次使用 ThreadLocal 后手动调用 remove()，以避免出现 ThreadLocal 经典的内存泄漏甚至是造成自身业务混乱的风险
 
 * [Java并发之AQS源码分析（一）](http://objcoding.com/2019/05/05/aqs-exclusive-lock/)
+
+* Java Map 类集合 K/V 是否能存储 null
+
+    ![map-null](/img/in-post/begin-java/map-null.png)
+
+* [为什么阿里巴巴要求谨慎使用ArrayList中的subList方法](https://juejin.im/post/5d117ef7f265da1ba328d240?utm_source=gold_browser_extension)
+
+* 创建线程或线程池的时候请指定有意义的线程名称，方便出错时回溯
+
+    ```java
+    public class TimeTaskThread extends Thread {
+        public TimeTaskThread() {
+            super.setName("TimerTaskThread");           
+            ...
+        }
+    }
+    ```
+
+* 使用线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者"过度切换"的问题
+
+* 线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式能够规避资源耗尽的风险
+
+    FixedThreadPool 和 SingleThreadPool
+
+    允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM
+
+    CachedThreadPool 和 ScheduledThreadPool
+
+    允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM
+
+* 避免 Random 实例被多线程使用，虽然共享该实例是线程安全的，但是会因为竞争统一 seed 导致性能的下降，Random 实例包括 java.util.Random 的实例或 Math.random() 的方式，在 JDK7 之后，可以直接使用 API ThreadLocalRandom
+
+    ```java
+    ThreadLocalRandom.current().nextInt()
+    ```
+
+* HashMap 在容量不够进行 resize 的时候由于高并发可能出现死链，导致 CPU 飙升，在开发过程中可以使用其他数据结构或加锁来规避此风险
+
+* 在高并发场景中，避免使用"等于"判断作为中断或退出的条件
+
+    如果并发控制没有处理好，容易产生等值判断被"击穿"的情况，使用大于或小于的区间判断条件来代替
