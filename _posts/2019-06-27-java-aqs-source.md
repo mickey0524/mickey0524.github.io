@@ -284,3 +284,130 @@ private void unparkSuccessor(Node node) {
 unparkSuccessor 方法获取 node 的后继节点中第一个状态不为 CANCELLED 的节点，然后调用 `LockSupport.unpark(s.thread)` 唤醒之前 parkAndCheckInterrupt 方法挂载的线程
 
 ## 共享锁
+
+跟独占锁相比，共享锁的主要特征是当有一个线程获取到锁之后，那么它就会依次唤醒等待队列中可以跟它共享的节点，当然这些节点也是共享锁类型
+
+### acquireShared
+
+```java
+public final void acquireShared(int arg) {
+    if (tryAcquireShared(arg) < 0)
+        doAcquireShared(arg);
+}
+```
+
+acquireShared 调用 AQS 子类实现的 tryAcquireShared 方法，当获取失败的时候，执行 doAcquireShared 方法
+
+### doAcquireShared
+
+```java
+private void doAcquireShared(int arg) {
+    // 添加共享锁类型的节点到队列中
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        // 中断标识
+        boolean interrupted = false;
+        for (;;) {
+            final Node p = node.predecessor();
+            if (p == head) {
+                // 当节点的 prev 节点为 head 的时候，再次尝试获取共享锁
+                int r = tryAcquireShared(arg);
+                if (r >= 0) {
+                    // 成功获取共享锁
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    if (interrupted)
+                        selfInterrupt();
+                    failed = false;
+                    return;
+                }
+            }
+            // 和排他锁一样，挂起逻辑
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+```
+
+👆的代码，同样采用了自旋机制，在线程挂起之前，不断地循环尝试获取锁，不同的是，一旦获取共享锁，会调用 setHeadAndPropagate 方法同时唤醒后继节点，实现共享模式
+
+### setHeadAndPropagate
+
+```java
+private void setHeadAndPropagate(Node node, int propagate) {
+    // 获取当前头节点
+    Node h = head;
+    // 设置当前节点为新的头节点
+    // 这里不需要加锁操作，因为获取共享锁之后，会从 FIFO 队列中依次唤醒队列，并不会产生并发安全问题
+    setHead(node);
+
+    if (propagate > 0 || h == null || h.waitStatus < 0 ||
+        (h = head) == null || h.waitStatus < 0) {
+        // 后继节点
+        Node s = node.next;
+        // 如果后继节点为空或者后继节点为共享类型，则进行唤醒后继节点
+        // 这里后继节点为空意思是只剩下当前头节点了
+        if (s == null || s.isShared())
+            doReleaseShared();
+    }
+}
+```
+
+该方法主要做了两个重要的步骤：
+
+1. 将当前节点设置为新的头节点，这点很重要，这意味着当前节点的前置节点（旧头节点）已经获取共享锁了，从队列中去除
+2. 调用 doReleaseShared 方法（见后文），它会调用 unparkSuccessor 方法唤醒后继节点
+
+### releaseShared
+
+```java
+public final boolean releaseShared(int arg) {
+    if (tryReleaseShared(arg)) {
+        doReleaseShared();
+        return true;
+    }
+    return false;
+}
+```
+
+releaseShared 方法调用 doReleaseShared 方法来释放共享锁
+
+### doReleaseShared
+
+```java
+private void doReleaseShared() {
+    for (;;) {
+        // 从头节点开始执行唤醒操作
+        // 这里需要注意，如果从 setHeadAndPropagate 方法调用该方法，那么这里的 head 是新的头节点
+        Node h = head;
+        if (h != null && h != tail) {
+            int ws = h.waitStatus;
+            if (ws == Node.SIGNAL) {
+                // 这里需要CAS原子操作，因为setHeadAndPropagate和releaseShared这两个方法都会顶用doReleaseShared，避免多次unpark唤醒操作
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;
+                // 执行唤醒操作
+                unparkSuccessor(h);
+            }
+            // 如果后继节点暂时不需要唤醒，那么当前头节点状态更新为PROPAGATE，确保后续可以传递给后继节点
+            else if (ws == 0 &&
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;
+        }
+        // 如果在唤醒的过程中头节点没有更改，退出循环
+        // 这里防止其它线程又设置了头节点，说明其它线程获取了共享锁，会继续循环操作
+        if (h == head)
+            break;
+    }
+}
+```
+
+## 总结
+
+这篇文章介绍了 AQS 的源码，希望对大家有所帮助
