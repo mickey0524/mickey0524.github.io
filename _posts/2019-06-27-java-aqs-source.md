@@ -408,6 +408,106 @@ private void doReleaseShared() {
 }
 ```
 
+## ConditionObject
+
+我们知道 ReentrantLock 能够创建 Condition，这是 ReentrantLock 的卖点之一，而 Condition 依赖的就是 AQS 的 ConditionObject 类
+
+### 属性
+
+```java
+private transient Node firstWaiter;
+private transient Node lastWaiter;
+```
+
+ConditionObject 类也会定义一个双向链表，用于存储在 ConditionObject 执行 await 的线程
+
+### await 方法
+
+```java
+public final void await() throws InterruptedException {
+    // 判断当前线程是否被中断
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    // 将当前线程作为内容构造的节点 Node 放入到 Condition 的等待队列中并返回此节点
+    Node node = addConditionWaiter();
+    // 释放当前线程所拥有的锁，返回值为 AQS 的状态位(即此时有几个线程拥有锁(考虑ReentrantLock的重入))
+    int savedState = fullyRelease(node);
+    int interruptMode = 0;
+    // 检测此节点是否在同步队列上，如果不在，说明此线程还没有资格竞争锁，此线程就继续挂起
+    while (!isOnSyncQueue(node)) {
+        LockSupport.park(this);
+        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
+            break;
+    }
+    // 将保存的 state 回写
+    if (acquireQueued(node, savedState) && interruptMode != THROW_IE)
+        interruptMode = REINTERRUPT;
+    // 清理下条件队列中的不是在等待条件的节点
+    if (node.nextWaiter != null) // clean up if cancelled
+        unlinkCancelledWaiters();
+    if (interruptMode != 0)
+        reportInterruptAfterWait(interruptMode);
+}
+```
+
+### signal 方法
+
+signal 方法将 Condition 的双向队列中头部节点 remove，然后加入 AQS 的双向队列，enq 方法在👆讲过，将 Node 作为 AQS 队列的 tail
+
+```java
+public final void signal() {
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+    Node first = firstWaiter;
+    if (first != null)
+        doSignal(first);
+}
+
+private void doSignal(Node first) {
+    do {
+        if ( (firstWaiter = first.nextWaiter) == null)
+            lastWaiter = null;
+        first.nextWaiter = null;
+    } while (!transferForSignal(first) &&
+             (first = firstWaiter) != null);
+}
+
+final boolean transferForSignal(Node node) {
+    if (!compareAndSetWaitStatus(node, Node.CONDITION, 0))
+        return false;
+
+    Node p = enq(node);
+    int ws = p.waitStatus;
+    if (ws > 0 || !compareAndSetWaitStatus(p, ws, Node.SIGNAL))
+        LockSupport.unpark(node.thread);
+    return true;
+}
+```
+
+### signalAll 方法
+
+signalAll 方法将 Condition 的双向队列中所有节点 remove，然后加入 AQS 的双向队列
+
+```java
+public final void signalAll() {
+    if (!isHeldExclusively())
+        throw new IllegalMonitorStateException();
+    Node first = firstWaiter;
+    if (first != null)
+        doSignalAll(first);
+}
+
+private void doSignalAll(Node first) {
+    lastWaiter = firstWaiter = null;
+    do {
+        Node next = first.nextWaiter;
+        first.nextWaiter = null;
+        transferForSignal(first);
+        first = next;
+    } while (first != null);
+}
+```
+
 ## 总结
 
 这篇文章介绍了 AQS 的源码，希望对大家有所帮助
