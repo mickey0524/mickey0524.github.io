@@ -1537,4 +1537,4 @@ System.out.println(Arrays.toString(copied));
         
         因此请不要随意使用 volatile 变量，这会导致 JIT 无法优化代码，并且会插入很多的内存屏障指令，降低性能
 
-		
+* [Java 序列化](https://www.hollischuang.com/archives/1140)
