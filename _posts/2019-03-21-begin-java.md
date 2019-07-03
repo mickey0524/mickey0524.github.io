@@ -1538,3 +1538,12 @@ System.out.println(Arrays.toString(copied));
         因此请不要随意使用 volatile 变量，这会导致 JIT 无法优化代码，并且会插入很多的内存屏障指令，降低性能
 
 * [Java 序列化](https://www.hollischuang.com/archives/1140)
+
+* Java 动态代理
+
+	[Java 动态代理](https://juejin.im/post/5ad3e6b36fb9a028ba1fee6a)
+	
+	[从代理模式再出发！Proxy.newProxyInstance的秘密](https://blog.csdn.net/lovejj1994/article/details/78080124)
+	
+	动态代理内部其实是由两个静态代理组成的，实现了 InvocationHandler 接口的代理类内部有一个指向委托类的引用，然后 Proxy.newProxyInstance 内部通过反射创建了一个 _Proxy 类（实现了委托类的接口），_Proxy 内部有指向代理类的引用，_Proxy 对委托类接口的调用都会转为对 InvocationHandler 中 invoke 方法的调用
+    
