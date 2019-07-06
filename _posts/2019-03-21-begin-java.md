@@ -1574,7 +1574,29 @@ System.out.println(Arrays.toString(copied));
 	
 	[从代理模式再出发！Proxy.newProxyInstance的秘密](https://blog.csdn.net/lovejj1994/article/details/78080124)
 	
-	动态代理内部其实是由两个静态代理组成的，实现了 InvocationHandler 接口的代理类内部有一个指向委托类的引用，然后 Proxy.newProxyInstance 内部通过反射创建了一个 _Proxy 类（实现了委托类的接口），_Proxy 内部有指向代理类的引用，_Proxy 对委托类接口的调用都会转为对 InvocationHandler 中 invoke 方法的调用
+	动态代理内部其实是由两个静态代理组成的，实现了 InvocationHandler 接口的代理类内部有一个指向委托类的引用，然后 Proxy.newProxyInstance 内部通过反射创建了一个 \_Proxy 类（实现了委托类的接口），\_Proxy 内部有指向代理类的引用，\_Proxy 对委托类接口的调用都会转为对 InvocationHandler 中 invoke 方法的调用
     
 * 线程安全：当多个线程访问一个对象的时候，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都能得到正确的结果，那么这个对象就是线程安全的
 
+* Java NIO 部分源码讲解
+
+    * [NIO Demo](https://github.com/CyC2018/CS-Notes/blob/master/notes/Java%20IO.md#%E5%A5%97%E6%8E%A5%E5%AD%97-nio-%E5%AE%9E%E4%BE%8B)
+    
+    * [NIO源码分析](https://www.jianshu.com/p/4ad93f696fb2)
+    
+    * [sun.nio docs & code](http://www.docjar.com/src/api/sun/nio/ch/EPollSelectorImpl.java)
+    
+    讲解一下主要方法，`ServerSocketChannel.open()` 会返回一个 `ServerSocketChannelImpl` 实例，`Selector.open()` 会根据机器型号返回不同的实例，Mac 和 Linux 上会返回 `EPollSelectorImpl`，`ssc.socket` 使用适配器模式返回一个包裹 ssc 的 ServerSocket，serverSocket 执行 bind 等同于 ssc 执行 bind
+
+    `ssc.register(selector, SelectionKey.OP_ACCEPT)` 会返回一个与 ssc 对应的 SelectionKey，方法内部会执行 `selector.register` 方法，selector 中有一个 map，保存着 channel 的 fd 到 SelectionKey 的映射，`selector.register` 方法会为 ssc 创建一个 `SelectionKeyImpl` 实例，然后将 <ssc.getFDVal(), SelectionKeyImpl> 的 pair 写入 map
+    
+    我们在调用 `ssc.register` 的时候，传入的是 SelectionKey.OP\_ACCEPT，在 SelectionKey 中，存在着 4 个 op 标识 —— OP\_READ、OP\_WRITE、OP\_CONNECT 和 OP\_ACCEPT，在 NIO 中，由于底层依赖的是 epoll，需要将传入的 op 转换为 epoll 能够理解的操作，例如 SelectionKey.READ -> PollArrayWrapper.POLLIN
+    
+    转换了类型之后，需要将 Channel 注册到 epoll 上去，这里将注册事件及对应的 Channel 保存到一个 updateList 中，到这里，初始化的工作全部都做好了
+    
+    于是，执行 `selector.select()` 方法，阻塞等待事件的到来，`select` 方法首先执行 `processDeregisterQueue`，该方法会删除所有 cancel 的 SelectionKey，然后执行 `pollWrapper.poll(timeout)`，poll 方法会遍历 updateList，remove 空闲的 key，然后执行 native 的 epollCtl 方法，然后执行 epollWait 方法，等待 epoll 返回可以操作的 Channel
+    
+    最后 NIO 将 epoll 的操作转换回用户定义的操作，例如 SelectionKey.READ，这样在代码中，使用 `key.isReadable()` 能够处理
+    
+    这大概就是 NIO 的执行过程，虽然很简单，但是还是能说明一些东西 
+    
