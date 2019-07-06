@@ -259,7 +259,36 @@ tags:
 * 当在 synchronized 中需要使用 wait()/notity()/notityAll() 的时候，使用 new Byte[0] 比 new Object 更加省空间
 
 * synchronized 作用于普通函数和静态函数的时候，两个线程能同时访问普通函数和静态函数，因为一个锁作用的是实例对象，一个锁作用的是类对象
-	
+
+* 同步方法常量池中会有一个 ACC\_SYNCHRONIZED 标志，当某个线程访问某个方法的时候，会检查是否有 ACC\_SYNCHRONIZED，如果有，则需要先获得监视器锁，然后开始执行方法，方法执行之后再释放监视器锁，同步代码块则是使用 monitorenter 和 monitorexit 两个指令实现的，monitorenter 可以理解为加锁，monitorexit 可以理解为释放锁，每个对象自身维护着一个被加锁次数的计数器，当计数器为 1 时，只有获得锁的线程才能再次获得锁，即可重入锁，当计数器为0时表示任意线程可以获得该锁
+
+    那么对象如何与监视器关联呢，在 Java 中，对象包含三块：对象头、实例数据、填充数据，其中对象头中就包含 Mark Word，Mark Word 一般存储对象的 hashCode、GC分代年龄以及锁信息，锁信息就包含指向互斥量（重量级锁）的指针，指向了一个监视器；监视器是通过 ObjectMonitor 来实现的，代码如下:
+
+    ```
+    ObjectMonitor() {
+        _header       = NULL;
+        _count        = 0; //记录个数
+        _waiters      = 0,
+        _recursions   = 0;
+        _object       = NULL;
+        _owner        = NULL;
+        _WaitSet      = NULL; //处于wait状态的线程，会被加入到_WaitSet
+        _WaitSetLock  = 0 ;
+        _Responsible  = NULL ;
+        _succ         = NULL ;
+        _cxq          = NULL ;
+        FreeNext      = NULL ;
+        _EntryList    = NULL ; //处于等待锁block状态的线程，会被加入到该列表
+        _SpinFreq     = 0 ;
+        _SpinClock    = 0 ;
+        OwnerIsThread = 0 ;
+    }
+    ```
+
+    从上面代码可以看到有 ObjectMonitor 两个队列,分别是 _WaitSet 和 _EntryList，_owner 指向持有 ObjectMonitor 对象的线程，当多个线程获取到对象 monitor 后进入 _owner 区域，并把 _owner 设置为指向当前线程，并把 _count 数量加1；当调用 wait() 方法后，将释放当前持有的 monitor，_owner 置为空，_count 减 1 操作，同时，将该线程进入 _WaitSet 集合中等待唤醒，总结如下图:
+
+    [synchronized](https://user-gold-cdn.xitu.io/2019/7/4/16bbb05d26dd957d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+
 * Java 反射与注解
 
 	[Java 反射与注解](https://www.cnblogs.com/xiashengwang/p/8942252.html)
@@ -1547,3 +1576,5 @@ System.out.println(Arrays.toString(copied));
 	
 	动态代理内部其实是由两个静态代理组成的，实现了 InvocationHandler 接口的代理类内部有一个指向委托类的引用，然后 Proxy.newProxyInstance 内部通过反射创建了一个 _Proxy 类（实现了委托类的接口），_Proxy 内部有指向代理类的引用，_Proxy 对委托类接口的调用都会转为对 InvocationHandler 中 invoke 方法的调用
     
+* 线程安全：当多个线程访问一个对象的时候，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都能得到正确的结果，那么这个对象就是线程安全的
+
