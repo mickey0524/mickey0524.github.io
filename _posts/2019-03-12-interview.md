@@ -1086,6 +1086,38 @@ tags:
 		where
 			c.s >= 4;
 		```
+
+    * 写 sql
+        
+        有一个表，字段是 uid，login_time，logout_time，p_date 求最大同时在线人数
+
+        ```java
+        SELECT
+            MAX(a.ts) as max_online_nums
+        FROM
+        (
+            SELECT
+                SUM(index) over (ORDER BY ts) as online_nums
+            FROM
+            (
+                SELECT
+                    unix_timestamp(login_time) as ts,
+                    1 as index
+                FROM
+                    t
+                WHERE
+                    p_date = "20190412"
+                UNION ALL
+                SELECT
+                    unix_timestamp(logout_time) as ts,
+                    -1 as index
+                FROM
+                    t
+                WHERE
+                    p_date = "20190412"
+            ) a
+        ) b 
+        ```
 	
 	* 算法题，判断回文数，比较简单，不写了
 
