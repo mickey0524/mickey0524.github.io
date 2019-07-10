@@ -1600,3 +1600,27 @@ System.out.println(Arrays.toString(copied));
     
     这大概就是 NIO 的执行过程，虽然很简单，但是还是能说明一些东西 
     
+* Java volatile 小栗子
+
+    ```java
+    int a = 0;
+    bool flag = false;
+
+    public void write() {
+        a = 2;  // 1
+        flag = true;  // 2
+    }
+
+    public void multiply() {
+        if (flag) {  // 3
+            int ret = a * a;  // 4
+        }
+    }
+    ```
+    
+    当 a 线程调用 write 方法，b 线程调用 multiply 方法的时候，👆的代码有两个问题
+
+    * write 中可能会发生指令重排，`flag = true` 可能先于 `a = 2` 执行
+    * `a = 2` 之后，a 的值没有从工作内存刷回主存，multiply 中的 a 还是 0    
+    
+    因此，这里应该给 flag 变量加上 volatile 关键字，这样根据 happen-before 原则，1 before 2，3 before 4，volatile 原则保证 2 before 3，传递性原则保证 1 before 4
