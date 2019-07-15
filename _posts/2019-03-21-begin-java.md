@@ -1624,3 +1624,7 @@ System.out.println(Arrays.toString(copied));
     * `a = 2` 之后，a 的值没有从工作内存刷回主存，multiply 中的 a 还是 0    
     
     因此，这里应该给 flag 变量加上 volatile 关键字，这样根据 happen-before 原则，1 before 2，3 before 4，volatile 原则保证 2 before 3，传递性原则保证 1 before 4
+
+* Java HashMap 默认的装载因子为什么是 0.75，为什么在 table Node 长度为 8 的时候转为红黑树，当 LOAD\_FACTOR 为 0.75 的时候，长度为 8 基本不可能（遵循泊松分布），时间和空间的权衡
+
+    [为什么Map桶中个数超过8才转为红黑树](https://www.cnblogs.com/williamjie/p/11168133.html)
