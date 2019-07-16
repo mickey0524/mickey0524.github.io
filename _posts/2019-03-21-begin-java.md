@@ -1628,3 +1628,7 @@ System.out.println(Arrays.toString(copied));
 * Java HashMap 默认的装载因子为什么是 0.75，为什么在 table Node 长度为 8 的时候转为红黑树，当 LOAD\_FACTOR 为 0.75 的时候，长度为 8 基本不可能（遵循泊松分布），时间和空间的权衡
 
     [为什么Map桶中个数超过8才转为红黑树](https://www.cnblogs.com/williamjie/p/11168133.html)
+
+* Java JUC 包思维导图
+
+    ![JUC](/img/in-post/begin-java/juc.jpeg)
