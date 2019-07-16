@@ -359,6 +359,10 @@ private Runnable getTask() {
 }
 ```
 
+## Executors.newCachedThreadPool 传入的 BlockingQueue 是 SynchronousQueue
+
+[Java SynchronousQueue](https://blog.csdn.net/yanyan19880509/article/details/52562039) 
+
 ## 总结
 
 这篇 blog 我们介绍了 ThreadPoolExecutor 这个类，还是讲的比较清楚的，希望对大家有所帮助
