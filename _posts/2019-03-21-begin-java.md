@@ -1632,3 +1632,8 @@ System.out.println(Arrays.toString(copied));
 * Java JUC 包思维导图
 
     ![JUC](/img/in-post/begin-java/juc.jpeg)
+
+* Java Synchronized 的局限性：
+
+    * 当线程尝试获取锁的时候，如果获取不到会一直阻塞
+    * 如果获取锁的线程进入休眠或者阻塞，除非当前线程异常，否则其他线程尝试获取锁必须一直等待
