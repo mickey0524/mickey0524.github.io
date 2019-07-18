@@ -1,13 +1,12 @@
 ---
 layout:     post
-title:      "superior-fe-article"
+title:      "superior-article"
 subtitle:   "优秀的开发文章(长期更新)"
 date:       2018-07-05 12:00:00
 author:     "Mickey"
 header-img: "img/post-bg-2015.jpg"
 tags:
-    - 前端开发
-    - python
+    - 开发
 ---
 
 ## 前端
