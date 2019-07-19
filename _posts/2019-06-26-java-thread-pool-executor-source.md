@@ -363,6 +363,80 @@ private Runnable getTask() {
 
 [Java SynchronousQueue](https://blog.csdn.net/yanyan19880509/article/details/52562039) 
 
+## RejectedExecutionHandler
+
+JDK 提供了 4 种 RejectedExecutionHandler 接口的实现，它们都是以 ThreadPoolExecutor 类的静态内部类的形式定义的，它们的具体实现以及拒绝策略如下
+
+* AbortPolicy （默认）
+
+    抛出未检查的 RejectedExecutionException，调用者自己捕获处理
+
+    ```java
+    public static class AbortPolicy implements RejectedExecutionHandler {
+        public AbortPolicy() { }
+
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            throw new RejectedExecutionException("Task " + r.toString() +
+                                                " rejected from " +
+                                                e.toString()); // 抛异常！
+        }
+    }
+    ```
+
+* DiscardPolicy
+
+    抛弃新提交的任务
+
+    ```java
+    public static class DiscardPolicy implements RejectedExecutionHandler {
+        public DiscardPolicy() { }
+
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+        }
+    }
+    ```
+
+* DiscardOldestPolicy
+
+    抛弃下一个被执行的任务，然后重新尝试提交任务
+
+    ```java
+    public static class DiscardOldestPolicy implements RejectedExecutionHandler {
+        public DiscardOldestPolicy() { }
+        
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            if (!e.isShutdown()) { // 先判断线程池关没
+                e.getQueue().poll(); // 丢到等待队列中下一个要被执行的任务
+                e.execute(r); // 重新尝试提交新来的任务
+            }
+        }
+    }
+    ```
+
+    不要和 PriorityBlockingQueue 一起使用，会丢失优先级最高的任务
+
+* CallerRunsPolicy （既不抛出异常，也不抛弃任务)
+
+    它不会在线程池中执行该任务，而是在调用 execute 提交这个任务的线程执行
+
+    如当主线程提交了任务时，任务队列已满，此时该任务会在主线程中执行。这样主线程在一段时间内不会提交任务给线程池，使得工作者线程有时间来处理完正在执行的任务
+
+    可以实现服务器在高负载下的性能缓慢降低
+
+    ```java
+    public static class CallerRunsPolicy implements RejectedExecutionHandler {
+        public CallerRunsPolicy() { }
+
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            if (!e.isShutdown()) {
+                // 直接在把它提交来的线程调用它的 run 方法，相当于没有新建一个线程来执行它，
+                // 而是直接在提交它的线程执行它，这样负责提交任务的线程一段时间内不会提交新的任务来
+                r.run(); 
+            }
+        }
+    }    
+    ```
+
 ## 总结
 
 这篇 blog 我们介绍了 ThreadPoolExecutor 这个类，还是讲的比较清楚的，希望对大家有所帮助
