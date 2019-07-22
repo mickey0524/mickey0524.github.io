@@ -1576,6 +1576,8 @@ System.out.println(Arrays.toString(copied));
 	
 	动态代理内部其实是由两个静态代理组成的，实现了 InvocationHandler 接口的代理类内部有一个指向委托类的引用，然后 Proxy.newProxyInstance 内部通过反射创建了一个 \_Proxy 类（实现了委托类的接口），\_Proxy 内部有指向代理类的引用，\_Proxy 对委托类接口的调用都会转为对 InvocationHandler 中 invoke 方法的调用
     
+    [Java Proxy和CGLIB动态代理原理](https://www.cnblogs.com/CarpenterLee/p/8241042.html)
+    
 * 线程安全：当多个线程访问一个对象的时候，如果不用考虑这些线程在运行时环境下的调度和交替执行，也不需要进行额外的同步，或者在调用方进行任何其他的协调操作，调用这个对象的行为都能得到正确的结果，那么这个对象就是线程安全的
 
 * Java NIO 部分源码讲解
