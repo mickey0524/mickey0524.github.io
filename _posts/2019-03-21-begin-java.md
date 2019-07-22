@@ -287,7 +287,7 @@ tags:
 
     从上面代码可以看到有 ObjectMonitor 两个队列,分别是 _WaitSet 和 _EntryList，_owner 指向持有 ObjectMonitor 对象的线程，当多个线程获取到对象 monitor 后进入 _owner 区域，并把 _owner 设置为指向当前线程，并把 _count 数量加1；当调用 wait() 方法后，将释放当前持有的 monitor，_owner 置为空，_count 减 1 操作，同时，将该线程进入 _WaitSet 集合中等待唤醒，总结如下图:
 
-    [synchronized](https://user-gold-cdn.xitu.io/2019/7/4/16bbb05d26dd957d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+    ![synchronized](https://user-gold-cdn.xitu.io/2019/7/4/16bbb05d26dd957d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 * Java 反射与注解
 
@@ -1100,6 +1100,10 @@ tags:
 	即使在可达性分析法中不可达的对象，也并非是“非死不可”的，这时候它们暂时处于“缓刑阶段”，要真正宣告一个对象死亡，至少要经历两次标记过程；可达性分析法中不可达的对象被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行 finalize 方法。当对象没有覆盖 finalize 方法，或 finalize 方法已经被虚拟机调用过时，虚拟机将这两种情况视为没有必要执行。
 
 	被判定为需要执行的对象将会被放在一个队列中进行第二次标记，除非这个对象与引用链上的任何一个对象建立关联，否则就会被真的回收。
+    
+    finalize() 方法是对象逃脱死亡的最后一次机会，不过虚拟机不保证等待 finalize() 方法执行结束，也就是说，虚拟机只触发 finalize() 方法的执行，如果这个方法要执行超久，那么虚拟机并不等待它执行结束，所以最好不要用这个方法
+
+    finalize() 方法能做的，try-finally 都能做，所以忘了这个方法吧
 
 * 如何判断一个常量是废弃常量
 
@@ -1646,3 +1650,17 @@ System.out.println(Arrays.toString(copied));
     * 再哈希法：同时构造多个不同的哈希函数，发生冲突就换一个哈希方法
     * 链地址法：将哈希地址相同的元素放在一个链表中，然后把这个链表的表头放在哈希表的对应位置
     * 建立公共溢出区：将哈希表分为基本表和溢出表两部分，凡是和基本表发生冲突的元素，一律填入溢出表
+* [用通俗的语言说说lock和lockInterruptibly的区别](http://www.dewen.net.cn/q/9077)
+
+* [Java OOM](https://github.com/TangBean/understanding-the-jvm/blob/master/Ch1-Java%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/01-OOM%E5%BC%82%E5%B8%B8.md)
+
+* [JVM GC](https://github.com/TangBean/understanding-the-jvm/tree/master/Ch1-Java%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6)
+
+* [JVM G1](https://liuzhengyang.github.io/2017/06/07/garbage-first-collector/)
+
+* Java 的反序列化的坑
+
+    * 类里面一定要 serialVersionUID，否则旧数据会反序列化会失败
+    * 一旦序列化保存到磁盘操作后，就不要修改类名了，否则旧数据会反序列化会失败
+    
+   可以尽量把对象转换成 JSON 保存更稳妥
