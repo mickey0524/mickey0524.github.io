@@ -967,6 +967,100 @@ tags:
 		}
 		```
 		
+        ```java
+        class Thread1 implements Runnable {
+        
+            private Semaphore semaphore1;
+            private Semaphore semaphore2;
+        
+            private final char[] vowels = new char[]{'a', 'e', 'i', 'o', 'u'};
+            private final HashSet<Character> s = new HashSet<>();
+        
+            public Thread1(Semaphore semaphore1, Semaphore semaphore2) {
+                this.semaphore1 = semaphore1;
+                this.semaphore2 = semaphore2;
+                for (char ch : vowels) {
+                    s.add(ch);
+                }
+            }
+        
+            @Override
+            public void run() {
+                try {
+                    semaphore1.acquire();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+        
+                int i = 0;
+                while (i < 26) {
+                    char ch = (char)(i + 'a');
+                    if (s.contains(ch)) {
+                        semaphore2.release();
+                        i += 1;
+                    } else {
+                        try {
+                            semaphore1.acquire();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        while (i < 26) {
+                            char c = (char)(i + 'a');
+                            if (s.contains(c)) {
+                                break;
+                            }
+                            System.out.print(c);
+                            i += 1;
+                        }
+                    }
+                }
+            }
+        }
+        
+        class Thread2 implements Runnable {
+        
+            private Semaphore semaphore1;
+            private Semaphore semaphore2;
+            private final char[] vowels = new char[]{'a', 'e', 'i', 'o', 'u'};
+        
+            public Thread2(Semaphore semaphore1, Semaphore semaphore2) {
+                this.semaphore1 = semaphore1;
+                this.semaphore2 = semaphore2;
+            }
+        
+            @Override
+            public void run() {
+                for (char ch : vowels) {
+                    try {
+                        semaphore1.acquire();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.print(ch);
+                    semaphore2.release();
+                }
+        
+            }
+        }
+
+        class Main {
+            public static void main(String[] args) throws InterruptedException, ExecutionException {
+                Semaphore vowel = new Semaphore(0);
+                Semaphore common = new Semaphore(1);
+        
+                Thread t1 = new Thread(new Thread1(common, vowel));
+                Thread t2 = new Thread(new Thread2(vowel, common));
+        
+                t1.start();
+                t2.start();
+        
+                t1.join();
+                t2.join();
+        
+            }
+        }
+        ```
+
 	* Java 基础
 
 		```java
