@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "interview"
-subtitle:   "面试总结"
+title:      "summer intern interview"
+subtitle:   "暑期实习面试总结"
 date:       2019-03-12 22:00:00
 author:     "Mickey"
 header-img: "img/post-bg-universe.jpg"
