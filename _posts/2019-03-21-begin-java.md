@@ -1664,3 +1664,5 @@ System.out.println(Arrays.toString(copied));
     * 一旦序列化保存到磁盘操作后，就不要修改类名了，否则旧数据会反序列化会失败
     
    可以尽量把对象转换成 JSON 保存更稳妥
+
+* [Java 8 新特性](https://blog.csdn.net/yitian_66/article/details/81010434)
