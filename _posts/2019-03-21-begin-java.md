@@ -285,9 +285,7 @@ tags:
     }
     ```
 
-    从上面代码可以看到有 ObjectMonitor 两个队列,分别是 _WaitSet 和 _EntryList，_owner 指向持有 ObjectMonitor 对象的线程，当多个线程获取到对象 monitor 后进入 _owner 区域，并把 _owner 设置为指向当前线程，并把 _count 数量加1；当调用 wait() 方法后，将释放当前持有的 monitor，_owner 置为空，_count 减 1 操作，同时，将该线程进入 _WaitSet 集合中等待唤醒，总结如下图:
-
-    ![synchronized](https://user-gold-cdn.xitu.io/2019/7/4/16bbb05d26dd957d?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+    从上面代码可以看到有 ObjectMonitor 两个队列,分别是 _WaitSet 和 _EntryList，_owner 指向持有 ObjectMonitor 对象的线程，当多个线程获取到对象 monitor 后进入 _owner 区域，并把 _owner 设置为指向当前线程，并把 _count 数量加1；当调用 wait() 方法后，将释放当前持有的 monitor，_owner 置为空，_count 减 1 操作，同时，将该线程进入 _WaitSet 集合中等待唤醒
 
 * Java 反射与注解
 
@@ -1666,3 +1664,13 @@ System.out.println(Arrays.toString(copied));
    可以尽量把对象转换成 JSON 保存更稳妥
 
 * [Java 8 新特性](https://blog.csdn.net/yitian_66/article/details/81010434)
+
+* Java 中对象一定在堆上分配内存吗
+    
+    Java 堆中主要保存了对象实例，但是，随着 JIT 编译期的发展与逃逸分析技术逐渐成熟, 栈上分配、标量替换优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么 "绝对" 了
+
+    其实，在编译期间，JIT会对代码做很多优化。其中有一部分优化的目的就是减少内存堆分配压力，其中一种重要的技术叫做逃逸分析。
+
+    如果JIT经过逃逸分析，发现有些对象没有逃逸出方法，那么有可能堆内存分配会被优化成栈内存分配
+
+    ![memory-assign](/img/in-post/begin-java/memory-assign.png)
