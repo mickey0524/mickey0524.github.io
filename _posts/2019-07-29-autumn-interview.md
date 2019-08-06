@@ -68,3 +68,67 @@ tags:
     * redis 如何持久化
 
         AOF + RDB
+    
+* 阿里 - 数据研发工程师
+
+    * 一面
+
+        * 深入理解 JVM，从头开始背完事了
+
+        * 双线程交替打印字符串
+
+            ```java
+            class Thread1 implements Runnable {
+                private static final String s = "This is a coding test";
+            
+                private Semaphore self;
+                private boolean first;
+            
+                public Thread1(Seamphore self, Seamphore next, boolean first) {
+                    this.self = self;
+                    this.first = first;
+                }
+            
+                public void run() {
+                    int length = s.length();
+                    int idx = first ? 0 : 1;
+                    
+                    while (idx < length) {
+                        semaphore.acquire();
+                        System.out.print(s.charAt(idx));
+                        idx += 2;
+                        next.release();
+                    }
+                }
+            }
+            ```
+        
+        * n 线程交替打印字符串
+
+            ```java
+            class Thread2 implements Runnable {
+                private static final String s = "This is a coding test";
+                
+                private Semaphore self;
+                private Semaphore next;
+                private int index;
+                private int threadNum;
+
+                public Thread2(Semaphore self, Semaphore next, int index, int threadNum) {
+                    this.self = self;
+                    this.next = next;
+                    this.index = index;
+                    this.threadNum = threadNum;
+                }
+
+                public void run() {
+                    int length = s.length();
+                    while (index < length) {
+                        self.acquire();
+                        System.out.print(s.charAt(index));
+                        this.index = index + this.threadNum;
+                        next.release();
+                    }
+                }
+            }
+            ```
