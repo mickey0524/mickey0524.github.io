@@ -13,6 +13,8 @@ tags:
 
 * 快手 —— 数据研发工程师（offer）
 
+    7.29 直通终面 + hr面，8.9 oc
+
     因为之前暑期三面全过，因此这次提前批，算是直通终面吧，一轮长达一个半小时的技术面之后，进行了 hr 面试
 
     * 一个 uid，p_date 的 hive 表，计算 7 留
@@ -70,6 +72,8 @@ tags:
         AOF + RDB
     
 * 阿里 - 数据研发工程师
+
+    8.6 一面，8.7 二面
 
     * 一面
 
@@ -151,7 +155,7 @@ tags:
             rtype: list
             """
 
-            def partition(arr, head, tail):
+                def partition(arr, head, tail):
                 """
                 获取快排中用于分割数组的元素的索引
                 type arr: list 待排序的数组
@@ -243,3 +247,139 @@ tags:
             2. dwd 层 - 事实层
             3. dwa 层 - 聚合层
             4. app 层 - 应用层
+
+* 百度 - 大数据开发工程师
+
+    8.10 一面 - 三面
+
+    * 一面
+
+        * HDFS 原理
+
+            [我整理的 HDFS](https://github.com/mickey0524/big-data-knowledge#hdfs)
+
+        * YARN 原理
+
+            [我整理的 YARN](https://github.com/mickey0524/big-data-knowledge#yarn)
+
+        * MR 原理
+
+            [我整理的 MR](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+
+        * Spark 原理
+
+            [我整理的 Spark](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+
+        * 线程、进程
+
+            线程是 CPU 调度的最小单位，进程是内存分配的最小单位
+
+        * CPU 如何进行时间片轮转
+
+            硬件层面，通过时间中断实现的
+
+        * 红黑树
+
+            [红黑树](https://github.com/CyC2018/CS-Notes/blob/master/docs/notes/%E7%AE%97%E6%B3%95%20-%20%E7%AC%A6%E5%8F%B7%E8%A1%A8.md#%E7%BA%A2%E9%BB%91%E6%A0%91)
+        
+        * Java 反射，动态代理
+
+            [我的 Java 总结](https://mickey0524.github.io/2019/03/21/begin-java/)
+        
+        * 快速排序
+
+            ```python
+            def quick_sort(self, arr, head, tail):
+            """
+            快排
+            type arr: list 待排序的数组
+            type head: int 起始索引
+            type tail: int 终止索引
+            rtype: list
+            """
+
+                def partition(arr, head, tail):
+                """
+                获取快排中用于分割数组的元素的索引
+                type arr: list 待排序的数组
+                type head: int 起始索引
+                type tail: int 终止索引
+                rtype: int
+                """
+                base_num = arr[tail]
+                i = head
+
+                for j in xrange(head, tail):
+                    if arr[j] < base_num:
+                        arr[i], arr[j] = arr[j], arr[i]
+                        i += 1
+
+                arr[tail], arr[i] = arr[i], arr[tail]
+
+                return i
+
+            if head < tail:
+                middle = partition(arr, head, tail)
+                self.quick_sort(arr, head, middle - 1)
+                self.quick_sort(arr, middle + 1, tail)
+            ```
+
+        * 二分查找
+
+            ```python
+            def binary_search(arr, target):
+                l, r, m = 0, len(arr) - 1, -1
+
+                while l <= r:
+                    m = l + (r - l) / 2
+                    if target == arr[m]:
+                        return True
+                    elif target > arr[m]:
+                        l = m + 1
+                    else:
+                        r = m - 1
+
+                return False
+            ```     
+        
+        * 设备连接路由表，路由表对外的 IP 是相同的，如何区分是哪个设备
+
+            路由表中存在映射，端口号 -> 真实 ip
+        
+        * Hive 中的元数据存储
+
+            首先需要搞清楚，Hive 中数据存储的位置，元数据（对数据的描述，包括表，表的列及其它各种属性）是存储在 MySQL 等数据库中的，因为这些数据要不断的更新、修改，不适合存储在 HDFS 中
+
+    * 二面
+
+        * HBase 架构
+
+            [我整理的 HBase](https://github.com/mickey0524/big-data-knowledge#hbase)
+
+        * MySQL B+ 树，MySQL 四种隔离级别，MVCC
+
+            [我整理的 MySQL](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/db.md)
+
+        * MySQL 查询计划生成以及优化
+
+            [MySQL 查询优化](https://www.cnblogs.com/williamjie/p/9132390.html)
+
+        * Redis 数据淘汰策略
+
+            [Redis 数据淘汰](https://github.com/CyC2018/CS-Notes/blob/master/notes/Redis.md#%E4%B8%83%E6%95%B0%E6%8D%AE%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5)
+        
+        * Redis 持久化
+
+            RDB + AOF
+        
+        * Nsq 介绍一下
+
+            [我的 Nsq 源码解析](https://github.com/mickey0524/nsq-analysis)
+
+        * Flink 介绍一下
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+    * 三面
+
+        三面聊人生，理想，以及面试官对百度云未来的展望，面试官介绍了国内的云市场，以及其他厂商的不足，学习了很多
