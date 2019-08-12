@@ -73,7 +73,7 @@ tags:
     
 * 阿里 - 数据研发工程师
 
-    8.6 一面，8.7 二面
+    8.6 一面，8.7 二面，8.12 三面
 
     * 一面
 
@@ -247,6 +247,32 @@ tags:
             2. dwd 层 - 事实层
             3. dwa 层 - 聚合层
             4. app 层 - 应用层
+    
+    * 三面
+
+        * 介绍一下实习
+
+            自行发挥
+
+        * 介绍一下自己如何学习的
+
+            自行发挥
+
+        * Nsq 源码介绍一下
+
+            [我的 Nsq 源码解析](https://github.com/mickey0524/nsq-analysis)
+
+        * Flink 源码介绍一下
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+        * Vue 源码介绍一下
+
+            [我的 Vue 源码解析](https://mickey0524.github.io/2018/04/21/vue-source-code-analysic-v1/)
+
+        * 之后的打算，计划
+
+            自行发挥
 
 * 百度 - 大数据开发工程师
 
@@ -407,3 +433,120 @@ tags:
     * 算法题
 
         Leetcode 第四题，自行 google
+
+* 猿辅导 - 数据研发工程师
+
+    8.12 一面 - 三面
+
+    * 一面
+
+        * 两个 字符串，str1 和 str2，计算 str1 - str2 的值，不能转为整型进行计算
+
+            ```python
+            def solution(str1, str2):
+                if str1 == str2:
+                    return '0'
+
+                len1, len2 = len(str1), len(str2)
+                symbol = 1
+
+                if len1 == len2:
+                    for i in xrange(len1):
+                        if str1[i] < str2[i]:
+                            symbol = -1
+                            str1, str2 = str2, str1
+                            break
+
+                elif len1 < len2:
+                    symbol = -1
+                    len1, len2, str1, str2 = len2, len1, str2, str1
+
+                carry = False
+                res = []
+
+                for i in xrange(max(len1, len2)):
+                    ch1 = int(str1[len1 - 1 - i])
+                    if carry:
+                        ch1 -= 1
+
+                    if i < len2:
+                        ch2 = int(str2[len2 - 1 - i])
+                        ch1 -= ch2
+
+                    if ch1 < 0:
+                        ch1 += 10
+                        carry = True
+                    else:
+                        carry = False
+
+                    res += str(ch1),
+
+                ans = res[::-1]
+                while ans and ans[0] == '0':
+                    ans.pop(0)
+
+                return ''.join(ans) if symbol == 1 else '-' + ''.join(ans)
+            ```
+
+        * 最长摆动序列，Leetcode 376
+
+            ```python
+            def wiggleMaxLength(self, nums):
+                """
+                :type nums: List[int]
+                :rtype: int
+                """
+                length = len(nums)
+                
+                if length < 2:
+                    return length
+                
+                dp = [[0] * 2 for _ in xrange(length)]
+                dp[0] = [1, 1]
+                
+                for i in xrange(1, length):
+                    if nums[i] > nums[i - 1]:
+                        dp[i][0] += dp[i - 1][1] + 1
+                        dp[i][1] = dp[i - 1][1]
+                    elif nums[i] < nums[i - 1]:
+                        dp[i][1] += dp[i - 1][0] + 1
+                        dp[i][0] = dp[i - 1][0]
+                    else:
+                        dp[i] = dp[i - 1]
+                
+                return max(dp[-1])
+            ```
+
+    * 二面
+
+        * 实习和项目经历
+
+            自行发挥
+
+    * 三面
+
+        * 零钱问题，Leetcode 518
+
+            ```python
+            def solution(coins, target):
+                dp = [0] * (target + 1)
+                dp[0] = 1
+
+                for c in coins:
+                    for i in xrange(c, target + 1):
+                        dp[i] += dp[i - c]
+                
+                return dp[target]
+            ```
+
+        * Flink 原理
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * 对大数据的理解
+
+            大数据类的工作可以分为三种，inf 方向，数据平台方向，以及数据研发方向
+
+        * 如何实时同步 MySQL -> HDFS
+
+            MySQL binlog -> Kafka -> 服务消费 Kafka，将更新写到 HDFS 上，然后根据 timestamp 来区分新数据
