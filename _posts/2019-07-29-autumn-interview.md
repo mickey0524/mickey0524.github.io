@@ -73,7 +73,7 @@ tags:
     
 * 阿里 - 数据研发工程师
 
-    8.6 一面，8.7 二面，8.12 三面
+    8.6 一面，8.7 二面，8.12 三面，8.14 四面
 
     * 一面
 
@@ -273,6 +273,41 @@ tags:
         * 之后的打算，计划
 
             自行发挥
+        
+    * 四面
+
+        * 介绍一下实习
+
+            自行发挥
+
+        * HBase 架构
+
+            [我整理的 HBase](https://github.com/mickey0524/big-data-knowledge#hbase)
+        
+        * Flink 介绍一下
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * 进程间通信的方式
+
+            [进程间通信](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/os.md)
+        
+        * TCP 11 种状态
+
+            [TCP](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/network.md)
+        
+        * ArrayBlockingQueue 源码
+
+            [BlockingQueue 源码](https://mickey0524.github.io/2019/07/01/blocking-queue-source/)
+        
+        * 1000 个苹果，放到 10 个篮子，如何分配，能够得到 1 - 1000 中任意的苹果数目
+
+            二进制分法，1，2，4...
+
+        * 为什么要出来面试
+
+            自行发挥
+
 
 * 百度 - 大数据开发工程师
 
