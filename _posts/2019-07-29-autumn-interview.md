@@ -73,7 +73,7 @@ tags:
     
 * 阿里 - 数据研发工程师
 
-    8.6 一面，8.7 二面，8.12 三面，8.14 四面
+    8.6 一面，8.7 二面，8.12 三面，8.14 四面，8.15 HR面
 
     * 一面
 
@@ -607,3 +607,23 @@ tags:
         * 如何实时同步 MySQL -> HDFS
 
             MySQL binlog -> Kafka -> 服务消费 Kafka，将更新写到 HDFS 上，然后根据 timestamp 来区分新数据
+
+* 网易云音乐
+
+    8.16 一面
+
+    * 项目经历
+
+        自行发挥
+
+    * Flink 原理
+
+        [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+    * Spark 数据倾斜如何解决
+
+        [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+    * Kafka 原理
+
+        [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
