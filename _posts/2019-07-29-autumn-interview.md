@@ -608,7 +608,7 @@ tags:
 
             MySQL binlog -> Kafka -> 服务消费 Kafka，将更新写到 HDFS 上，然后根据 timestamp 来区分新数据
 
-* 网易云音乐
+* 网易云音乐 - 大数据开发工程师
 
     8.16 一面
 
@@ -627,3 +627,52 @@ tags:
     * Kafka 原理
 
         [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
+
+* 第四范式 - 大数据开发工程师
+
+    8.17 一面
+
+    * Flink 原理
+
+        [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+    * Kafka offset 存放位置
+
+        老版本存放在 ZK 上，新版本存放在全局 topic 上
+
+    * Spark Stage 如何划分
+
+        [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+    
+    * Java 双亲委派模型
+
+        [我的 Java 总结](https://mickey0524.github.io/2019/03/21/begin-java/)
+
+    * 算法题 - 链表反转
+
+        ```python
+        class ListNode(object):
+
+            def __init__(self, v):
+                self.v = v
+                self.next = None
+        
+        def solution(head):
+            res = ListNode()
+            tmp = res
+
+            while head:
+                next_node = head.next
+                head.next = tmp.next
+                tmp.next = head
+                head = next_node
+
+            return res.next
+        ```
+    
+    * 算法题 - 两个链表是否相交，问思路
+
+        两个链表长度为 len1，len2，较长的链表先走 len1 - len2 步，然后两个链表再一个走一步，如果节点相交，则两个链表相交
+
+        
+        

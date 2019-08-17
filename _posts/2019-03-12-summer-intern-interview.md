@@ -1185,9 +1185,9 @@ tags:
         
         有一个表，字段是 uid，login_time，logout_time，p_date 求最大同时在线人数
 
-        ```java
+        ```
         SELECT
-            MAX(a.ts) as max_online_nums
+            MAX(a.online_nums) as max_online_nums
         FROM
         (
             SELECT
