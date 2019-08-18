@@ -612,67 +612,159 @@ tags:
 
     8.16 一面
 
-    * 项目经历
+    * 一面
 
-        自行发挥
+        * 项目经历
 
-    * Flink 原理
+            自行发挥
 
-        [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        * Flink 原理
 
-    * Spark 数据倾斜如何解决
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
 
-        [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+        * Spark 数据倾斜如何解决
 
-    * Kafka 原理
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
 
-        [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
+        * Kafka 原理
+
+            [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
 
 * 第四范式 - 大数据开发工程师
 
     8.17 一面
 
-    * Flink 原理
+    * 一面
 
-        [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        * Flink 原理
 
-    * Kafka offset 存放位置
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
 
-        老版本存放在 ZK 上，新版本存放在全局 topic 上
+        * Kafka offset 存放位置
 
-    * Spark Stage 如何划分
+            老版本存放在 ZK 上，新版本存放在全局 topic 上
 
-        [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
-    
-    * Java 双亲委派模型
+        * Spark Stage 如何划分
 
-        [我的 Java 总结](https://mickey0524.github.io/2019/03/21/begin-java/)
-
-    * 算法题 - 链表反转
-
-        ```python
-        class ListNode(object):
-
-            def __init__(self, v):
-                self.v = v
-                self.next = None
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
         
-        def solution(head):
-            res = ListNode()
-            tmp = res
+        * Java 双亲委派模型
 
-            while head:
-                next_node = head.next
-                head.next = tmp.next
-                tmp.next = head
-                head = next_node
+            [我的 Java 总结](https://mickey0524.github.io/2019/03/21/begin-java/)
 
-            return res.next
-        ```
-    
-    * 算法题 - 两个链表是否相交，问思路
+        * 算法题 - 链表反转
 
-        两个链表长度为 len1，len2，较长的链表先走 len1 - len2 步，然后两个链表再一个走一步，如果节点相交，则两个链表相交
+            ```python
+            class ListNode(object):
 
+                def __init__(self, v):
+                    self.v = v
+                    self.next = None
+            
+            def solution(head):
+                res = ListNode()
+                tmp = res
+
+                while head:
+                    next_node = head.next
+                    head.next = tmp.next
+                    tmp.next = head
+                    head = next_node
+
+                return res.next
+            ```
         
+        * 算法题 - 两个链表是否相交，问思路
+
+            两个链表长度为 len1，len2，较长的链表先走 len1 - len2 步，然后两个链表再一个走一步，如果节点相交，则两个链表相交
+
+* 腾讯 - 大数据研发工程师
+
+    8.18 一面
+
+    * 一面
+
+        一面的面试官十分奇葩，因为我语速快觉得我人毛躁，一直问我会不会和同事吵架，也不想听我的实习，体验十分不好。。。
+
+        * 算法题 - 非递归二叉树前序遍历
+
+            ```python
+            class TreeNode(object):
+                
+                def __init__(self, v):
+                    self.v = v
+                    self.left = None
+                    self.right = None
+
+            from collections import deque
+                    
+            def solution(root):
+                if not root:
+                    return
+                
+                q = deque([root])
+                while q:
+                    cur_node = q.pop()
+                    
+                    print cur_node.v
+                    
+                    if cur_node.right:
+                        q.append(cur_node.right)
+                    
+                    if cur_node.left:
+                        q.append(cur_node.left)
+                
+                return
+            ```
+        
+        * 算法题
+
+            最小非零元素
+
+            牛牛给了小Q一个长度为n正整数序列ai
+
+            牛牛要求小Q重复以下操作步骤k轮
+            
+            1、发现最小的非零元素x
+            
+            2、打印x
+            
+            3、将序列中所有非零元素减x
+
+            ```python
+            def solution(nums, k):
+                length = len(nums)
+                nums.sort()
+
+                n_idx, k_idx = 0, 0
+                res, delta = [], 0
+                while n_idx < length and k_idx < k:
+                    if nums[n_idx] > delta:
+                        res.append(nums[n_idx] - delta)
+                        delta = nums[n_idx]
+                        k_idx += 1
+                    
+                    n_idx += 1
+
+                if k_idx < k:
+                    res += [0] * (k - k_idx)
+                
+                return res
+            ```
+        
+        * Flink 原理
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * Java GC，包括 GC 算法，GC 垃圾收集器，GC 发送在什么时候，做了什么事情，以及可达性分析 gg 的是否会被马上清除
+
+            [Java](https://github.com/CyC2018/CS-Notes/blob/master/notes/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA.md)
+        
+        * Spark 数据倾斜如何做
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * 大数据中 Lambda 架构
+
+            
         
