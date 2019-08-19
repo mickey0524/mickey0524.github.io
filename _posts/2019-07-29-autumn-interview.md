@@ -764,7 +764,8 @@ tags:
 
             [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
 
-        * 大数据中 Lambda 架构
+        * 大数据中 Lambda 架构和 Kappa 架构
 
-            
-        
+            [大数据 Lambda 架构](https://yq.aliyun.com/articles/197233)
+
+            [Lambda 和 Kappa](https://blog.csdn.net/jsjsjs1789/article/details/87105858)
