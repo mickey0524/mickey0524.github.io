@@ -1674,6 +1674,7 @@ System.out.println(Arrays.toString(copied));
     如果JIT经过逃逸分析，发现有些对象没有逃逸出方法，那么有可能堆内存分配会被优化成栈内存分配
 
     ![memory-assign](/img/in-post/begin-java/memory-assign.png)
+
 * Java Arrays.sort 源码
 
 	* 老版本使用插入排序 + 归并排序，当数组中元素小于 7 的时候，使用插入排序，否则使用归并排序
@@ -1684,4 +1685,8 @@ System.out.println(Arrays.toString(copied));
 		runLen[i - 2] > runLen[i - 1]
 		```
 
-		
+* Java 中 a = a + 4 和 a += 4 的区别（a 是 byte 类型）
+
+    a 是 byte 类型，4 默认是 int 类型，所以 a + 4 会转为 int 类型，不能赋值给 byte 类型的 a
+
+    += 在 Java 里会自动转型，不过 4 换成 1111 就溢出了
