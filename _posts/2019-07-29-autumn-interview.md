@@ -632,7 +632,7 @@ tags:
 
 * 第四范式 - 大数据开发工程师
 
-    8.17 一面
+    8.17 一面，8.20 二面
 
     * 一面
 
@@ -677,6 +677,22 @@ tags:
         * 算法题 - 两个链表是否相交，问思路
 
             两个链表长度为 len1，len2，较长的链表先走 len1 - len2 步，然后两个链表再一个走一步，如果节点相交，则两个链表相交
+    
+    * 二面
+
+        * 项目经历
+            
+            自行发挥
+
+        * Hive，Spark 如何解决数据倾斜
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+        
+        * Flink 如何实现 exactly once
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * 介绍第四范式的大数据平台
 
 * 腾讯 - 大数据研发工程师
 
