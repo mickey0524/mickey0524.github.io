@@ -610,7 +610,7 @@ tags:
 
 * 网易云音乐 - 大数据开发工程师
 
-    8.16 一面
+    8.16 一面，8.21 二面
 
     * 一面
 
@@ -629,6 +629,28 @@ tags:
         * Kafka 原理
 
             [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
+
+    * 二面
+
+        * 项目经历
+
+            自行发挥
+
+        * Flink 的状态后端如何存储
+
+            [Flink 如何选择状态后端](http://wuchong.me/blog/2018/11/21/flink-tips-how-to-choose-state-backends/)
+        
+        * MR 的过程
+
+            [我的 MR 整理](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+        
+        * 数仓如何分层
+
+            dim，ods，dwa
+
+        * 有没有阅读过数仓相关的书籍
+
+            没有
 
 * 第四范式 - 大数据开发工程师
 
