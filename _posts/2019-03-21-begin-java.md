@@ -1690,3 +1690,9 @@ System.out.println(Arrays.toString(copied));
     a 是 byte 类型，4 默认是 int 类型，所以 a + 4 会转为 int 类型，不能赋值给 byte 类型的 a
 
     += 在 Java 里会自动转型，不过 4 换成 1111 就溢出了
+
+* Java 字符串操作
+
+    [Java String](https://www.cnblogs.com/yueshutong/p/9520691.html)
+
+    [Java String 类拼接时的编译器优化](https://blog.csdn.net/OOC_ZC/article/details/83999471)

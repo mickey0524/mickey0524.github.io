@@ -247,6 +247,10 @@ tags:
             2. dwd 层 - 事实层
             3. dwa 层 - 聚合层
             4. app 层 - 应用层
+        
+        * Java String 类拼接的时候编译器优化
+
+            [Java String类拼接时的编译器优化](https://blog.csdn.net/OOC_ZC/article/details/83999471)
     
     * 三面
 
