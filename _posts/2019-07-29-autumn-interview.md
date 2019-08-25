@@ -849,3 +849,63 @@ tags:
         * 大数据组件的理解
 
             [大数据](https://github.com/mickey0524/big-data-knowledge)
+
+* 拼多多 - 大数据研发工程师
+
+    8.25 一面
+
+    * 一面
+
+        吐槽一下微信视频面试。。。
+
+        * Java HashMap
+
+            [HashMap 源码分析](https://mickey0524.github.io/2019/06/18/java-hash-map-source/)
+
+        * Flink 原理
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+        * MR 的过程
+
+            [我的 MR 整理](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+        
+        * 项目经历
+            
+            自行发挥
+
+        * 数据仓库分层
+
+            维度层，事实层（uuid，维度层外键，度量）
+
+        * Hive 表如下所示，用 SQL 统计每日每个城市新增访问用户数
+
+            ```
+            user_visit(
+                uid bigint,
+                time bigint,
+                city string
+            )
+            ```
+
+            ```
+            SELECT
+                city,
+                dayofyear(FROM_UNIXTIME(time)) as day,
+                COUNT(DISTINCT uid) as new_count
+            FROM
+            (
+                SELECT
+                    uid,
+                    city,
+                    MIN(time) as time
+                FROM
+                    user_visit
+                GROUP BY
+                    uid,
+                    city
+            ) t
+            group by
+                city,
+                dayofyear(FROM_UNIXTIME(time))
+            ```
