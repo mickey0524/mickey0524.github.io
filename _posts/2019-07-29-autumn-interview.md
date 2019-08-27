@@ -612,9 +612,9 @@ tags:
 
             MySQL binlog -> Kafka -> 服务消费 Kafka，将更新写到 HDFS 上，然后根据 timestamp 来区分新数据
 
-* 网易云音乐 - 大数据开发工程师
+* 网易云音乐 - 大数据开发工程师（二面挂）
 
-    8.16 一面，8.21 二面
+    8.16 一面，8.21 二面，每面 20 分钟，然后就被挂了。。。
 
     * 一面
 
@@ -814,7 +814,7 @@ tags:
 
 * 美团 - 数据研发工程师
 
-    8.20 一面，8.22 二面
+    8.20 一面，8.22 二面，8.27 三面 - 五面，8.27 hr 面
 
     * 一面
 
@@ -849,6 +849,66 @@ tags:
         * 大数据组件的理解
 
             [大数据](https://github.com/mickey0524/big-data-knowledge)
+        
+    * 三面
+
+        * 介绍业务
+
+            自行发挥
+        
+        * Spark 数据倾斜
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * Hive 数据倾斜
+
+            [我的 Hive 总结](https://github.com/mickey0524/big-data-knowledge#hive)
+        
+        * 数仓方法论
+
+            1. 选择业务过程：我认为这就是理解自己的业务是在做什么
+            2. 声明粒度：精确定义某个事实表的每一行在表示什么
+            3. 确定纬度：确定度量环境中所有可能出现的单值描述符
+            4. 确定事实：确定过程的度量是什么
+        
+        * 统计抖音城市的日活的事实表
+
+            1. uid 用户维度
+            2. did 设备维度
+            3. cid 城市维度
+            4. vid 视频 id
+            5. play_num 视频播放次数
+            6. start_time 开始时间
+            7. end_time 结束时间
+            ... 等
+
+    * 四面
+
+        * 介绍业务
+
+            自行发挥
+        
+        * Flink 原理（exactly once，watermark）
+
+            一直在讲 Flink
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+        * Flink 1.4 之后端到端的一致性如何保证
+
+            [Flink 结合 Kafka 实现端到端的一致性语义](https://blog.csdn.net/u013411339/article/details/90625521)
+
+    * 五面
+
+        * 介绍业务
+
+            自行发挥
+
+        * 数据倾斜
+
+            同三面
+
+        * 聊人生，聊理想，给我介绍维度建模
 
 * 拼多多 - 大数据研发工程师
 
