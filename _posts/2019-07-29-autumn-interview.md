@@ -722,7 +722,7 @@ tags:
 
 * 腾讯 —— 腾讯音乐 —— 大数据研发工程师
 
-    8.18 一面
+    8.18 一面，8.28 二面
 
     * 一面
 
@@ -811,6 +811,46 @@ tags:
             [大数据 Lambda 架构](https://yq.aliyun.com/articles/197233)
 
             [Lambda 和 Kappa](https://blog.csdn.net/jsjsjs1789/article/details/87105858)
+    
+    * 二面
+
+        二面面试官人贼贼好，面试很舒服
+
+        * 自我介绍
+
+            自行发挥
+
+        * 项目经历
+
+            自行发挥
+        
+        * Java 泛型在编译的时候和运行的时候都做了什么
+
+            泛型值存在于 Java 的编译期，编译成字节码文件后，泛型是要被擦除的，例如一个 Integer 类型的 ArrayList，add 一个 "hello" 会报错，但是反射调用就没问题
+
+        * Java 反射实现的原理
+
+            Java 类加载的时候，会编译生成 .class 字节码文件，会将类的字段、方法的限定符、描述符加载到方法区，同时 Java 对象的对象头中有对 Java 类的引用
+
+        * 操作系统如何执行一个可执行文件
+
+            操作系统分配 CPU，然后父 SHELL 进程去内核态启动子进程，然后会给子进程分配虚拟内存页（涉及到页面置换算法），子进程执行可执行文件
+
+        * 进程、线程和协程之间的区别
+            
+            [OS](https://github.com/mickey0524/web-development-knowledge/blob/master/docs/os.md)
+
+        * TCP 的 11 种状态
+
+            [TCP 的 11 种状态](https://blog.csdn.net/pearl_c/article/details/51226320)
+
+        * 从浏览器输入一个 URL 之后发生了什么
+
+            [HTTP 请求页面](https://github.com/CyC2018/CS-Notes/blob/master/notes/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%20-%20%E5%BA%94%E7%94%A8%E5%B1%82.md#4-http-%E8%AF%B7%E6%B1%82%E9%A1%B5%E9%9D%A2)
+
+        * HTTP V1、V1.1 和 V2.0 之间有什么变化
+
+            [HTTP 各版本](https://github.com/CyC2018/CS-Notes/blob/master/notes/HTTP.md#%E4%B8%83http20)
 
 * 美团 —— 到店事业部 —— 数据研发工程师
 
