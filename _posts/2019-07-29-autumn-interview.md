@@ -658,7 +658,7 @@ tags:
 
 * 第四范式 —— 数据中台 —— 大数据开发工程师
 
-    8.17 一面，8.20 二面
+    8.17 一面，8.20 二面，9.1 三面
 
     * 一面
 
@@ -719,6 +719,23 @@ tags:
             [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
         
         * 介绍第四范式的大数据平台
+    
+    * 三面
+
+        * 项目经历
+
+            自行发挥
+
+        * 介绍第四范式的大数据平台
+
+        * 讲讲 Flink 源码
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * 大数据批流处理架构
+
+            [大数据 Lambda 架构](https://yq.aliyun.com/articles/197233)
+            
 
 * 腾讯 —— 腾讯音乐 —— 大数据研发工程师
 
@@ -1011,3 +1028,27 @@ tags:
                 city,
                 dayofyear(FROM_UNIXTIME(time))
             ```
+
+* 京东 —— 供应链 —— 数据研发工程师
+
+    9.1 一面（面试结束后，面试官还和我握了手，受宠若惊）
+
+    * 一面
+
+        * 介绍业务
+
+            自行发挥
+        
+        * Nsq 源码
+
+            [我的 Nsq 总结](https://github.com/mickey0524/nsq-analysis)
+
+        * MR 过程
+
+            [我的 MR 总结](https://github.com/mickey0524/big-data-knowledge#mapreduce)
+
+        * Spark 过程
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * 面试官介绍业务
