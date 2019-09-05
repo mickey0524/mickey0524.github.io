@@ -971,7 +971,7 @@ tags:
 
 * 拼多多 —— 数据中台 —— 大数据研发工程师
 
-    8.25 一面
+    8.25 一面，9.5 二面
 
     * 一面
 
@@ -1028,6 +1028,64 @@ tags:
                 city,
                 dayofyear(FROM_UNIXTIME(time))
             ```
+        
+    * 二面
+
+        二面居然还是微信视频面试，不过二面回答我的提问是我面试中体验最好的，很感谢
+
+        * 介绍业务
+
+            自行发挥
+        
+        * 数据仓库分层方式
+
+            dim 维度，dwd 事实，dwa 聚合层
+
+        * 数仓缓慢变化维度解决方法
+
+            [数仓方法论](https://mickey0524.github.io/2019/08/24/dw-methodology/)
+
+        * 数仓一致性的问题
+
+            这个需要区分一致性维度和一致性事实来看
+
+            * 一致性维度，构建总线矩阵，跨事实表字段 + 上卷（产品维度和品牌维度对应的字段名和填充值）等保证维度一致性
+
+            * 一致性事实，收入、利润等关键指标是必须保持一致的事实，如果事实与不止一个维度模型关联，那么针对这些事实的基本定义和等式，如果针对的是一个事情，是必须相同的，例如两个事实表中的收益单位之类的
+        
+        * 算法题
+
+            给出一个数组 ['a', 'b', 'c'] 得到所有的排列组成的数组，['a', 'b', 'c', 'ab', 'ba'...]
+
+            ```python
+            def pdd_solution(arr):
+                length = len(arr)
+                if length < 2:
+                    return arr
+
+                s = set()
+
+                for i in xrange(length):
+                    arr[0], arr[i] = arr[i], arr[0]
+                    s.add(arr[0])
+                    child_arr = pdd_solution(arr[1:])
+
+                    for string in child_arr:
+                        s.add(arr[0] + string)
+
+                    arr[0], arr[i] = arr[i], arr[0]
+
+                return list(s)
+            ```
+
+        * 如何知道哪个数据指标有用
+
+            思考理解业务过程 + ab test + 后验看数
+
+        * Flink 原理
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
 
 * 京东 —— 供应链 —— 数据研发工程师
 
