@@ -1031,7 +1031,7 @@ tags:
 
 * 京东 —— 供应链 —— 数据研发工程师
 
-    9.1 一面（面试结束后，面试官还和我握了手，受宠若惊）
+    9.1 一面（面试结束后，面试官还和我握了手，受宠若惊），9.5 二面
 
     * 一面
 
@@ -1050,5 +1050,37 @@ tags:
         * Spark 过程
 
             [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * 面试官介绍业务
+
+    * 二面
+
+        * 介绍业务
+
+            自行发挥
+
+        * Flink 原理
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+        
+        * Kafka Rebalance
+
+            [我的 Kafka 总结](https://github.com/mickey0524/big-data-knowledge#kafka)
+
+        * Hive 数据倾斜
+            
+            [我的 Hive 总结](https://github.com/mickey0524/big-data-knowledge#hive)
+
+        * Spark 数据倾斜
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * Spark Driver
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+
+        * Nsq 适用场景
+
+            因为会丢数据，我觉得 Nsq 仅仅适用于流量侧
 
         * 面试官介绍业务
