@@ -1063,19 +1063,19 @@ tags:
                 if length < 2:
                     return arr
 
-                s = set()
+                res = []
 
                 for i in xrange(length):
                     arr[0], arr[i] = arr[i], arr[0]
-                    s.add(arr[0])
+                    res.append(arr[0])
                     child_arr = pdd_solution(arr[1:])
 
                     for string in child_arr:
-                        s.add(arr[0] + string)
+                        res.append(arr[0] + string)
 
                     arr[0], arr[i] = arr[i], arr[0]
 
-                return list(s)
+                return res
             ```
 
         * 如何知道哪个数据指标有用
