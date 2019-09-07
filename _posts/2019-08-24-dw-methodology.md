@@ -103,3 +103,33 @@ tags:
     ![web_1](/img/in-post/dw-methodology/web_1.png)
 
     上图中可以看到步骤维度，我们知道网页粒度上也有很多 area，或者在一个网页上执行操作需要有一个步骤，这就是步骤维度的用处，可以用于分析在当前网页上操作的漏斗
+
+* 设计者总是喜欢在事实表中存储 "到目前为止" 列，他们认为在每个事实行中存储 "到目前为止季度" 或 "到目前为止年" 等相加后的总计是比较有益的，因为他们可以直接获取，不需要计算，请不要这样做，事实表必须和粒度保持一致，应该将他们从设计的模式中拿走，通过计算获得
+
+* 维度属性层次
+
+    * 轻微不整齐的可变深度层次
+
+        例如地理层次，最简单的位置具有4个级别：地址、城市、州和国家，比较复杂一点的情况增加了区域，最复杂的情况增加了区和区域级别
+
+        可以统一处理，用城市名填在区和区域的位置上，也可以填入 Not Applicable
+
+        ![account_1](/img/in-post/dw-methodology/account_1.png)
+
+    * 不整齐可变深度层次
+
+        例如组织维度，很多时候是一个组织树
+
+        ![account_2](/img/in-post/dw-methodology/account_2.png)
+
+        这个时候可以建立一个桥接表
+
+        ![account_3](/img/in-post/dw-methodology/account_3.png)
+
+        ![account_3](/img/in-post/dw-methodology/account_4.png)
+
+    * 随时间变化的不规则层次
+
+        新增有效时间和失效时间
+
+        ![account_5](/img/in-post/dw-methodology/account_5.png)
