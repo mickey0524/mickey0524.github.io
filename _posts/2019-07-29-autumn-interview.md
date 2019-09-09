@@ -739,7 +739,7 @@ tags:
 
 * 腾讯 —— 腾讯音乐 —— 大数据研发工程师
 
-    8.18 一面，8.28 二面
+    8.18 一面，8.28 二面，9.9 三面
 
     * 一面
 
@@ -868,6 +868,30 @@ tags:
         * HTTP V1、V1.1 和 V2.0 之间有什么变化
 
             [HTTP 各版本](https://github.com/CyC2018/CS-Notes/blob/master/notes/HTTP.md#%E4%B8%83http20)
+    
+    * 三面
+
+        感觉像 hr 面的技术面
+
+        * 项目经历
+
+            自行发挥
+
+        * 你有什么技术特长
+
+            自行发挥
+
+        * 讲讲工作中遇到的最大的困难
+
+            自行发挥
+
+        * 讲讲 Flink
+
+            [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
+
+        * 为什么要投他们
+
+            自行发挥
 
 * 美团 —— 到店事业部 —— 数据研发工程师
 
