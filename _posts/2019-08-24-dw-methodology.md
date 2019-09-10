@@ -133,3 +133,7 @@ tags:
         新增有效时间和失效时间
 
         ![account_5](/img/in-post/dw-methodology/account_5.png)
+
+* 应用于多值维度的桥接表
+
+    ![client_1](/img/in-post/dw-methodology/client_1.png)
