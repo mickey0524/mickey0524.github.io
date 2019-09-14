@@ -60,7 +60,7 @@ tags:
 
     * 重写，直接在原始表上改写数据
 
-    * 增加新行，新增 start\_time、end\_time 列来表示当前行的有效期
+    * 增加新行，新增 start\_time、end\_time 列来表示当前行的有效期，可以根据业务需求建立 change\_reason 的列来指代修改原因
 
     * 增加新属性，在当前行上新增字段来表示历史属性
 
@@ -137,3 +137,15 @@ tags:
 * 应用于多值维度的桥接表
 
     ![client_1](/img/in-post/dw-methodology/client_1.png)
+
+* 桥接表和组合字符串
+
+    * 桥接表
+
+        ![employee_1](/img/in-post/dw-methodology/employee_1.png)
+
+    * 组合字符串
+
+        可以将多数值存储为维度表中的属性 'A|B|C' 或 ["A", "B", "C"]，如果使用比较多的话，也可以抽取支架维度
+
+        ![employee_2](/img/in-post/dw-methodology/employee_2.png)
