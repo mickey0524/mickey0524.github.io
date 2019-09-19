@@ -995,7 +995,7 @@ tags:
 
 * 拼多多 —— 数据中台 —— 大数据研发工程师
 
-    8.25 一面，9.5 二面
+    8.25 一面，9.5 二面，9.19 HR 面
 
     * 一面
 
@@ -1166,3 +1166,313 @@ tags:
             因为会丢数据，我觉得 Nsq 仅仅适用于流量侧
 
         * 面试官介绍业务
+
+* 微软 —— STCA（Bing ads）—— 软件开发工程师
+
+    9.19 一面 - 四面
+
+    * 一面
+
+        * 介绍业务
+
+            自行发挥
+
+        * 算法题，有一个数组，取值范围为（0 - 255），给出一个不会出现在数组中的数字 n，进行数组压缩，返回一个 byte 数组（元素范围为 0 - 255）
+
+            ```python
+            def solution(arr, n):
+                length = len(arr)
+                if length < 4:
+                    return arr
+
+                res = []
+                i = 0
+
+                while i < length:
+                    j = i + 1
+                    while j < length and arr[i] == arr[j]:
+                        j += 1
+                    
+                    repeat_num = j - i
+                    if repeat_num > 3:
+                        res.append(arr[i])
+
+                        while repeat_num > 255:
+                            repeat_num -= 255
+                            res.append(n)
+
+                        res.append(repeat_num)
+
+                    else:
+                        for idx in xrange(i, j):
+                            res.append(arr[idx])
+                    
+                    i = j
+                
+                return res
+            ```
+        
+        * 算法题，给出一个由数字字符串组成的数组，给出拼接这些字符串之后能得到的最大数字
+
+            ```python
+            def solution(arr):
+                length = len(arr)
+                if length == 1:
+                    return arr[0]
+                
+                def comp(a, b):
+                    return a + b <= b + a
+                
+                arr.sort(cmp=comp)
+
+                return ''.join(arr)
+            ```
+
+    * 二面
+
+        * 介绍业务
+
+            自行发挥
+
+        * 蓄水池抽样算法，相同概率找到 target 在 arr 中索引
+
+            ```python
+            from random import randint
+
+            def solution(arr, target):
+                cur_num = -1
+                res = -1
+
+                for idx, n in enumerate(arr):
+                    if n == target:
+                        cur_num += 1
+                        if randint(0, cur_num) == cur_num:
+                            res = idx
+                
+                return res
+            ```
+        
+        * 并查集算法
+
+            ```python
+            class UnionFind(object):
+                def __init__(self, N):
+                    """
+                    初始化参数
+                    type N: int 点的个数
+                    """
+                    self.count = N
+                    self.id = [i for i in xrange(N)]
+                    self.size = [1] * N
+
+                def get_count(self):
+                    """
+                    获取并查集中不同种类的点
+                    rtype: int
+                    """
+                    return self.count
+
+                def _find(self, p):
+                    """
+                    查询id指代的节点的根节点
+                    type p: int 节点id
+                    rtype: int
+                    """
+                    if p != self.id[p]:
+                        self.id[p] = self._find(self.id[p])
+
+                    return self.id[p]
+
+                def union(self, p, q):
+                    """
+                    在连通图中打通p节点和q节点
+                    type p: int 节点p
+                    type q: int 节点q
+                    """
+                    p_root, q_root = self._find(p), self._find(q)
+
+                    if p_root == q_root:
+                        return False
+
+                    if self.size[p_root] < self.size[q_root]:
+                        self.id[p_root] = q_root
+                        self.size[q_root] += self.size[p_root]
+                    else:
+                        self.id[q_root] = p_root
+                        self.size[p_root] += self.size[q_root]
+
+                    self.count -= 1
+
+                    return True
+            ```
+
+        * 算法题，查找一个乱序整数数组中，最长连续子序列的长度
+
+            ```python
+            def solution(arr):
+                length = len(arr)
+                if length < 2:
+                    return length
+
+                hash_map = {}
+                res = 1
+
+                for n in arr:
+                    l = hash_map.get(n - 1, 0)
+                    r = hash_map.get(n + 1, 0)
+                    
+                    tmp = l + r + 1
+                    hash_map[n] = tmp
+                    if l != 0:
+                        hash_map[n - l] = tmp
+                    if r != 0:
+                        hash_map[n + r] = tmp
+                    
+                    res = max(res, tmp)
+                
+                return res
+            ```
+
+    * 三面
+
+        * 介绍业务
+
+            自行发挥
+
+        * 算法题，判断一个树是否为 BST
+
+            ```python
+            class TreeNode(object):
+                def __init__(self, v):
+                    self.v = v
+                    self.left = None
+                    self.right = None
+
+            def solution(root):
+                if not root:
+                    return True
+                
+                res = [True, None]
+
+                def recursive(node):
+                    if not res[0] or not node:
+                        return
+                    
+                    recursive(node.left)
+
+                    if res[1] and res[1] >= node.v:
+                        res[0] = False
+                        return
+
+                    res[1] = node.v
+
+                    recursive(node.right)
+                
+                recursive(root)
+
+                return res[0]
+            ```
+
+        * 算法题，第 k 个排列，leetcode 第 60 题
+
+            ```python
+            def getPermutation(self, n, k):
+                """
+                :type n: int
+                :type k: int
+                :rtype: str
+                """
+                tmp = self.helper([i for i in xrange(1, n + 1)], k)
+
+                return ''.join(map(str, tmp))
+
+            def helper(self, arr, k):
+                if k == 1:
+                    return arr
+
+                length = len(arr)
+                tmp = self.get_factorial(length - 1)
+                i = 0
+                while (i + 1) * tmp < k:
+                    i += 1
+
+                prefix = [arr[i]]
+
+                return prefix + self.helper(arr[:i] + arr[i + 1:], k - tmp * i)
+
+            def get_factorial(self, n):
+                res = 1
+
+                for i in xrange(1, n + 1):
+                    res *= i
+
+                return res
+            ```
+
+        * 算法题，有一个关注列表 [['A', 'B'], ['A', 'C'], ['C', 'E']]，如果 'A' 关注了 'B' 那么 A 和 B 是一个组的，求出最后的分组
+
+            ```python
+            from collections import defaultdict
+
+            def solution(arr):
+                cur_idx = 0
+                ch_2_idx = {}
+                idx_2_ch = {}
+
+                for a, b in arr:
+                    if a not in ch_2_idx:
+                        ch_2_idx[a] = cur_idx
+                        idx_2_ch[cur_idx] = a
+                        cur_idx += 1
+                    if b not in ch_2_idx:
+                        ch_2_idx[b] = cur_idx
+                        idx_2_ch[cur_idx] = b
+                        cur_idx += 1
+                
+                ud = UnionFind(cur_idx)
+                for a, b in arr:
+                    ud.union(ch_2_idx[a], ch_2_idx[b])
+                
+                res = defaultdict(list)
+                for idx, n in enumerate(ud.id):
+                    res[n] += idx_2_ch[idx] 
+
+                return res.values()
+            ```
+
+    * 四面
+
+        * 算法题，将一个 BST 转变为一个双端链表
+
+        我的做法
+
+        ```python
+        class TreeNode(object):
+            def __init__(self, v):
+                self.v = v
+                self.left = None
+                self.right = None
+
+        def solution(root):
+            stack = deque()
+            res = [None, None]
+
+            def recursive(node):
+                if not node:
+                    return
+                
+                recursive(node.left)
+
+                node.pre = res[1]
+                if not res[0]:
+                    res[0] = node
+                else:
+                    res[1].right = node
+                res[1] = node
+
+                recursive(node.right)
+
+            recursive(root)
+
+            return res[0]
+        ```
