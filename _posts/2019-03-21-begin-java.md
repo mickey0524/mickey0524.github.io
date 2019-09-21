@@ -1696,3 +1696,7 @@ System.out.println(Arrays.toString(copied));
     [Java String](https://www.cnblogs.com/yueshutong/p/9520691.html)
 
     [Java String 类拼接时的编译器优化](https://blog.csdn.net/OOC_ZC/article/details/83999471)
+
+* Java 类中 serialversionuid 作用是什么
+
+	[Java 类中 serialversionuid 作用是什么](https://www.cnblogs.com/duanxz/p/3511695.html)
