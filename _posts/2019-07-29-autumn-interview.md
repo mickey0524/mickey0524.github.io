@@ -337,7 +337,7 @@ tags:
 
 * 百度 —— 智能云 —— 大数据开发工程师（offer）
 
-    8.10 一面 - 三面
+    8.10 一面 - 三面，9.23 OC
 
     * 一面
 
@@ -1476,3 +1476,60 @@ tags:
 
             return res[0]
         ```
+    
+* FreeWheel —— data inf —— 软件开发工程师
+
+    9.23 一面 - 三面，9.23 HR 面
+
+    * 一面
+
+        * 介绍业务
+
+            自行发挥
+        
+        * Hadoop 2.0 HDFS NameNode HA
+
+            主备 NameNode + QJM，需要回答出 editlog 和 fsimage
+
+            [我的 HDFS 总结](https://github.com/mickey0524/big-data-knowledge#hdfs)
+
+        * Spark 各种问（Driver 运行，数据倾斜，各种 shuffle 等等）
+
+            [我的 Spark 总结](https://github.com/mickey0524/big-data-knowledge#spark)
+        
+        * 算法题，正则匹配，？表示可以匹配任何一个字符，* 表示可以匹配 0 - N 个字符
+
+            ```python
+            def solution(s, p):
+                len_s, len_p = len(s), len(p)
+                dp = [[False] * (len_p + 1) for _ in xrange(len_s + 1)]
+                dp[0][0] = True
+
+                for i in xrange(len_s):
+                    for j in xrange(len_p):
+                        if s[i] == p[j] or p[j] == '?':
+                            dp[i + 1][j + 1] = dp[i][j]
+                        
+                        elif p[j] == '*':
+                            dp[i + 1][j + 1] = dp[i + 1][j] or dp[i][j + 1] or dp[i][j]
+                
+                return dp[len_s][len_p]
+            ```
+        
+    * 二面
+
+        * 介绍业务
+
+            自行发挥
+
+        * 如何看开源项目的源码
+
+            github clone 下来，起 local 环境，打断点，单步调试走通最简单的场景，然后再逐步复杂化
+
+        * 有 m 个苹果，一次能够取 1 - n 个，A 和 B 两个人，拿到最后一个苹果的输，A 先开始，请问什么情况下 A 能获胜
+
+            只有一个苹果的时候，A 输，2 到 n + 1 个苹果的时候 A 赢，n + 2 输，n + 3 到 2n + 2 赢，2n + 3 输....
+
+    * 三面
+
+        类似 HR 面了，聊人生，聊过去的学习，manager 表示主要想聊聊，看看我是什么样的人
