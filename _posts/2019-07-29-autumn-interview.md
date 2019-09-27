@@ -1111,9 +1111,9 @@ tags:
             [我的 Flink 源码解析](https://github.com/mickey0524/flink-streaming-source-analysis)
         
 
-* 京东 —— 供应链 —— 数据研发工程师
+* 京东 —— 供应链 —— 数据研发工程师（ssp offer）
 
-    9.1 一面（面试结束后，面试官还和我握了手，受宠若惊），9.4 二面，9.6 hr 面
+    9.1 一面（面试结束后，面试官还和我握了手，受宠若惊），9.4 二面，9.6 hr 面，9.27 offer
 
     * 一面
 
