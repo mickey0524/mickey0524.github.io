@@ -1700,3 +1700,7 @@ System.out.println(Arrays.toString(copied));
 * Java 类中 serialversionuid 作用是什么
 
 	[Java 类中 serialversionuid 作用是什么](https://www.cnblogs.com/duanxz/p/3511695.html)
+
+* Java 8 新特性
+
+    [Java 8 新特性](https://blog.csdn.net/javazyw/article/details/82733459)
