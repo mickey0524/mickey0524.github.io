@@ -1704,3 +1704,7 @@ System.out.println(Arrays.toString(copied));
 * Java 8 新特性
 
     [Java 8 新特性](https://blog.csdn.net/javazyw/article/details/82733459)
+
+* Maven
+
+    [最强Maven教程！|一个小时学会Maven！|（强烈建议收藏！文末附教程+学习路线图）](https://zhuanlan.zhihu.com/p/73444114)
