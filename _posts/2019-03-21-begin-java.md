@@ -1707,4 +1707,6 @@ System.out.println(Arrays.toString(copied));
 
 * Maven
 
-    [最强Maven教程！|一个小时学会Maven！|（强烈建议收藏！文末附教程+学习路线图）](https://zhuanlan.zhihu.com/p/73444114)
+    * [最强Maven教程！|一个小时学会Maven！|（强烈建议收藏！文末附教程+学习路线图）](https://zhuanlan.zhihu.com/p/73444114)
+    * [Maven settings.xml](https://www.cnblogs.com/hongmoshui/p/10762272.html)  
+
