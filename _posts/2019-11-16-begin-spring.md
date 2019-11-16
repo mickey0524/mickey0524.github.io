@@ -211,3 +211,130 @@ tags:
 		public class Config {
 		}
 		```
+	
+* 在 Java 配置（JavaConfig）中，可以使用 @Profile 注解指定某个 bean 属于哪一个 profile，@Profile 可以用于类，也可以用于方法，例如，`@Profile("dev")` 和 `@Profile("prod")`
+
+* 在 XML 配置中，可以定义带有 profile 选项的 beans，然后根据 `spring.profiles.active` 和 `spring.profiles.default` 两个属性来选择使用的配置
+
+* Spring 4 之后，引入了一个 @Conditional 注解，只有在给定的条件为 true 的时候，才会创建这个 bean，否则的话，这个 bean 会被忽略
+	
+	传入 @Conditional 注解的类需要实现 Condition 接口
+	
+	```java
+	public interface Condition {
+		boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata);
+	}
+	
+	public class MagicExistsCondition implements Condition {
+		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+			Environment env = context.getEnvironment();
+			return env.containsProperty("magic");  // 只有环境变量中存在 magic 属性的时候，才返回 true，bean 才被加载
+		}
+	}
+	```
+	
+* Spring 支持使用 @Autowired 来自动装配，如果这个时候有多个 bean 符合装配的条件，Spring 会抛出异常，这个时候我们需要显示的告诉 Spring 我们想要哪个 bean
+
+	* 使用 @Primary 或在 XML 中设置 primary 来表明优先选择这个 bean
+
+		```java
+		@Component
+		@Primary
+		public class IceCream implements Dessert { ... }
+		
+		<bean id="iceCream" class="com.IceCream" primary="true">
+		```
+		
+	* 同时在 @Component 和 @Autowired 处使用 @Qualifier
+
+		```java
+		@Component
+		@Qualifier("iceCream")
+		public class IceCream implements Dessert { ... }
+		
+		@Autowired
+		@Qualifier("iceCream")
+		public void setDessert(Dessert dessert) {
+			this.dessert = dessert;
+		}
+		```
+	
+	* 和前一个差不多，自定义注解继承 @ Qualifier，可以组合着使用
+
+		```java
+		@Target({ElementType.CONSTRUCTOR, ElementType.FIELD,
+					ElementType.METHOD, ElementType.TYPE})
+		@Retention(RetentionPolicy.RUNTIME)
+		@Qualifier
+		public @interface A { }
+		
+		@Target({ElementType.CONSTRUCTOR, ElementType.FIELD,
+					ElementType.METHOD, ElementType.TYPE})
+		@Retention(RetentionPolicy.RUNTIME)
+		@Qualifier
+		public @interface B { }
+		
+		@Target({ElementType.CONSTRUCTOR, ElementType.FIELD,
+					ElementType.METHOD, ElementType.TYPE})
+		@Retention(RetentionPolicy.RUNTIME)
+		@Qualifier
+		public @interface C { }
+		
+		@Component
+		@A
+		@B
+		public class IceCream implements Dessert { ... }
+		
+		@Autowired
+		@A
+		@B
+		public void setDessert(Dessert dessert) {
+			this.dessert = dessert;
+		}
+		```
+
+* Spring 中 bean 的作用域默认是单例，我们前面也讲到过，但是有时候我们可以选择其他作用域，可以使用 @Scope 来修改 bean 的作用域，或者在 XML 中设置 scope
+
+	* 单例（Singleton）：在整个应用中，只创建 bean 的一个实例
+	* 原型（Prototype）：每次注入或者通过 Spring 应用上下文获取的时候，都会创建一个新的 bean 实例
+
+		```java
+		@Component
+		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+		public class Notepad { ... }
+		
+		<bean id="notepad" class="com.Notepad" scope="prototype" />
+		```
+		
+	* 会话（Session）：在 Web 应用中，为每个会话创建一个 bean 实例
+		
+		* 基于接口 —— 走动态代理
+
+			```java
+			@Scope(value=WebApplicationContext.SCOPE_SESSION,
+					 proxyMode=ScopedProxyMode.INTERFACES)
+					 
+			<bean id="cart"
+					class="com.Cart"
+					scope="session">
+				<aop:scoped-proxy proxy-target-class="false" />
+			</bean>
+			```
+
+		* 基于类 —— 走 CGLib
+			
+			```java
+			@Scope(value=WebApplicationContext.SCOPE_SESSION,
+					 proxyMode=ScopedProxyMode.TARGET_CLASS)
+
+			<bean id="cart"
+					class="com.Cart"
+					scope="session">
+				<aop:scoped-proxy />
+			</bean>
+			```
+			
+	* 请求（Request）：在 Web 应用中，为每个请求创建一个 bean 实例
+
+		
+	
