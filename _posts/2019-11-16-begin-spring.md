@@ -241,7 +241,9 @@ tags:
 		@Component
 		@Primary
 		public class IceCream implements Dessert { ... }
+		```
 		
+		```xml
 		<bean id="iceCream" class="com.IceCream" primary="true">
 		```
 		
@@ -302,7 +304,9 @@ tags:
 		@Component
 		@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 		public class Notepad { ... }
+		```
 		
+		```xml
 		<bean id="notepad" class="com.Notepad" scope="prototype" />
 		```
 		
@@ -313,7 +317,9 @@ tags:
 			```java
 			@Scope(value=WebApplicationContext.SCOPE_SESSION,
 					 proxyMode=ScopedProxyMode.INTERFACES)
-					 
+			```
+			
+			```xml	 
 			<bean id="cart"
 					class="com.Cart"
 					scope="session">
@@ -326,7 +332,9 @@ tags:
 			```java
 			@Scope(value=WebApplicationContext.SCOPE_SESSION,
 					 proxyMode=ScopedProxyMode.TARGET_CLASS)
-
+			```
+			
+			```xml
 			<bean id="cart"
 					class="com.Cart"
 					scope="session">
@@ -336,5 +344,139 @@ tags:
 			
 	* 请求（Request）：在 Web 应用中，为每个请求创建一个 bean 实例
 
+* 将变量定义在 properties，然后用 Environment 引入 bean，避免硬编码（运行时注入）
+
+	```java
+	@Configuration
+	@PropertySource("classpath:/com/app.properties")
+	public class ExpressiveConfig {
 		
+		@Autowired
+		Environment env;
+		
+		@Bean
+		public BlankDisc disc() {
+			return new BlankDisc(
+				env.getProperty("disc.title"),
+				env.getProperty("disc.artist")
+			);
+		}
+	}
+	```
+
+* 使用 Spring 占位符是避免硬编码的更好的做法（运行时注入）
+
+	```xml
+	<bean id="car" class="com.Car">
+		<property name="name" value="${name}"/>
+	</bean>
+	```
 	
+	```java
+	public Car(
+		@Value("${name}") String name) {
+			this.name = name;
+		}
+	)
+	```
+	
+	需要配置一个 bean 加载配置文件
+	
+	```xml
+    <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <value>classpath:db.properties</value>
+                <value>classpath:redis.properties</value>
+                <value>classpath:config/config.properties</value>
+            </array>
+        </property>
+    </bean>
+	```
+
+* 使用 Spring 表达式语言（SpEL）进行装配（运行时注入），SpEL 需要放到 "#{ ... }" 之中
+
+	* `#{T(System).currentTimeMillis()}` 会将 `java.lang.System` 视为 Java 中对应的类型，获取计算时的毫秒数
+	
+	* `#{car.name}` 获取 id 为 car 的 bean 的 name 属性
+
+	* `#{car.getName()?.toUpperCase()}` 获取 id 为 car 的 bean 的 getName 方法，? 确保不为 null 再调用 toUpperCase 方法，防止 NPE
+
+	* `#{car.getName() ?: 'default'}` 获取 id 为 car 的 bean 的 getName 方法，如果为 null，返回 default
+
+	* `#{systemProperties['disc.title']}` 引用系统属性
+
+* Spring AOP 中描述切点的 execution 表达式
+
+	```java
+	execution(* concert.Performance.perform(..))
+				 | \__________________/    |   \__/
+		  返回任意类型         |          方法   |
+				           方法所属的类       使用任意参数
+	```
+
+* Spring 两种使用 AOP 切面的方式
+
+	* XML
+
+		```xml
+	   <bean id="checkTime" class="com.CheckNowTime"/>
+	
+	    <aop:config>
+	        <aop:aspect ref="checkTime">
+	            <aop:pointcut id="dohomework" expression="execution(* *.doHomeWork(..))"/>
+	            <aop:before pointcut-ref="dohomework" method="beforDoHomework"/>
+	            <aop:after pointcut-ref="dohomework" method="afterDoHomework"/>
+	        </aop:aspect>
+	    </aop:config>
+		```
+
+	* JavaConfig
+	
+		```java
+		@Configuration
+		@EnableAspectJAutoProxy  // 必须开启这个
+		@ComponentScan
+		public class BeanConfig {
+		}
+		
+		@Aspect
+		@Component  // 切面 bean
+		public class CheckNowTime {
+		
+		    @Before("execution(* *.doHomeWork(..))")
+		    public void beforDoHomework() {
+		        System.out.println(new Date(System.currentTimeMillis()) + " before do homework");
+		    }
+		
+		    @After("execution(* *.doHomeWork(..))")
+		    public void afterDoHomework() {
+		        System.out.println(new Date(System.currentTimeMillis()) + " after do homework");
+		    }
+		}
+		```
+
+* 切面能够获得传递给被切方法的参数
+
+	* JavaConfig
+
+		```java
+		@Before("execution(* com.CompactDisc.playTrack(int)) && args(trackNumber)")
+		public void countTrack(int trackNumber) {
+			...
+		}
+		```
+		
+	* XML
+
+		```xml
+		<bean id="trackCounter" class="com.TrackCounter" />
+		
+		<aop:config>
+			<aop:aspect ref="trackCounter">
+				<aop:pointcut id="trackPlayed" expression="execution(* com.CompactDisc.playTrack(int)) and args(trackNumber)"
+			</aop:aspect>
+			
+			<aop:before pointcur-ref="trackPlayed" method="countTrack" />
+		</aop:config>
+		```
