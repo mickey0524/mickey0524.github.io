@@ -480,3 +480,50 @@ tags:
 			<aop:before pointcur-ref="trackPlayed" method="countTrack" />
 		</aop:config>
 		```
+
+* Spring MVC 中常用的注解
+
+	* @Controller：表明这个类是一个控制器类
+	* @RequestMapping：map 请求到控制器类
+	* @ReponseBody：序列化 Response 为一个实体类
+	* @RestController：这个注解继承了 @Controller 和 @ResponseBody
+	* @RequestParam：用来接收请求传入的 param
+	* @PathVariable：用来接收请求 path 上的变量
+	* @RequestBody：用来将 application/json 的入参序列化为方法的参数
+
+* Spring MVC POST 请求校验传入实体的数据不为空
+
+	```java
+	@Data
+	public class StudentDto {
+		@NotNull
+		private long id;
+		
+		@NotNull
+		@Size(min=5, max=25)
+		private String name;
+	}
+	
+	...
+	
+	@RequestMapping("/student")
+	public ResponseEntity test_post(@Valid StudentDto student, Errors errors) {
+		if (errors.hasErrors()) {
+			...
+		}
+	}
+	```
+
+* Spring MVC 配置视图解析器
+
+	按照👇这样配置，可以将请求打到 `/webapp/static/html/${name}.html` 页面
+
+	```java
+    <bean id="htmlViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="0" />
+        <property name="prefix" value="/static/html/"/>
+        <property name="suffix" value=".html" />
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+    </bean>
+	```
