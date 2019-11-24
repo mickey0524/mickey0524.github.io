@@ -527,3 +527,22 @@ tags:
         <property name="contentType" value="text/html;charset=UTF-8"/>
     </bean>
 	```
+
+* Spring MVC 中过滤器、监听器和拦截器的区别
+
+    [Spring MVC 中过滤器、监听器和拦截器的区别](https://zhuanlan.zhihu.com/p/69060111)
+
+* Spring MVC 解决抛出异常的问题
+
+	首先，我们肯定知道可以使用 `@ExceptionHandler` 来注解方法捕获异常，但是需要在每个 Controller 内实现重复的代码，或者继承一个父类来统一处理，Spring 3.2 之后，可以使用 @ControllerAdvice 注解来统一处理所有控制器中抛出的异常
+	
+	```java
+	@ControllerAdvice
+	public class ExceptionAdvice {
+		
+		@ExceptionHandler(CustomException.class)
+		public String customExceptionHandler() {
+			return "error";
+		}
+	}
+	```
