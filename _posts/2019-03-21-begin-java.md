@@ -1710,3 +1710,6 @@ System.out.println(Arrays.toString(copied));
     * [最强Maven教程](https://zhuanlan.zhihu.com/p/73444114)
     * [Maven settings.xml](https://www.cnblogs.com/hongmoshui/p/10762272.html)  
 
+* Java 中的四种引用
+
+    [java的四种引用，强弱软虚，用到的场景](https://blog.csdn.net/google_huchun/article/details/54311659)
