@@ -31,7 +31,7 @@ tags:
 
 # 山药汤
 
-![山药汤](/img/in-post/wintersnow-menu/山药汤.jpg)
+![山药汤](/img/in-post/wintersnow-menu/山药汤.png)
 
 ## 食材
 
