@@ -546,3 +546,7 @@ tags:
 		}
 	}
 	```
+
+* Spring MVC 中静态资源拦截如何处理
+
+   [静态资源到底要放在哪里](http://www.javaboy.org/2019/0408/springboot-static-resources.html)
