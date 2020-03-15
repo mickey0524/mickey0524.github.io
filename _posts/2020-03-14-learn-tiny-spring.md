@@ -42,3 +42,24 @@ step-5 主要增加了 XML 中 ref 依赖其他 bean 的方法，其实就是在
 # step-6-invite-application-context
 
 step-6 在之前的基础上新增了 ApplicationContext，用于管理应用的上下文，ApplicationContext 首先读取 XML 文件，将 Bean 读取至 BeanDefinitionReader 中的 Map 中，然后将 Map copy 至 BeanFactory 的 Map 中
+
+# step-7-method-interceptor-by-jdk-dynamic-proxy
+
+step-7 增加了 JDK 动态代理类型的 AOP Proxy，TargetSource 中存储了需要被代理的对象，AdvisedSupport 中存储了 TargetSource 以及 MethodInceptor，MethodInceptor 是一个接口，用于在被代理对象方法执行前后自定义逻辑，MethodInceptor 接受 MethodInvocation 作为参数，MethodInvocation 内的逻辑就是保证被代理对象方法的正常执行
+
+至于如何进行动态代理，自然是实现 InvocationHandler 接口，使用 Proxy.newProxyInstance 啦
+
+# step-8-invite-pointcut-and-aspectj
+
+step-8 增加了 PointCut 相关的东西，使得 AOP 能够借助 AspectJ 实现 execution，进而判断目标 class 和目标 method 是否 match 切点
+
+# step-9-auto-create-aop-proxy
+
+step-9 增加了切点对 Bean 实例和 Bean 实例中方法的 match
+
+ApplicationContext 首先调用 XmlBeanDefinitionReader 读取 XML 文件，将所有的 Bean 定义读取为 BeanDefinition 放置于 AbstractBeanDefinitionReader 中的 registry 这个 Map 中，然后将 kv 拷贝到 BeanFactory 中；然后注册 BeanPostProcessors，BeanPostProcessors 是用于在 Bean 实例化的时候进行切点的判断，对 match 的 Bean 实例进行 JDK Proxy
+
+# step-10-invite-cglib-and-aopproxy-factory
+
+step-10 新增 cglib 方式和 AOP 代理工厂
+
