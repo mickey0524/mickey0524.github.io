@@ -61,5 +61,57 @@ ApplicationContext 首先调用 XmlBeanDefinitionReader 读取 XML 文件，将�
 
 # step-10-invite-cglib-and-aopproxy-factory
 
-step-10 新增 cglib 方式和 AOP 代理工厂
+step-10 新增 cglib 方式和 AOP 代理工厂，这里我们对这个项目进行一个总结
 
+## beans/io
+
+该目录主要是用于将文件读取为 InputStream，Resource 接口定义 getInputStream 方法，ResourceLoader 接口定义 getResource 接口，那么我就可以针对 UrlResource 和 StreamResource 定义配套的 Resource/ResourceLoader 子类，依靠 ClassLoader 的 gesResource 和 getResourceAsStream 两个函数
+
+## beans/BeanDefinition
+
+BeanDefinition 是一个核心类，用于存储 Bean 的元数据，我们在 XML 中定义 Bean 都是下面的格式
+
+```xml
+<bean id="XXX" class="com.a.b.c">
+    <property name="" value="" />
+    <property name="" ref="" />
+</bean>
+```
+
+BeanDefinition 存储了 className，通过 `Class.forName` 得到 Class，同时存储了 bean 对象，这也是单例的实现方式
+
+## beans/PropertyValue
+
+PropertyValue 存储了 property 的 name 和 value/ref
+
+## beans/xml
+
+该目录只定义了一个 XmlBeanDefinitionReader 一个类，用于读取并解析 XML 文件，得到存储 BeanDefinition 的 Map
+
+## beans/factory
+
+该目录主要是定义了 tiny-string 中的 Bean 工厂，我们知道 ApplicationContext 中有一个重要的方法，就是 getBean，其实就是 BeanFactory 中提供
+
+定义了 AbstractBeanFactory 这个抽象类，依靠模版设计模式规范 Bean 工厂，使用 ConcurrentHashMap 存储 BeanDefinition 的 Map
+
+创建 Bean 实例时通过 BeanDefinition 中存储的 Class 反射调用 newInstance 方法，然后将 BeanDefinition 中存储的 Property 存储到 Bean 实例中
+
+## context
+
+context 目录起着 Spring 中上下文的作用，AbstractApplicationContext 是 ApplicationContext 的抽象父类，首先调用 XmlBeanDefinitionReader 读取配置，然后将 BeanDefinition 的 Map 拷贝至 BeanFactory
+
+第二步是根据 BeanDefinition 中的 Class 筛选出 Bean 的处理类，用于处理 AOP
+
+第三步是触发所有 Bean 的实例化（单例）
+
+到这里，IOC 和 Spring 的微型框架基本就讲完了，接下来是 AOP
+
+## aop
+
+aop 目录实现了 AOP 的功能，在 Bean 实例创建的时候，会调用 initializeBean 方法，会链式执行所有的 BeanPostProcessor 中的方法，这里就是实现 AOP 的关键
+
+AspectJAwareAdvisorAutoProxyCreator 中的 postProcessAfterInitialization 方法会取出所有的切点，进行判断，只有 match class 的才会进行代理，优先走 JDK Proxy，没有接口的走 cglib
+
+AspectJExpressionPointcutAdvisor 类中存放了 PointCut 切点以及 Advice（就是切点的处理函数）
+
+这里最关键的两个接口，MethodInterceptor 和 MethodInvocation，MethodInvocation 用于保证被切方法的执行，MethodInterceptor 继承了 Advice，用于执行切点函数
